@@ -1,0 +1,482 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D527CF74172474B600F698D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF73172474B600F698D0 /* UIKit.framework */; };
+		D527CF76172474B600F698D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF75172474B600F698D0 /* Foundation.framework */; };
+		D527CF78172474B600F698D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF77172474B600F698D0 /* CoreGraphics.framework */; };
+		D527CF7E172474B600F698D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D527CF7C172474B600F698D0 /* InfoPlist.strings */; };
+		D527CF80172474B600F698D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CF7F172474B600F698D0 /* main.m */; };
+		D527CF84172474B600F698D0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CF83172474B600F698D0 /* AppDelegate.m */; };
+		D527CF86172474B600F698D0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D527CF85172474B600F698D0 /* Default.png */; };
+		D527CF88172474B600F698D0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D527CF87172474B600F698D0 /* Default@2x.png */; };
+		D527CF8A172474B600F698D0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D527CF89172474B600F698D0 /* Default-568h@2x.png */; };
+		D527CF8D172474B600F698D0 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D527CF8B172474B600F698D0 /* MainStoryboard_iPhone.storyboard */; };
+		D527CF90172474B600F698D0 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */; };
+		D527CF93172474B600F698D0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CF92172474B600F698D0 /* ViewController.m */; };
+		D527CF9B172474B600F698D0 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF9A172474B600F698D0 /* SenTestingKit.framework */; };
+		D527CF9C172474B600F698D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF73172474B600F698D0 /* UIKit.framework */; };
+		D527CF9D172474B600F698D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF75172474B600F698D0 /* Foundation.framework */; };
+		D527CFA5172474B600F698D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D527CFA3172474B600F698D0 /* InfoPlist.strings */; };
+		D527CFA8172474B600F698D0 /* AutonautTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFA7172474B600F698D0 /* AutonautTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D527CF9E172474B600F698D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D527CF68172474B500F698D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D527CF6F172474B600F698D0;
+			remoteInfo = Autonaut;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D527CF70172474B600F698D0 /* Autonaut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Autonaut.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D527CF73172474B600F698D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D527CF75172474B600F698D0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D527CF77172474B600F698D0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D527CF7B172474B600F698D0 /* Autonaut-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Autonaut-Info.plist"; sourceTree = "<group>"; };
+		D527CF7D172474B600F698D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D527CF7F172474B600F698D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D527CF81172474B600F698D0 /* Autonaut-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Autonaut-Prefix.pch"; sourceTree = "<group>"; };
+		D527CF82172474B600F698D0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D527CF83172474B600F698D0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D527CF85172474B600F698D0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		D527CF87172474B600F698D0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		D527CF89172474B600F698D0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D527CF8C172474B600F698D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		D527CF8F172474B600F698D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		D527CF91172474B600F698D0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		D527CF92172474B600F698D0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		D527CF99172474B600F698D0 /* AutonautTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AutonautTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D527CF9A172474B600F698D0 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D527CFA2172474B600F698D0 /* AutonautTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AutonautTests-Info.plist"; sourceTree = "<group>"; };
+		D527CFA4172474B600F698D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D527CFA6172474B600F698D0 /* AutonautTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutonautTests.h; sourceTree = "<group>"; };
+		D527CFA7172474B600F698D0 /* AutonautTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutonautTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D527CF6D172474B600F698D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CF74172474B600F698D0 /* UIKit.framework in Frameworks */,
+				D527CF76172474B600F698D0 /* Foundation.framework in Frameworks */,
+				D527CF78172474B600F698D0 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D527CF95172474B600F698D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CF9B172474B600F698D0 /* SenTestingKit.framework in Frameworks */,
+				D527CF9C172474B600F698D0 /* UIKit.framework in Frameworks */,
+				D527CF9D172474B600F698D0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D527CF67172474B500F698D0 = {
+			isa = PBXGroup;
+			children = (
+				D527CF79172474B600F698D0 /* Autonaut */,
+				D527CFA0172474B600F698D0 /* AutonautTests */,
+				D527CF72172474B600F698D0 /* Frameworks */,
+				D527CF71172474B600F698D0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D527CF71172474B600F698D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D527CF70172474B600F698D0 /* Autonaut.app */,
+				D527CF99172474B600F698D0 /* AutonautTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D527CF72172474B600F698D0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D527CF73172474B600F698D0 /* UIKit.framework */,
+				D527CF75172474B600F698D0 /* Foundation.framework */,
+				D527CF77172474B600F698D0 /* CoreGraphics.framework */,
+				D527CF9A172474B600F698D0 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D527CF79172474B600F698D0 /* Autonaut */ = {
+			isa = PBXGroup;
+			children = (
+				D527CF82172474B600F698D0 /* AppDelegate.h */,
+				D527CF83172474B600F698D0 /* AppDelegate.m */,
+				D527CF8B172474B600F698D0 /* MainStoryboard_iPhone.storyboard */,
+				D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */,
+				D527CF91172474B600F698D0 /* ViewController.h */,
+				D527CF92172474B600F698D0 /* ViewController.m */,
+				D527CF7A172474B600F698D0 /* Supporting Files */,
+			);
+			path = Autonaut;
+			sourceTree = "<group>";
+		};
+		D527CF7A172474B600F698D0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D527CF7B172474B600F698D0 /* Autonaut-Info.plist */,
+				D527CF7C172474B600F698D0 /* InfoPlist.strings */,
+				D527CF7F172474B600F698D0 /* main.m */,
+				D527CF81172474B600F698D0 /* Autonaut-Prefix.pch */,
+				D527CF85172474B600F698D0 /* Default.png */,
+				D527CF87172474B600F698D0 /* Default@2x.png */,
+				D527CF89172474B600F698D0 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D527CFA0172474B600F698D0 /* AutonautTests */ = {
+			isa = PBXGroup;
+			children = (
+				D527CFA6172474B600F698D0 /* AutonautTests.h */,
+				D527CFA7172474B600F698D0 /* AutonautTests.m */,
+				D527CFA1172474B600F698D0 /* Supporting Files */,
+			);
+			path = AutonautTests;
+			sourceTree = "<group>";
+		};
+		D527CFA1172474B600F698D0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D527CFA2172474B600F698D0 /* AutonautTests-Info.plist */,
+				D527CFA3172474B600F698D0 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D527CF6F172474B600F698D0 /* Autonaut */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D527CFAB172474B600F698D0 /* Build configuration list for PBXNativeTarget "Autonaut" */;
+			buildPhases = (
+				D527CF6C172474B600F698D0 /* Sources */,
+				D527CF6D172474B600F698D0 /* Frameworks */,
+				D527CF6E172474B600F698D0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Autonaut;
+			productName = Autonaut;
+			productReference = D527CF70172474B600F698D0 /* Autonaut.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D527CF98172474B600F698D0 /* AutonautTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D527CFAE172474B600F698D0 /* Build configuration list for PBXNativeTarget "AutonautTests" */;
+			buildPhases = (
+				D527CF94172474B600F698D0 /* Sources */,
+				D527CF95172474B600F698D0 /* Frameworks */,
+				D527CF96172474B600F698D0 /* Resources */,
+				D527CF97172474B600F698D0 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D527CF9F172474B600F698D0 /* PBXTargetDependency */,
+			);
+			name = AutonautTests;
+			productName = AutonautTests;
+			productReference = D527CF99172474B600F698D0 /* AutonautTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D527CF68172474B500F698D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = robbykraft;
+			};
+			buildConfigurationList = D527CF6B172474B500F698D0 /* Build configuration list for PBXProject "Autonaut" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D527CF67172474B500F698D0;
+			productRefGroup = D527CF71172474B600F698D0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D527CF6F172474B600F698D0 /* Autonaut */,
+				D527CF98172474B600F698D0 /* AutonautTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D527CF6E172474B600F698D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CF7E172474B600F698D0 /* InfoPlist.strings in Resources */,
+				D527CF86172474B600F698D0 /* Default.png in Resources */,
+				D527CF88172474B600F698D0 /* Default@2x.png in Resources */,
+				D527CF8A172474B600F698D0 /* Default-568h@2x.png in Resources */,
+				D527CF8D172474B600F698D0 /* MainStoryboard_iPhone.storyboard in Resources */,
+				D527CF90172474B600F698D0 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D527CF96172474B600F698D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CFA5172474B600F698D0 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D527CF97172474B600F698D0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D527CF6C172474B600F698D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CF80172474B600F698D0 /* main.m in Sources */,
+				D527CF84172474B600F698D0 /* AppDelegate.m in Sources */,
+				D527CF93172474B600F698D0 /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D527CF94172474B600F698D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D527CFA8172474B600F698D0 /* AutonautTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D527CF9F172474B600F698D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D527CF6F172474B600F698D0 /* Autonaut */;
+			targetProxy = D527CF9E172474B600F698D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D527CF7C172474B600F698D0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D527CF7D172474B600F698D0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D527CF8B172474B600F698D0 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D527CF8C172474B600F698D0 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D527CF8F172474B600F698D0 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		D527CFA3172474B600F698D0 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D527CFA4172474B600F698D0 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D527CFA9172474B600F698D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D527CFAA172474B600F698D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D527CFAC172474B600F698D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
+				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D527CFAD172474B600F698D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
+				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D527CFAF172474B600F698D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Autonaut.app/Autonaut";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
+				INFOPLIST_FILE = "AutonautTests/AutonautTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D527CFB0172474B600F698D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Autonaut.app/Autonaut";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
+				INFOPLIST_FILE = "AutonautTests/AutonautTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D527CF6B172474B500F698D0 /* Build configuration list for PBXProject "Autonaut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D527CFA9172474B600F698D0 /* Debug */,
+				D527CFAA172474B600F698D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D527CFAB172474B600F698D0 /* Build configuration list for PBXNativeTarget "Autonaut" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D527CFAC172474B600F698D0 /* Debug */,
+				D527CFAD172474B600F698D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D527CFAE172474B600F698D0 /* Build configuration list for PBXNativeTarget "AutonautTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D527CFAF172474B600F698D0 /* Debug */,
+				D527CFB0172474B600F698D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D527CF68172474B500F698D0 /* Project object */;
+}

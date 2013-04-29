@@ -5,15 +5,18 @@
 //  Created by Robby on 12/31/12.
 //  Copyright (c) 2012 Robby Kraft. All rights reserved.
 //
+//  
+//
+//
 
 #import <UIKit/UIKit.h>
 
 @interface Automata : UIImage
 
-@property (retain) UIImage *image;
-@property bool* cells;
-
--(Automata*) initwithRule:(int)ruleNumber width:(int)width height:(int)height singlePoint:(BOOL)singlePoint;
--(UIImage*) getImage;
+-(UIImage*) initwithRule:(int)ruleNumber
+           randomInitials:(BOOL)randomStart
+                    width:(NSInteger)visibleWidth
+                   height:(NSInteger)height
+              retinaScale:(CGFloat)scale;
 
 @end

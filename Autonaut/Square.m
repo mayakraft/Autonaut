@@ -6,17 +6,33 @@
 //  Copyright (c) 2013 robbykraft. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "Square.h"
-
 @implementation Square
+
+@synthesize state;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        state = arc4random()%2;
+        if(state)
+            [self setBackgroundColor:[UIColor whiteColor]];
+        else
+            [self setBackgroundColor:[UIColor blackColor]];
     }
     return self;
+}
+
+-(void) randomState
+{
+    state = arc4random()%2;
+    if(state)
+        [self setBackgroundColor:[UIColor whiteColor]];
+    else
+        [self setBackgroundColor:[UIColor blackColor]];    
 }
 
 /*
@@ -25,7 +41,15 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
+}*/
+
+-(void) setShadow
+{
+    self.layer.masksToBounds = NO;
+    self.layer.cornerRadius = 8;
+    self.layer.shadowOffset = CGSizeMake(-5, 7);
+    self.layer.shadowRadius = 5;
+    self.layer.shadowOpacity = 0.5;
 }
-*/
 
 @end

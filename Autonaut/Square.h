@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface Square : UIView
-
+@property BOOL state;
+-(void) randomState;
 @end

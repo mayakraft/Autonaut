@@ -22,20 +22,24 @@
 @interface Automata(){
     NSInteger width;
     NSInteger height;
+    NSInteger visibleHeight;
+    NSInteger visibleWidth;
+    bool *cells;
 }
 @end
 
 @implementation Automata
 
--(UIImage*) initwithRule:(int)ruleNumber
+-(id) initwithRule:(int)ruleNumber
            randomInitials:(BOOL)randomStart
-                    width:(NSInteger)visibleWidth
-                   height:(NSInteger)visibleHeight
-              retinaScale:(CGFloat)scale
+                    width:(NSInteger)widthInput
+                   height:(NSInteger)heightInput
 {
     if(ruleNumber > 255 || ruleNumber < 0)
         return nil; //rule number must be between 0 and 255
 
+    visibleWidth = widthInput;
+    visibleHeight = heightInput;
     width = visibleWidth + visibleHeight*2;
     height = visibleHeight;
     bool binaryRule[8];
@@ -50,8 +54,7 @@
         }
     }
 
-    bool *cells = malloc(sizeof(bool)*width*height);
-
+    cells = malloc(sizeof(bool)*width*height);
     // Initial conditions
     for(int i = 0; i < width; i++){
         if(randomStart){
@@ -63,7 +66,6 @@
             if(i == ((NSInteger)((width)/2))) cells[i] = true;
         }
     }
-    
     //Elementary Cellular Automata Computation
     for(int j = 1;j < height; j++){
         for(int i = 1;i < width; i++){
@@ -80,10 +82,21 @@
             else cells[i+width*j] = false;
         }
     } 
-    return [UIImage imageWithData:[self GIFDataFromArray:cells width:visibleWidth height:visibleHeight] scale:scale];
+    return self;
 }
 
--(NSData*) GIFDataFromArray:(bool*)cells width:(int)visibleWidth height:(int)visibleHeight
+-(NSArray*) arrayFromData
+{
+    NSMutableArray *mutableCells = [[NSMutableArray alloc] init];
+    for (int j=0;j<visibleHeight;j++){
+        for(int i=0;i<visibleWidth;i++){
+            [mutableCells addObject:[NSNumber numberWithBool:cells[height+i+width*j]]];
+        }
+    }
+    return mutableCells;
+}
+
+-(UIImage*) GIFImageFromDataWithScale:(CGFloat)scale
 {
     unsigned char header[30] =                   /*  width  */ /*  height */ /*GCT*/
     {  '\x47','\x49','\x46','\x38','\x39','\x61','\x0f','\x00','\x0f','\x00','\x80','\x00','\x00',
@@ -128,7 +141,8 @@
         }
     }
     [imageData appendBytes:footer length:4];
-    return imageData;
+//    return [UIImage imageWithData:imageData];
+    return [UIImage imageWithData:imageData scale:scale];
 }
 
 @end

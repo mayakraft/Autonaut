@@ -11,12 +11,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Automata : UIImage
+@interface Automata : NSObject
 
--(UIImage*) initwithRule:(int)ruleNumber
-           randomInitials:(BOOL)randomStart
-                    width:(NSInteger)visibleWidth
-                   height:(NSInteger)height
-              retinaScale:(CGFloat)scale;
-
+-(id) initwithRule:(int)ruleNumber
+    randomInitials:(BOOL)randomStart
+             width:(NSInteger)visibleWidth
+            height:(NSInteger)height;
+-(NSArray*) arrayFromData;
+-(UIImage*) GIFImageFromDataWithScale:(CGFloat)scale;
 @end

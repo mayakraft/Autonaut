@@ -413,10 +413,12 @@
 		D527CFAC172474B600F698D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ABEBA155-7A5B-4EFA-BBA4-DEFBB04D8AA2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -424,10 +426,12 @@
 		D527CFAD172474B600F698D0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ABEBA155-7A5B-4EFA-BBA4-DEFBB04D8AA2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -26,6 +26,15 @@
     return self;
 }
 
+-(void) setState:(BOOL)stateToBe
+{
+    state = stateToBe;
+    if(state)
+        [self setBackgroundColor:[UIColor whiteColor]];
+    else
+        [self setBackgroundColor:[UIColor blackColor]];
+}
+
 -(void) randomState
 {
     state = arc4random()%2;

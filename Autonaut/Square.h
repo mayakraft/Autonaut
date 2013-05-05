@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface Square : UIView
-@property (nonatomic) BOOL state;
+@property (nonatomic) NSNumber* state;
 -(void) randomState;
--(void) setState:(BOOL)stateToBe;
+-(void) setState:(NSNumber*)stateToBe;
 @end

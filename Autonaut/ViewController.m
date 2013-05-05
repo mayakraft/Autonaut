@@ -27,11 +27,11 @@
     UIView *checkerboard;
     NSMutableArray *homeCells;
     NSMutableArray *flipRow;
-    NSInteger selection;
     UIButton *generatorButton;
     UIButton *playgroundButton;
     NSInteger pauseCounter;
     NSInteger BOARD_HEIGHT, BOARD_WIDTH;
+    NSArray *automataArray;
 }
 @end
 
@@ -40,16 +40,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
+    //[self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor blackColor]];
 
     if (IS_IPAD() || [[UIScreen mainScreen] bounds].size.height/[[UIScreen mainScreen] bounds].size.width < 5/3.0)
-        BOARD_HEIGHT = 12;//8;
+        BOARD_HEIGHT = 8;//12;//8;
     else
-        BOARD_HEIGHT = 15;//10;
-    BOARD_WIDTH = 9;//6;
+        BOARD_HEIGHT = 10;//15;//10;
+    BOARD_WIDTH = 6;//9;//6;
 
     Automata *titleAutomata = [[Automata alloc] initwithRule:60 randomInitials:YES width:BOARD_WIDTH height:BOARD_HEIGHT];
-    NSArray *automataArray = [titleAutomata arrayFromData];
+    automataArray = [titleAutomata arrayFromData];
+    
     /*UIImage *automata = [[Automata alloc] initwithRule:18 randomInitials:YES width:320 height:320 retinaScale:2.0];
     UIImageView *automataView = [[UIImageView alloc] initWithImage:automata];
     automataView.layer.masksToBounds = NO;
@@ -60,11 +62,6 @@
     [automataView setFrame:CGRectMake(900, 1500, 160, 160)];
     [self.view addSubview:automataView];*/
     
-
-//    checkerboard = [[UIView alloc] initWithFrame:CGRectMake(0,
-//                                                            [[UIScreen mainScreen] bounds].size.height-[[UIScreen mainScreen] bounds].size.width-20,
-//                                                            [[UIScreen mainScreen] bounds].size.width,
-//                                                            [[UIScreen mainScreen] bounds].size.width)];
     checkerboard = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             0,
                                                             [[UIScreen mainScreen] bounds].size.width,
@@ -75,10 +72,11 @@
     yOffset-=20;
     for(int i = 0; i < BOARD_WIDTH; i++){
         [flipRow addObject:[[Square alloc] initWithFrame:CGRectMake(i*checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                      checkerboard.bounds.size.height/BOARD_HEIGHT - checkerboard.bounds.size.height/BOARD_HEIGHT/2.0*3,
-                                                                      checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                      checkerboard.bounds.size.height/BOARD_HEIGHT)]];
+                                                                    checkerboard.bounds.size.height/BOARD_HEIGHT - checkerboard.bounds.size.height/BOARD_HEIGHT/2.0*3,
+                                                                    checkerboard.bounds.size.width/BOARD_WIDTH,
+                                                                    checkerboard.bounds.size.height/BOARD_HEIGHT)]];
         [flipRow[i] layer].zPosition = 10;
+        ((Square*)flipRow[i]).tag = i;
         [flipRow[i] layer].anchorPoint = CGPointMake(0.5f,1);
         //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(checkerboard.bounds.size.width/BOARD_WIDTH/4.0, checkerboard.bounds.size.height/BOARD_HEIGHT/2.0);
         [[flipRow[i] layer] setShadowColor:[[UIColor grayColor] CGColor]];
@@ -94,7 +92,8 @@
                                                                           checkerboard.bounds.size.height/BOARD_HEIGHT)]];
             //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.zPosition = 10;
             ((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(0.5f,1);
-            [(Square*)homeCells[j*BOARD_WIDTH+i] setState:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue]];
+            [(Square*)homeCells[j*BOARD_WIDTH+i] setState:[NSNumber numberWithBool:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue]]];
+            [((UIView*)homeCells[j*BOARD_WIDTH+i]) setHidden:YES];
             //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(checkerboard.bounds.size.width/BOARD_WIDTH/4.0, checkerboard.bounds.size.height/BOARD_HEIGHT/2.0);
             [checkerboard addSubview:[homeCells objectAtIndex:j*BOARD_WIDTH+i]];
         }
@@ -121,7 +120,7 @@
     playgroundButton.layer.borderColor = [[UIColor blackColor] CGColor];
     playgroundButton.layer.cornerRadius = 20.0f;
     //[self.view addSubview:playgroundButton];
-
+    
     if(IS_IPAD()){
         [generatorButton setFrame:CGRectMake(150, 100, [[UIScreen mainScreen] bounds].size.width-300, 100)];
         [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
@@ -133,10 +132,13 @@
         playgroundButton.layer.cornerRadius = 50.0f;
         
     }
-    selection = 0;
     pauseCounter = 0;
-    NSTimer *gameTimer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:INTERVAL target:self selector:@selector(loop) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:gameTimer forMode:NSDefaultRunLoopMode];
+    CATransform3D identity = CATransform3DIdentity;
+    for(Square *square in flipRow)
+    {
+        [square layer].transform = identity;
+        [self performSelector:@selector(animate3Drotation:) withObject:[NSNumber numberWithInteger:square.tag] afterDelay:arc4random()%300/100.0];
+    }    
 }
 -(IBAction)generatorButtonPress:(id)sender{
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
@@ -146,28 +148,6 @@
 -(IBAction)playgroundButtonPress:(id)sender{
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
-}
--(void) loop{
-    if(!pauseCounter){
-        CATransform3D identity = CATransform3DIdentity;
-        [flipRow[selection%BOARD_WIDTH] setFrame:CGRectMake([flipRow[selection%BOARD_WIDTH] frame].origin.x,
-                                                            ((int)(selection/BOARD_WIDTH))*checkerboard.bounds.size.height/BOARD_HEIGHT - checkerboard.bounds.size.height/BOARD_HEIGHT,
-                                                            [flipRow[selection%BOARD_WIDTH] frame].size.width,
-                                                            [flipRow[selection%BOARD_WIDTH] frame].size.height)];
-        [flipRow[selection%BOARD_WIDTH] layer].transform = identity;
-        [((Square*)flipRow[selection%BOARD_WIDTH]) performSelector:@selector(randomState) withObject:self afterDelay:FLIP_INTERVAL/2.0];
-        [self animate3Drotation];
-        selection++;
-        if(selection == BOARD_HEIGHT*BOARD_WIDTH+BOARD_WIDTH) {
-            selection = 0;
-            pauseCounter = 10;
-        }
-        if(pauseCounter == 0 && selection % BOARD_WIDTH == 0)
-            pauseCounter = 1;
-    }
-    else
-        if(pauseCounter > 0)
-            pauseCounter--;
 }
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context
 {
@@ -184,9 +164,20 @@
         [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
         [UIView commitAnimations];
     }
-    if([animationID isEqualToString:@"3DFlipDown"])
+    if([animationID respondsToSelector:@selector(integerValue)])
     {
-        NSLog(@"%f",[flipRow[0] frame].origin.y);    
+        NSInteger selection = [animationID integerValue]%BOARD_WIDTH;//((int)[animationID integerValue]/BOARD_WIDTH)+[animationID integerValue]%BOARD_WIDTH;
+        NSInteger checkerboardIndex = ([animationID integerValue]+BOARD_WIDTH) % (BOARD_HEIGHT * BOARD_WIDTH + BOARD_WIDTH);
+        if(checkerboardIndex-BOARD_WIDTH >= 0 && checkerboardIndex-BOARD_WIDTH < BOARD_WIDTH*BOARD_HEIGHT)
+            [((UIView*)homeCells[checkerboardIndex-BOARD_WIDTH]) setHidden:NO];
+        CATransform3D identity = CATransform3DIdentity;
+        [flipRow[selection] layer].transform = identity;
+        CGRect rect = CGRectMake([flipRow[selection] frame].origin.x,
+                                 (((int)checkerboardIndex/BOARD_WIDTH)-1)*checkerboard.bounds.size.height/BOARD_HEIGHT,
+                                 checkerboard.bounds.size.width/BOARD_WIDTH,
+                                 checkerboard.bounds.size.height/BOARD_HEIGHT);
+        [((Square*) flipRow[selection]) setFrame:rect];
+        [self performSelector:@selector(animate3Drotation:) withObject:[NSNumber numberWithInteger:checkerboardIndex] afterDelay:arc4random()%33/100.0];
     }
 }
 -(void)expandToCollapse:(NSString*)objectDescription
@@ -214,18 +205,31 @@
     checkerboard.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -185), 0.15f, 0.15f);
     [UIView commitAnimations];
 }
--(void)animate3Drotation
+-(void)animate3Drotation:(NSNumber*)squareNumber
 {
+//    NSLog(@"%@",squareNumber);
+    NSInteger selection = [squareNumber integerValue]%BOARD_WIDTH;
     CATransform3D transform3DFoo = CATransform3DIdentity;
     transform3DFoo.m34 = -1.0 / 100;
     transform3DFoo = CATransform3DRotate(transform3DFoo, M_PI, 1, 0, 0);
-    [UIView beginAnimations:@"3DFlipDown" context:NULL];
-    [UIView setAnimationDuration:FLIP_INTERVAL];
-    ((UIView*)flipRow[selection%BOARD_WIDTH]).layer.transform = transform3DFoo;//CATransform3DMakeRotation(M_PI, 0.0, 1.0, 0.0);
+    [UIView beginAnimations:[NSString stringWithFormat:@"%@",squareNumber] context:nil];
+    CGFloat flipInterval = arc4random()%33/100.0+.33;
+    [UIView setAnimationDuration:flipInterval];
+    ((UIView*)flipRow[selection]).layer.transform = transform3DFoo;//CATransform3DMakeRotation(M_PI, 0.0, 1.0, 0.0);
     [UIView setAnimationDelegate:self];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
     [UIView commitAnimations];
+    bool nextCell;
+    if([squareNumber integerValue] >= 0 && [squareNumber integerValue] < BOARD_WIDTH * BOARD_HEIGHT - BOARD_WIDTH){
+        NSLog(@"Automata Number: %@",squareNumber);
+        nextCell = [[automataArray objectAtIndex:[squareNumber integerValue]+BOARD_WIDTH] boolValue];
+    }
+    else{
+        nextCell = arc4random()%2;
+        NSLog(@"Random Number: %d",nextCell);
+    }
+    [((Square*)flipRow[selection]) performSelector:@selector(setState:) withObject:[NSNumber numberWithBool:nextCell] afterDelay:flipInterval/2.0];
 }
 // keyPath is @"transform.rotation.z"
 - (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath
@@ -266,7 +270,7 @@
     return animation;
 }
 -(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
-	//NSLog(@"AnimationDidStop");
+	NSLog(@"AnimationDidStop");
 }
 - (void)didReceiveMemoryWarning
 {

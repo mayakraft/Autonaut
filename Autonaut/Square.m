@@ -17,8 +17,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        state = arc4random()%2;
-        if(state)
+        state = [NSNumber numberWithBool:arc4random()%2];
+        if([state boolValue])
             [self setBackgroundColor:[UIColor whiteColor]];
         else
             [self setBackgroundColor:[UIColor blackColor]];
@@ -26,10 +26,10 @@
     return self;
 }
 
--(void) setState:(BOOL)stateToBe
+-(void) setState:(NSNumber*)stateToBe
 {
     state = stateToBe;
-    if(state)
+    if([state boolValue])
         [self setBackgroundColor:[UIColor whiteColor]];
     else
         [self setBackgroundColor:[UIColor blackColor]];
@@ -37,8 +37,8 @@
 
 -(void) randomState
 {
-    state = arc4random()%2;
-    if(state)
+    state = [NSNumber numberWithBool:arc4random()%2];
+    if([state boolValue])
         [self setBackgroundColor:[UIColor whiteColor]];
     else
         [self setBackgroundColor:[UIColor blackColor]];    

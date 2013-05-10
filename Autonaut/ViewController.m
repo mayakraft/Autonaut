@@ -12,6 +12,7 @@
 #import "Square.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
+#import "AnimatedBoardView.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -24,14 +25,9 @@
 
 @interface ViewController ()
 {
-    UIView *checkerboard;
-    NSMutableArray *homeCells;
-    NSMutableArray *flipRow;
     UIButton *generatorButton;
     UIButton *playgroundButton;
-    NSInteger pauseCounter;
-    NSInteger BOARD_HEIGHT, BOARD_WIDTH;
-    NSArray *automataArray;
+    AnimatedBoardView *animatedBoard;
 }
 @end
 
@@ -40,17 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //[self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
-    [self.view setBackgroundColor:[UIColor blackColor]];
-
-    if (IS_IPAD() || [[UIScreen mainScreen] bounds].size.height/[[UIScreen mainScreen] bounds].size.width < 5/3.0)
-        BOARD_HEIGHT = 8;//12;//8;
-    else
-        BOARD_HEIGHT = 10;//15;//10;
-    BOARD_WIDTH = 6;//9;//6;
-
-    Automata *titleAutomata = [[Automata alloc] initwithRule:60 randomInitials:YES width:BOARD_WIDTH height:BOARD_HEIGHT];
-    automataArray = [titleAutomata arrayFromData];
+    [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
+    animatedBoard = [[AnimatedBoardView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:animatedBoard];
     
     /*UIImage *automata = [[Automata alloc] initwithRule:18 randomInitials:YES width:320 height:320 retinaScale:2.0];
     UIImageView *automataView = [[UIImageView alloc] initWithImage:automata];
@@ -62,45 +50,8 @@
     [automataView setFrame:CGRectMake(900, 1500, 160, 160)];
     [self.view addSubview:automataView];*/
     
-    checkerboard = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                            0,
-                                                            [[UIScreen mainScreen] bounds].size.width,
-                                                            [[UIScreen mainScreen] bounds].size.height-20)];
-    homeCells = [[NSMutableArray alloc] init];
-    flipRow = [[NSMutableArray alloc] init];
-    NSInteger yOffset = [[UIScreen mainScreen] bounds].size.height-[[UIScreen mainScreen] bounds].size.width;
-    yOffset-=20;
-    for(int i = 0; i < BOARD_WIDTH; i++){
-        [flipRow addObject:[[Square alloc] initWithFrame:CGRectMake(i*checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                    checkerboard.bounds.size.height/BOARD_HEIGHT - checkerboard.bounds.size.height/BOARD_HEIGHT/2.0*3,
-                                                                    checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                    checkerboard.bounds.size.height/BOARD_HEIGHT)]];
-        [flipRow[i] layer].zPosition = 10;
-        ((Square*)flipRow[i]).tag = i;
-        [flipRow[i] layer].anchorPoint = CGPointMake(0.5f,1);
-        //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(checkerboard.bounds.size.width/BOARD_WIDTH/4.0, checkerboard.bounds.size.height/BOARD_HEIGHT/2.0);
-        [[flipRow[i] layer] setShadowColor:[[UIColor grayColor] CGColor]];
-        [[flipRow[i] layer] setShadowOffset:CGSizeMake(1.1, 1.1)];
-        [[flipRow[i] layer] setShadowRadius:3.0];
-        [checkerboard addSubview:[flipRow objectAtIndex:i]];
-    }
-    for(int j = 0; j < BOARD_HEIGHT; j++){
-        for(int i = 0; i < BOARD_WIDTH; i++){
-            [homeCells addObject:[[Square alloc] initWithFrame:CGRectMake(i*checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                          j*checkerboard.bounds.size.height/BOARD_HEIGHT + checkerboard.bounds.size.height/BOARD_HEIGHT/2.0,
-                                                                          checkerboard.bounds.size.width/BOARD_WIDTH,
-                                                                          checkerboard.bounds.size.height/BOARD_HEIGHT)]];
-            //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.zPosition = 10;
-            ((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(0.5f,1);
-            [(Square*)homeCells[j*BOARD_WIDTH+i] setState:[NSNumber numberWithBool:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue]]];
-            [((UIView*)homeCells[j*BOARD_WIDTH+i]) setHidden:YES];
-            //((UIView*)homeCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(checkerboard.bounds.size.width/BOARD_WIDTH/4.0, checkerboard.bounds.size.height/BOARD_HEIGHT/2.0);
-            [checkerboard addSubview:[homeCells objectAtIndex:j*BOARD_WIDTH+i]];
-        }
-    }
-    [self.view addSubview:checkerboard];
-    generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 25, [[UIScreen mainScreen] bounds].size.width-100, 40)];
-    [generatorButton setTitle:@"generator" forState:UIControlStateNormal];
+    generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(66, -10, [[UIScreen mainScreen] bounds].size.width-133, 40)];
+    [generatorButton setTitle:@"generator ➜" forState:UIControlStateNormal];
     [generatorButton addTarget:self action:@selector(generatorButtonPress:) forControlEvents:UIControlEventTouchDown];
     [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
     [generatorButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -108,18 +59,34 @@
     generatorButton.layer.borderWidth = 3.0f;
     generatorButton.layer.borderColor = [[UIColor blackColor] CGColor];
     generatorButton.layer.cornerRadius = 20.0f;
+    [generatorButton setHidden:YES];
+    [generatorButton setTag:1];
     //[self.view addSubview:generatorButton];
     
-    playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 75, [[UIScreen mainScreen] bounds].size.width-100, 40)];
+    playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 20, [[UIScreen mainScreen] bounds].size.width-120, 40)];
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
-    [playgroundButton setTitle:@"playground" forState:UIControlStateNormal];
+    [playgroundButton setTitle:@"playground ➜" forState:UIControlStateNormal];
     [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0]];
     [playgroundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[UIColor whiteColor]];
     playgroundButton.layer.borderWidth = 3.0f;
     playgroundButton.layer.borderColor = [[UIColor blackColor] CGColor];
     playgroundButton.layer.cornerRadius = 20.0f;
+    [playgroundButton setHidden: YES];
+    [playgroundButton setTag:2];
     //[self.view addSubview:playgroundButton];
+    
+    [[generatorButton layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
+    [[generatorButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
+    [[playgroundButton layer] setAnchorPoint:CGPointMake(0.5f, -1.0)];
+    [[playgroundButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
+    
+    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:1.33];
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:2.0];
+//    [UIView beginAnimations:[NSString stringWithFormat:@"%@",squareNumber] context:nil];
+//    [UIView setAnimationDuration:flipInterval];
+//    [travelingRow[selection] layer].transform = transformFlipDown;
+   
     
     if(IS_IPAD()){
         [generatorButton setFrame:CGRectMake(150, 100, [[UIScreen mainScreen] bounds].size.width-300, 100)];
@@ -132,13 +99,23 @@
         playgroundButton.layer.cornerRadius = 50.0f;
         
     }
-    pauseCounter = 0;
-    CATransform3D identity = CATransform3DIdentity;
-    for(Square *square in flipRow)
-    {
-        [square layer].transform = identity;
-        [self performSelector:@selector(animate3Drotation:) withObject:[NSNumber numberWithInteger:square.tag] afterDelay:arc4random()%300/100.0];
-    }    
+
+    [animatedBoard triggerFlipCellBegin];
+
+}
+-(void)buttonFlipDown:(UIButton*)button
+{
+    [button setHidden:NO];
+    CATransform3D transformFlipDown = CATransform3DIdentity;
+    transformFlipDown.m34 = -1.0 / 500;
+    transformFlipDown = CATransform3DRotate(transformFlipDown, 0, 1, 0, 0);
+    [UIView beginAnimations:[NSString stringWithFormat:@"flipButtonDown%d",button.tag] context:nil];
+    [UIView setAnimationDuration:0.33];
+    [[button layer] setTransform:transformFlipDown];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView commitAnimations];
+    
 }
 -(IBAction)generatorButtonPress:(id)sender{
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
@@ -164,21 +141,6 @@
         [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
         [UIView commitAnimations];
     }
-    if([animationID respondsToSelector:@selector(integerValue)])
-    {
-        NSInteger selection = [animationID integerValue]%BOARD_WIDTH;//((int)[animationID integerValue]/BOARD_WIDTH)+[animationID integerValue]%BOARD_WIDTH;
-        NSInteger checkerboardIndex = ([animationID integerValue]+BOARD_WIDTH) % (BOARD_HEIGHT * BOARD_WIDTH + BOARD_WIDTH);
-        if(checkerboardIndex-BOARD_WIDTH >= 0 && checkerboardIndex-BOARD_WIDTH < BOARD_WIDTH*BOARD_HEIGHT)
-            [((UIView*)homeCells[checkerboardIndex-BOARD_WIDTH]) setHidden:NO];
-        CATransform3D identity = CATransform3DIdentity;
-        [flipRow[selection] layer].transform = identity;
-        CGRect rect = CGRectMake([flipRow[selection] frame].origin.x,
-                                 (((int)checkerboardIndex/BOARD_WIDTH)-1)*checkerboard.bounds.size.height/BOARD_HEIGHT,
-                                 checkerboard.bounds.size.width/BOARD_WIDTH,
-                                 checkerboard.bounds.size.height/BOARD_HEIGHT);
-        [((Square*) flipRow[selection]) setFrame:rect];
-        [self performSelector:@selector(animate3Drotation:) withObject:[NSNumber numberWithInteger:checkerboardIndex] afterDelay:arc4random()%33/100.0];
-    }
 }
 -(void)expandToCollapse:(NSString*)objectDescription
 {
@@ -195,83 +157,56 @@
 }
 -(void)animateCheckerboardShrinkAndReposition
 {
-    pauseCounter = -1;
     [UIView beginAnimations:@"checkerboard" context:nil];
-    checkerboard.autoresizesSubviews = YES;
+    animatedBoard.autoresizesSubviews = YES;
     [UIView setAnimationDuration:1.0];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.66];
-    checkerboard.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -185), 0.15f, 0.15f);
+    animatedBoard.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -205), 0.1f, 0.1f);
     [UIView commitAnimations];
-}
--(void)animate3Drotation:(NSNumber*)squareNumber
-{
-//    NSLog(@"%@",squareNumber);
-    NSInteger selection = [squareNumber integerValue]%BOARD_WIDTH;
-    CATransform3D transform3DFoo = CATransform3DIdentity;
-    transform3DFoo.m34 = -1.0 / 100;
-    transform3DFoo = CATransform3DRotate(transform3DFoo, M_PI, 1, 0, 0);
-    [UIView beginAnimations:[NSString stringWithFormat:@"%@",squareNumber] context:nil];
-    CGFloat flipInterval = arc4random()%33/100.0+.33;
-    [UIView setAnimationDuration:flipInterval];
-    ((UIView*)flipRow[selection]).layer.transform = transform3DFoo;//CATransform3DMakeRotation(M_PI, 0.0, 1.0, 0.0);
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
-    [UIView commitAnimations];
-    bool nextCell;
-    if([squareNumber integerValue] >= 0 && [squareNumber integerValue] < BOARD_WIDTH * BOARD_HEIGHT - BOARD_WIDTH){
-        NSLog(@"Automata Number: %@",squareNumber);
-        nextCell = [[automataArray objectAtIndex:[squareNumber integerValue]+BOARD_WIDTH] boolValue];
-    }
-    else{
-        nextCell = arc4random()%2;
-        NSLog(@"Random Number: %d",nextCell);
-    }
-    [((Square*)flipRow[selection]) performSelector:@selector(setState:) withObject:[NSNumber numberWithBool:nextCell] afterDelay:flipInterval/2.0];
 }
 // keyPath is @"transform.rotation.z"
-- (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath
-{
-    CAKeyframeAnimation * animation;
-    animation = [CAKeyframeAnimation animationWithKeyPath:keyPath];
-    animation.duration = FLIP_INTERVAL;
-    animation.delegate = self;
-    animation.removedOnCompletion = NO;
-    animation.fillMode = kCAFillModeForwards;
-    
-    // Create arrays for values and associated timings.
-    float degrees = M_PI;
-    float delta = degrees;
-    NSMutableArray *values = [NSMutableArray array];
-    NSMutableArray *timings = [NSMutableArray array];
-    NSMutableArray *keytimes = [NSMutableArray array];
-    
-    NSLog(@"Degrees: %.2f  Delta: %.2f",degrees*180/M_PI, delta*180/M_PI);
-    
-    [values addObject:[NSNumber numberWithFloat:0]];
-    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-    [keytimes addObject:[NSNumber numberWithFloat:0.0]];
-    
-    [values addObject:[NSNumber numberWithFloat:degrees*1.10]];
-    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    [keytimes addObject:[NSNumber numberWithFloat:0.80]];
-    
-    [values addObject:[NSNumber numberWithFloat:degrees]];
-    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [keytimes addObject:[NSNumber numberWithFloat:1.0]];
-    
-    // Reduce the size of the bounce by the lid's tension
-    
-    animation.values = values;
-    animation.timingFunctions = timings;
-    animation.keyTimes = keytimes;
-    return animation;
-}
--(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
-	NSLog(@"AnimationDidStop");
-}
+//- (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath
+//{
+//    CAKeyframeAnimation * animation;
+//    animation = [CAKeyframeAnimation animationWithKeyPath:keyPath];
+//    animation.duration = FLIP_INTERVAL;
+//    animation.delegate = self;
+//    animation.removedOnCompletion = NO;
+//    animation.fillMode = kCAFillModeForwards;
+//    
+//    // Create arrays for values and associated timings.
+//    float degrees = M_PI;
+//    float delta = degrees;
+//    NSMutableArray *values = [NSMutableArray array];
+//    NSMutableArray *timings = [NSMutableArray array];
+//    NSMutableArray *keytimes = [NSMutableArray array];
+//    
+//    NSLog(@"Degrees: %.2f  Delta: %.2f",degrees*180/M_PI, delta*180/M_PI);
+//    
+//    [values addObject:[NSNumber numberWithFloat:0]];
+//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+//    [keytimes addObject:[NSNumber numberWithFloat:0.0]];
+//    
+//    [values addObject:[NSNumber numberWithFloat:degrees*1.10]];
+//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+//    [keytimes addObject:[NSNumber numberWithFloat:0.80]];
+//    
+//    [values addObject:[NSNumber numberWithFloat:degrees]];
+//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [keytimes addObject:[NSNumber numberWithFloat:1.0]];
+//    
+//    // Reduce the size of the bounce by the lid's tension
+//    
+//    animation.values = values;
+//    animation.timingFunctions = timings;
+//    animation.keyTimes = keytimes;
+//    return animation;
+//}
+//-(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
+//	NSLog(@"AnimationDidStop");
+//}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

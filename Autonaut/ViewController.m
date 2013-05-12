@@ -12,7 +12,8 @@
 #import "Square.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
-#import "AnimatedBoardView.h"
+#import "FlippingAutomataView.h"
+#import "Generator.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -27,7 +28,7 @@
 {
     UIButton *generatorButton;
     UIButton *playgroundButton;
-    AnimatedBoardView *animatedBoard;
+    FlippingAutomataView *flippingAutomata;
 }
 @end
 
@@ -37,19 +38,9 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
-    animatedBoard = [[AnimatedBoardView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:animatedBoard];
-    
-    /*UIImage *automata = [[Automata alloc] initwithRule:18 randomInitials:YES width:320 height:320 retinaScale:2.0];
-    UIImageView *automataView = [[UIImageView alloc] initWithImage:automata];
-    automataView.layer.masksToBounds = NO;
-    automataView.layer.cornerRadius = 8; // if you like rounded corners
-    automataView.layer.shadowOffset = CGSizeMake(-5, 7);
-    automataView.layer.shadowRadius = 5;
-    automataView.layer.shadowOpacity = 0.5;
-    [automataView setFrame:CGRectMake(900, 1500, 160, 160)];
-    [self.view addSubview:automataView];*/
-    
+    flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
+    [self.view addSubview:flippingAutomata];
+        
     generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(66, -10, [[UIScreen mainScreen] bounds].size.width-133, 40)];
     [generatorButton setTitle:@"generator ➜" forState:UIControlStateNormal];
     [generatorButton addTarget:self action:@selector(generatorButtonPress:) forControlEvents:UIControlEventTouchDown];
@@ -100,7 +91,7 @@
         
     }
 
-    [animatedBoard triggerFlipCellBegin];
+    [flippingAutomata beginAnimations];
 
 }
 -(void)buttonFlipDown:(UIButton*)button
@@ -121,6 +112,8 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
+    Generator *generator = [[Generator alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
@@ -158,12 +151,12 @@
 -(void)animateCheckerboardShrinkAndReposition
 {
     [UIView beginAnimations:@"checkerboard" context:nil];
-    animatedBoard.autoresizesSubviews = YES;
+    flippingAutomata.autoresizesSubviews = YES;
     [UIView setAnimationDuration:1.0];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.66];
-    animatedBoard.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -205), 0.1f, 0.1f);
+    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -205), 0.1f, 0.1f);
     [UIView commitAnimations];
 }
 // keyPath is @"transform.rotation.z"

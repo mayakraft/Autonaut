@@ -29,6 +29,8 @@
 		D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CFB517249B2400F698D0 /* QuartzCore.framework */; };
 		D527CFB917249BEB00F698D0 /* Square.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFB817249BEB00F698D0 /* Square.m */; };
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
+		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
+		D5D2E71E173ECE460051D5DF /* Generator.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E71D173ECE460051D5DF /* Generator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,10 @@
 		D527CFB817249BEB00F698D0 /* Square.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Square.m; sourceTree = "<group>"; };
 		D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedBoardView.h; sourceTree = "<group>"; };
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
+		D5A3CD151740251800574630 /* FlippingAutomataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippingAutomataView.h; sourceTree = "<group>"; };
+		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
+		D5D2E71C173ECE460051D5DF /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
+		D5D2E71D173ECE460051D5DF /* Generator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Generator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +145,10 @@
 				D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */,
 				D527CF91172474B600F698D0 /* ViewController.h */,
 				D527CF92172474B600F698D0 /* ViewController.m */,
+				D5D2E71C173ECE460051D5DF /* Generator.h */,
+				D5D2E71D173ECE460051D5DF /* Generator.m */,
+				D5A3CD151740251800574630 /* FlippingAutomataView.h */,
+				D5A3CD161740251800574630 /* FlippingAutomataView.m */,
 				D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */,
 				D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */,
 				D527CFB117247E4F00F698D0 /* Automata.h */,
@@ -300,6 +310,8 @@
 				D527CF93172474B600F698D0 /* ViewController.m in Sources */,
 				D527CFB917249BEB00F698D0 /* Square.m in Sources */,
 				D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */,
+				D5D2E71E173ECE460051D5DF /* Generator.m in Sources */,
+				D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

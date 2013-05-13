@@ -9,7 +9,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
 #import "Automata.h"
-#import "Square.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
 #import "FlippingAutomataView.h"
@@ -22,7 +21,7 @@
 
 #define SHRINK_TIME 0.12f
 #define EXPAND_TIME 0.08f
-#define SCALED_DOWN_AMOUNT 0.01  // For example, 0.01 is one hundredth of the normal size
+#define SCALED_DOWN_AMOUNT 0.01
 
 @interface ViewController ()
 {
@@ -52,7 +51,7 @@
     generatorButton.layer.cornerRadius = 20.0f;
     [generatorButton setHidden:YES];
     [generatorButton setTag:1];
-    //[self.view addSubview:generatorButton];
+    [self.view addSubview:generatorButton];
     
     playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 20, [[UIScreen mainScreen] bounds].size.width-120, 40)];
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
@@ -114,6 +113,7 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
     Generator *generator = [[Generator alloc] initWithFrame:self.view.frame];
     [self.view addSubview:generator];
+    [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];

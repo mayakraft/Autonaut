@@ -5,7 +5,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Automata.h"
-#import "Square.h"
 
 @interface FlippingAutomataView : UIView
 {

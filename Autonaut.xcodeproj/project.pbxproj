@@ -27,9 +27,9 @@
 		D527CFB317247E4F00F698D0 /* Automata.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFB217247E4F00F698D0 /* Automata.m */; };
 		D527CFB417247E5D00F698D0 /* Automata.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFB217247E4F00F698D0 /* Automata.m */; };
 		D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CFB517249B2400F698D0 /* QuartzCore.framework */; };
-		D527CFB917249BEB00F698D0 /* Square.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFB817249BEB00F698D0 /* Square.m */; };
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
+		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
 		D5D2E71E173ECE460051D5DF /* Generator.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E71D173ECE460051D5DF /* Generator.m */; };
 /* End PBXBuildFile section */
 
@@ -70,12 +70,12 @@
 		D527CFB117247E4F00F698D0 /* Automata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Automata.h; sourceTree = "<group>"; };
 		D527CFB217247E4F00F698D0 /* Automata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Automata.m; sourceTree = "<group>"; };
 		D527CFB517249B2400F698D0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		D527CFB717249BEB00F698D0 /* Square.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
-		D527CFB817249BEB00F698D0 /* Square.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Square.m; sourceTree = "<group>"; };
 		D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedBoardView.h; sourceTree = "<group>"; };
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
 		D5A3CD151740251800574630 /* FlippingAutomataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippingAutomataView.h; sourceTree = "<group>"; };
 		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
+		D5A3CD1817403B1000574630 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
+		D5A3CD1917403B1000574630 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
 		D5D2E71C173ECE460051D5DF /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
 		D5D2E71D173ECE460051D5DF /* Generator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Generator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,10 +151,10 @@
 				D5A3CD161740251800574630 /* FlippingAutomataView.m */,
 				D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */,
 				D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */,
+				D5A3CD1817403B1000574630 /* RuleButton.h */,
+				D5A3CD1917403B1000574630 /* RuleButton.m */,
 				D527CFB117247E4F00F698D0 /* Automata.h */,
 				D527CFB217247E4F00F698D0 /* Automata.m */,
-				D527CFB717249BEB00F698D0 /* Square.h */,
-				D527CFB817249BEB00F698D0 /* Square.m */,
 				D527CF7A172474B600F698D0 /* Supporting Files */,
 			);
 			path = Autonaut;
@@ -308,10 +308,10 @@
 				D527CF84172474B600F698D0 /* AppDelegate.m in Sources */,
 				D527CFB417247E5D00F698D0 /* Automata.m in Sources */,
 				D527CF93172474B600F698D0 /* ViewController.m in Sources */,
-				D527CFB917249BEB00F698D0 /* Square.m in Sources */,
 				D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */,
 				D5D2E71E173ECE460051D5DF /* Generator.m in Sources */,
 				D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */,
+				D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

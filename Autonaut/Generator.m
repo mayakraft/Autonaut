@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 robbykraft. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "Generator.h"
 #import "Automata.h"
-#import <QuartzCore/QuartzCore.h>
+#import "RuleButton.h"
 
 @implementation Generator
 
@@ -37,10 +38,21 @@
         nonrandomAutomataView.layer.shadowRadius = 5;
         nonrandomAutomataView.layer.shadowOpacity = 0.5;
         [self addSubview:nonrandomAutomataView];
+        
+        for(int i = 0; i < 8; i++){
+            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(20, 66+i*40, 50, 33)];
+            [button setRuleNumber:i];
+            [button addTarget:self action:@selector(ruleButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:button];
+        }
     }
     return self;
 }
 
+-(IBAction)ruleButtonPress:(id)sender
+{
+    NSLog(@"Button Pressed: %d",[sender ruleNumber]);
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

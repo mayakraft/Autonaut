@@ -35,18 +35,18 @@
         
         for(int j = 0; j < BOARD_HEIGHT; j++){
             for(int i = 0; i < BOARD_WIDTH; i++){
-                [animatedCells addObject:[[Square alloc] initWithFrame:CGRectMake(i*board.bounds.size.width/BOARD_WIDTH,
+                [animatedCells addObject:[[UIView alloc] initWithFrame:CGRectMake(i*board.bounds.size.width/BOARD_WIDTH,
                                                                               j*board.bounds.size.height/BOARD_HEIGHT,
                                                                               board.bounds.size.width/BOARD_WIDTH,
                                                                               board.bounds.size.height/BOARD_HEIGHT)]];
 //                ((UIView*)animatedCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(0.5f,1);
-                [(Square*)animatedCells[j*BOARD_WIDTH+i] setState:[NSNumber numberWithBool:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue]]];
+                [(UIView*)animatedCells[j*BOARD_WIDTH+i] setBackgroundColor:[UIColor colorWithWhite:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue] alpha:1.0]];
                 [((UIView*)animatedCells[j*BOARD_WIDTH+i]) setHidden:YES];
                 [board addSubview:[animatedCells objectAtIndex:j*BOARD_WIDTH+i]];
             }
         }
         for(int i = 0; i < BOARD_WIDTH; i++){
-            [travelingRow addObject:[[Square alloc] initWithFrame:CGRectMake(i*board.bounds.size.width/BOARD_WIDTH,
+            [travelingRow addObject:[[UIView alloc] initWithFrame:CGRectMake(i*board.bounds.size.width/BOARD_WIDTH,
                                                                         -board.bounds.size.height/BOARD_HEIGHT/2.0,
                                                                         board.bounds.size.width/BOARD_WIDTH,
                                                                         board.bounds.size.height/BOARD_HEIGHT)]];
@@ -120,7 +120,7 @@
 -(void) triggerFlipCellBegin
 {
     CATransform3D identity = CATransform3DIdentity;
-    for(Square *square in travelingRow)
+    for(UIView *square in travelingRow)
     {
         [square layer].transform = identity;
         if(square.tag == ((int) travelingRow.count/2))
@@ -185,7 +185,7 @@
         nextCell = arc4random()%2;
 //        NSLog(@"Random Number: %d",nextCell);
     }
-    [travelingRow[selection] performSelector:@selector(setState:) withObject:[NSNumber numberWithBool:nextCell] afterDelay:flipInterval/2.0];
+    [travelingRow[selection] performSelector:@selector(setBackgroundColor:) withObject:[UIColor colorWithWhite:nextCell alpha:1.0] afterDelay:flipInterval/2.0];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

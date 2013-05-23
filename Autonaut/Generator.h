@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Generator : UIView
-
+@interface Generator : UIView{
+    NSArray *buttons;
+    UIImageView *randomAutomataView;
+    UIImageView *nonrandomAutomataView;
+    NSInteger retina;
+}
+@property (nonatomic, strong) NSNumber *rule;
+-(void) setNewRule;
 @end

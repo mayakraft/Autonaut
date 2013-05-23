@@ -7,9 +7,11 @@
 //
 
 #import "RuleButton.h"
+#import "Generator.h"
 
 @implementation RuleButton
 @synthesize ruleNumber;
+@synthesize state;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -22,10 +24,34 @@
         [self addSubview:left];
         [self addSubview:center];
         [self addSubview:right];
+        [right setUserInteractionEnabled:NO];
+        [center setUserInteractionEnabled:NO];
+        [left setUserInteractionEnabled:NO];
+//        bg.exclusiveTouch = NO;
     }
     return self;
 }
 
+-(void) setState:(BOOL)s
+{
+    NSLog(@"Set State %d",s);
+    state = s;
+    [(Generator*)self.superview setNewRule];
+    [self animateStateChange];
+}
+
+-(void) animateStateChange
+{
+    NSLog(@"Animate State Change");
+    bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
+    if(state)
+        [bottom setBackgroundColor:[UIColor whiteColor]];
+    else
+        [bottom setBackgroundColor:[UIColor blackColor]];
+    [self addSubview:bottom];
+    [bottom setUserInteractionEnabled:NO];
+    
+}
 -(void)layoutSubviews
 {
     if(!(ruleNumber % 2))

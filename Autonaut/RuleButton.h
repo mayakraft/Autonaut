@@ -13,7 +13,10 @@
     UIView *left;
     UIView *center;
     UIView *right;
+    UIView *bottom;
 }
 @property NSInteger ruleNumber;
+@property (nonatomic) BOOL state;
+@property (nonatomic, weak) NSNumber *rule;
 
 @end

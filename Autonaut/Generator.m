@@ -12,46 +12,73 @@
 #import "RuleButton.h"
 
 @implementation Generator
+@synthesize rule;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        Automata *randomAutomata = [[Automata alloc] initwithRule:60 randomInitials:YES width:320 height:320];
-        UIImageView *randomAutomataView = [[UIImageView alloc] initWithImage:[randomAutomata GIFImageFromDataWithScale:2.0] ];
-        [randomAutomataView setFrame:CGRectMake(frame.size.width*.33, frame.size.height*.05, frame.size.width*.6, frame.size.width*.6)];
-        randomAutomataView.layer.masksToBounds = NO;
-        randomAutomataView.layer.cornerRadius = 8; // if you like rounded corners
-        randomAutomataView.layer.shadowOffset = CGSizeMake(5, 7);
-        randomAutomataView.layer.shadowRadius = 5;
-        randomAutomataView.layer.shadowOpacity = 0.5;
-//        [randomAutomataView setFrame:CGRectMake(900, 1500, 160, 160)];
+        
+        retina = 2;
+        
+        rule = [NSNumber numberWithInteger:60];
+        randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width*.33, frame.size.height*.05, frame.size.width*.6, frame.size.width*.6)];
+        Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+        [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
         [self addSubview:randomAutomataView];
 
-        Automata *nonrandomAutomata = [[Automata alloc] initwithRule:60 randomInitials:NO width:320 height:320];
-        UIImageView *nonrandomAutomataView = [[UIImageView alloc] initWithImage:[nonrandomAutomata GIFImageFromDataWithScale:2.0] ];
-        [nonrandomAutomataView setFrame:CGRectMake(frame.size.width*.33, frame.size.height*.95-frame.size.width*.6, frame.size.width*.6, frame.size.width*.6)];
-        nonrandomAutomataView.layer.masksToBounds = NO;
-        nonrandomAutomataView.layer.cornerRadius = 8; // if you like rounded corners
-        nonrandomAutomataView.layer.shadowOffset = CGSizeMake(5, 7);
-        nonrandomAutomataView.layer.shadowRadius = 5;
-        nonrandomAutomataView.layer.shadowOpacity = 0.5;
+        nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width*.33, frame.size.height*.95-frame.size.width*.6, frame.size.width*.6, frame.size.width*.6)];
+        Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
+        [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
         [self addSubview:nonrandomAutomataView];
-        
+
+        NSInteger ruleButtonHeight = frame.size.height/11;
+        NSMutableArray *buttonsMutable = [NSMutableArray array];
         for(int i = 0; i < 8; i++){
-            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(20, 66+i*40, 50, 33)];
+            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(20, ruleButtonHeight+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
             [button setRuleNumber:i];
             [button addTarget:self action:@selector(ruleButtonPress:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
+            [button setRule:rule];
+            [button setState:0];
+            [buttonsMutable addObject:button];
         }
+        buttons = buttonsMutable;
     }
     return self;
 }
 
--(IBAction)ruleButtonPress:(id)sender
+-(void) setNewRule{
+    NSInteger base10 = 0;
+    for(int i = 0; i < 8; i++){
+        if([(RuleButton*)[buttons objectAtIndex:i] state])
+            base10+=pow(2.0, i);
+    }
+    NSLog(@"New Rule: %d",base10);
+    
+    [randomAutomataView removeFromSuperview];
+    [nonrandomAutomataView removeFromSuperview];
+    
+    rule = [NSNumber numberWithInteger:base10];
+    randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.05, self.frame.size.width*.6, self.frame.size.width*.6)];
+    Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
+    [self addSubview:randomAutomataView];
+    
+    nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.95-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
+    Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
+    [self addSubview:nonrandomAutomataView];
+    
+    NSLog(@"New Screen Sizes : %f : %f",randomAutomataView.frame.size.width,randomAutomataView.frame.size.height);
+}
+
+-(IBAction)ruleButtonPress:(RuleButton*)sender
 {
     NSLog(@"Button Pressed: %d",[sender ruleNumber]);
+    if([sender state]) [sender setState:FALSE];
+    else [sender setState:TRUE];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

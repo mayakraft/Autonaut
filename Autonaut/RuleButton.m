@@ -55,13 +55,13 @@
     transformFlip.m34 = -1.0 / 50;
     transformFlip = CATransform3DRotate(transformFlip, M_PI, 1, 0, 0);
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.16];
+    [UIView setAnimationDuration:.24];
     [[bottom layer] setTransform:transformFlip];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
     [UIView commitAnimations];
-    [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.16*.48];
+    [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.24*.48];
 }
 -(void)layoutSubviews
 {

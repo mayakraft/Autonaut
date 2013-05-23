@@ -30,6 +30,9 @@
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
 		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
+		D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BC7491174ECFF50039F6FA /* SettingsViewController.m */; };
+		D5BC7496174EDCD30039F6FA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BC7495174EDCD30039F6FA /* AVFoundation.framework */; };
+		D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5BC7497174EDDE50039F6FA /* sweep.mp3 */; };
 		D5D2E71E173ECE460051D5DF /* Generator.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E71D173ECE460051D5DF /* Generator.m */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +79,10 @@
 		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
 		D5A3CD1817403B1000574630 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
 		D5A3CD1917403B1000574630 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
+		D5BC7490174ECFF50039F6FA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		D5BC7491174ECFF50039F6FA /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		D5BC7495174EDCD30039F6FA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D5BC7497174EDDE50039F6FA /* sweep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sweep.mp3; sourceTree = "<group>"; };
 		D5D2E71C173ECE460051D5DF /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
 		D5D2E71D173ECE460051D5DF /* Generator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Generator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5BC7496174EDCD30039F6FA /* AVFoundation.framework in Frameworks */,
 				D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */,
 				D527CF74172474B600F698D0 /* UIKit.framework in Frameworks */,
 				D527CF76172474B600F698D0 /* Foundation.framework in Frameworks */,
@@ -108,6 +116,7 @@
 		D527CF67172474B500F698D0 = {
 			isa = PBXGroup;
 			children = (
+				D5BC7495174EDCD30039F6FA /* AVFoundation.framework */,
 				D527CFB517249B2400F698D0 /* QuartzCore.framework */,
 				D527CF79172474B600F698D0 /* Autonaut */,
 				D527CFA0172474B600F698D0 /* AutonautTests */,
@@ -143,6 +152,8 @@
 				D527CF83172474B600F698D0 /* AppDelegate.m */,
 				D527CF8B172474B600F698D0 /* MainStoryboard_iPhone.storyboard */,
 				D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */,
+				D5BC7490174ECFF50039F6FA /* SettingsViewController.h */,
+				D5BC7491174ECFF50039F6FA /* SettingsViewController.m */,
 				D527CF91172474B600F698D0 /* ViewController.h */,
 				D527CF92172474B600F698D0 /* ViewController.m */,
 				D5D2E71C173ECE460051D5DF /* Generator.h */,
@@ -163,6 +174,7 @@
 		D527CF7A172474B600F698D0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D5BC7497174EDDE50039F6FA /* sweep.mp3 */,
 				D527CF7B172474B600F698D0 /* Autonaut-Info.plist */,
 				D527CF7C172474B600F698D0 /* InfoPlist.strings */,
 				D527CF7F172474B600F698D0 /* main.m */,
@@ -270,6 +282,7 @@
 				D527CF8A172474B600F698D0 /* Default-568h@2x.png in Resources */,
 				D527CF8D172474B600F698D0 /* MainStoryboard_iPhone.storyboard in Resources */,
 				D527CF90172474B600F698D0 /* MainStoryboard_iPad.storyboard in Resources */,
+				D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +325,7 @@
 				D5D2E71E173ECE460051D5DF /* Generator.m in Sources */,
 				D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */,
 				D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */,
+				D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

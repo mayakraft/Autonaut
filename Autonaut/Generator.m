@@ -21,7 +21,10 @@
         // Initialization code
         
         NSLog(@"InitWithFrame");
-        
+
+        sweep = [[AVAudioPlayer alloc] initWithContentsOfURL:
+                      [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/sweep.mp3", [[NSBundle mainBundle] resourcePath]]] error:nil];
+
         retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
         retina = 1;
         
@@ -76,7 +79,8 @@
     }
     rule = [NSNumber numberWithInteger:base10];
     NSLog(@"NewRULE: %@",rule);
-    [self updateImageViews];
+    [self performSelectorInBackground:@selector(updateImageViews) withObject:nil];
+//    [self updateImageViews];
 }
 
 -(IBAction)ruleButtonPress:(RuleButton*)sender
@@ -85,6 +89,10 @@
     if([sender state]) [sender setState:FALSE];
     else [sender setState:TRUE];
     [self setNewRule];
+    if([sweep isPlaying])
+        [sweep pause];
+    [sweep setCurrentTime:0.0];
+    [sweep play];
 }
 
 /*

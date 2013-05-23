@@ -36,7 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //    [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
     [self.view setBackgroundColor:[UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0]];
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
     [self.view addSubview:flippingAutomata];
@@ -56,7 +55,7 @@
     
     playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 20, [[UIScreen mainScreen] bounds].size.width-120, 40)];
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
-    [playgroundButton setTitle:@"playground ➜" forState:UIControlStateNormal];
+    [playgroundButton setTitle:@"settings ➜" forState:UIControlStateNormal];
     [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0]];
     [playgroundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[UIColor whiteColor]];
@@ -65,19 +64,15 @@
     playgroundButton.layer.cornerRadius = 20.0f;
     [playgroundButton setHidden: YES];
     [playgroundButton setTag:2];
-    //[self.view addSubview:playgroundButton];
+    [self.view addSubview:playgroundButton];
     
     [[generatorButton layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
     [[generatorButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
     [[playgroundButton layer] setAnchorPoint:CGPointMake(0.5f, -1.0)];
     [[playgroundButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
     
-    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:1.33];
-    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:2.0];
-//    [UIView beginAnimations:[NSString stringWithFormat:@"%@",squareNumber] context:nil];
-//    [UIView setAnimationDuration:flipInterval];
-//    [travelingRow[selection] layer].transform = transformFlipDown;
-   
+    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.66];
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.75];   
     
     if(IS_IPAD()){
         [generatorButton setFrame:CGRectMake(150, 100, [[UIScreen mainScreen] bounds].size.width-300, 100)];
@@ -88,12 +83,15 @@
         [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
         playgroundButton.layer.borderWidth = 8.0f;
         playgroundButton.layer.cornerRadius = 50.0f;
-        
     }
 
     [flippingAutomata beginAnimations];
-
 }
+
+-(void) viewWillAppear:(BOOL)animated{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
 -(void)buttonFlipDown:(UIButton*)button
 {
     [button setHidden:NO];
@@ -118,8 +116,9 @@
     [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
-    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
-    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
+    [self performSegueWithIdentifier:@"SettingsSegue" sender:self];
+//    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
+//    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
 }
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context
 {

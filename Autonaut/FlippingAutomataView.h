@@ -18,6 +18,7 @@
 }
 
 @property NSArray *automataArray;
+@property NSNumber *stopped;
 -(void) beginAnimations;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "RuleButton.h"
 #import "Generator.h"
+#import <QuartzCore/CAAnimation.h>
 
 @implementation RuleButton
 @synthesize ruleNumber;
@@ -34,23 +35,33 @@
 
 -(void) setState:(BOOL)s
 {
-    NSLog(@"Set State %d",s);
     state = s;
-    [(Generator*)self.superview setNewRule];
     [self animateStateChange];
 }
 
 -(void) animateStateChange
 {
-    NSLog(@"Animate State Change");
-    bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
-    if(state)
-        [bottom setBackgroundColor:[UIColor whiteColor]];
-    else
-        [bottom setBackgroundColor:[UIColor blackColor]];
-    [self addSubview:bottom];
-    [bottom setUserInteractionEnabled:NO];
+    UIColor *cellColor;
+    if(state) cellColor = [UIColor whiteColor];
+    else      cellColor = [UIColor blackColor];
     
+    bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/4.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
+    [bottom setUserInteractionEnabled:NO];
+    [bottom setBackgroundColor:center.backgroundColor];
+    [[bottom layer] setAnchorPoint:CGPointMake(0.5, 1.0)];
+    [self addSubview:bottom];
+    
+    CATransform3D transformFlip = CATransform3DIdentity;
+    transformFlip.m34 = -1.0 / 50;
+    transformFlip = CATransform3DRotate(transformFlip, M_PI, 1, 0, 0);
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:.16];
+    [[bottom layer] setTransform:transformFlip];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
+    [UIView commitAnimations];
+    [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.16*.48];
 }
 -(void)layoutSubviews
 {

@@ -14,6 +14,13 @@
 {
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
+       ([UIScreen mainScreen].scale == 2.0)) 
+        [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
+     else 
+         [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     return YES;
 }
 							

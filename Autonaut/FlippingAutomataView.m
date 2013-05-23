@@ -12,15 +12,17 @@
 
 @implementation FlippingAutomataView
 @synthesize automataArray;
+@synthesize stopped;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         BOARD_WIDTH = BOARD_HEIGHT = 10;
-        flipTime = 1.0;
-        intervalTime = .01;
+        flipTime = .66;
+        intervalTime = .005;
         restartTime = 4.0;
+        stopped = [NSNumber numberWithBool:NO];
         animatedCells = [[NSMutableArray alloc] init];
         automataRules = [NSArray arrayWithObjects:@18, @30, @60, @90, @106, @110, @126, nil];
         [self loadNewAutomata:[automataRules objectAtIndex:arc4random()%automataRules.count]];
@@ -77,7 +79,8 @@
         if([animationID integerValue] == BOARD_HEIGHT*BOARD_WIDTH-1){
             [self resetBoard];
             [self loadNewAutomata:[automataRules objectAtIndex:arc4random()%automataRules.count]];
-            [self performSelector:@selector(loop:) withObject:[NSNumber numberWithInteger:0] afterDelay:restartTime];
+            if(![stopped boolValue])
+                [self performSelector:@selector(loop:) withObject:[NSNumber numberWithInteger:0] afterDelay:restartTime];
         }
     }
 }

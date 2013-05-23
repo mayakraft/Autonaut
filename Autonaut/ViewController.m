@@ -36,7 +36,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
+    //    [self.view setBackgroundColor:[UIColor colorWithRed:.9 green:.87 blue:.84 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0]];
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
     [self.view addSubview:flippingAutomata];
         
@@ -112,6 +113,7 @@
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
     Generator *generator = [[Generator alloc] initWithFrame:self.view.frame];
+    [flippingAutomata setStopped:@1];
     [self.view addSubview:generator];
     [self.view sendSubviewToBack:generator];
 }

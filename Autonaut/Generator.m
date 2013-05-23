@@ -20,19 +20,23 @@
     if (self) {
         // Initialization code
         
-        retina = 2;
+        NSLog(@"InitWithFrame");
+        
+        retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
+        retina = 1;
         
         rule = [NSNumber numberWithInteger:60];
-        randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width*.33, frame.size.height*.05, frame.size.width*.6, frame.size.width*.6)];
-        Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
-        [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
+
+        randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.05, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:randomAutomataView];
 
-        nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width*.33, frame.size.height*.95-frame.size.width*.6, frame.size.width*.6, frame.size.width*.6)];
-        Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
-        [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
+        
+        nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.95-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:nonrandomAutomataView];
 
+//        [randomAutomataView setBackgroundColor:[UIColor orangeColor]];
+//        [nonrandomAutomataView setBackgroundColor:[UIColor orangeColor]];
+        
         NSInteger ruleButtonHeight = frame.size.height/11;
         NSMutableArray *buttonsMutable = [NSMutableArray array];
         for(int i = 0; i < 8; i++){
@@ -49,29 +53,30 @@
     return self;
 }
 
+-(void)viewDidLoad
+{
+    NSLog(@"ViewDidLoad");
+}
+
+-(void) updateImageViews
+{
+    Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
+    
+    Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
+    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
+
+}
+
 -(void) setNewRule{
     NSInteger base10 = 0;
     for(int i = 0; i < 8; i++){
         if([(RuleButton*)[buttons objectAtIndex:i] state])
             base10+=pow(2.0, i);
     }
-    NSLog(@"New Rule: %d",base10);
-    
-    [randomAutomataView removeFromSuperview];
-    [nonrandomAutomataView removeFromSuperview];
-    
     rule = [NSNumber numberWithInteger:base10];
-    randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.05, self.frame.size.width*.6, self.frame.size.width*.6)];
-    Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
-    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
-    [self addSubview:randomAutomataView];
-    
-    nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.95-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
-    Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
-    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
-    [self addSubview:nonrandomAutomataView];
-    
-    NSLog(@"New Screen Sizes : %f : %f",randomAutomataView.frame.size.width,randomAutomataView.frame.size.height);
+    NSLog(@"NewRULE: %@",rule);
+    [self updateImageViews];
 }
 
 -(IBAction)ruleButtonPress:(RuleButton*)sender
@@ -79,7 +84,9 @@
     NSLog(@"Button Pressed: %d",[sender ruleNumber]);
     if([sender state]) [sender setState:FALSE];
     else [sender setState:TRUE];
+    [self setNewRule];
 }
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

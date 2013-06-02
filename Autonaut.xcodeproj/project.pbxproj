@@ -28,6 +28,8 @@
 		D527CFB417247E5D00F698D0 /* Automata.m in Sources */ = {isa = PBXBuildFile; fileRef = D527CFB217247E4F00F698D0 /* Automata.m */; };
 		D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CFB517249B2400F698D0 /* QuartzCore.framework */; };
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
+		D5954476175AF7950074188E /* blackfuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954475175AF7950074188E /* blackfuzz.png */; };
+		D5954478175AF79D0074188E /* whitefuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954477175AF79D0074188E /* whitefuzz.png */; };
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
 		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
 		D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BC7491174ECFF50039F6FA /* SettingsViewController.m */; };
@@ -75,6 +77,8 @@
 		D527CFB517249B2400F698D0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedBoardView.h; sourceTree = "<group>"; };
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
+		D5954475175AF7950074188E /* blackfuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackfuzz.png; sourceTree = "<group>"; };
+		D5954477175AF79D0074188E /* whitefuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitefuzz.png; sourceTree = "<group>"; };
 		D5A3CD151740251800574630 /* FlippingAutomataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippingAutomataView.h; sourceTree = "<group>"; };
 		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
 		D5A3CD1817403B1000574630 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
@@ -174,6 +178,8 @@
 		D527CF7A172474B600F698D0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D5954475175AF7950074188E /* blackfuzz.png */,
+				D5954477175AF79D0074188E /* whitefuzz.png */,
 				D5BC7497174EDDE50039F6FA /* sweep.mp3 */,
 				D527CF7B172474B600F698D0 /* Autonaut-Info.plist */,
 				D527CF7C172474B600F698D0 /* InfoPlist.strings */,
@@ -283,6 +289,8 @@
 				D527CF8D172474B600F698D0 /* MainStoryboard_iPhone.storyboard in Resources */,
 				D527CF90172474B600F698D0 /* MainStoryboard_iPad.storyboard in Resources */,
 				D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */,
+				D5954476175AF7950074188E /* blackfuzz.png in Resources */,
+				D5954478175AF79D0074188E /* whitefuzz.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

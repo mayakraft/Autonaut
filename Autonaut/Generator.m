@@ -28,27 +28,23 @@
         retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
         retina = 1;
         
-        rule = [NSNumber numberWithInteger:60];
+        rule = [NSNumber numberWithInteger:30];
 
-        randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.05, self.frame.size.width*.6, self.frame.size.width*.6)];
+        randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, (self.frame.size.height-self.frame.size.width*1.2)*.33, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:randomAutomataView];
-
         
-        nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height*.95-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
+        nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height-(self.frame.size.height-self.frame.size.width*1.2)*.33-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:nonrandomAutomataView];
-
-//        [randomAutomataView setBackgroundColor:[UIColor orangeColor]];
-//        [nonrandomAutomataView setBackgroundColor:[UIColor orangeColor]];
         
-        NSInteger ruleButtonHeight = frame.size.height/11;
-        NSMutableArray *buttonsMutable = [NSMutableArray array];
+        NSInteger ruleButtonHeight = frame.size.height/12;
+        NSMutableArray *buttonsMutable = [[NSMutableArray alloc] init];
         for(int i = 0; i < 8; i++){
-            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(20, ruleButtonHeight+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
+            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(self.frame.size.width*.15-ruleButtonHeight*3/4.0, ruleButtonHeight*1.82+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
             [button setRuleNumber:i];
             [button addTarget:self action:@selector(ruleButtonPress:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
             [button setRule:rule];
-            [button setState:0];
+//            [button setState:0];
             [buttonsMutable addObject:button];
         }
         buttons = buttonsMutable;
@@ -89,10 +85,10 @@
     if([sender state]) [sender setState:FALSE];
     else [sender setState:TRUE];
     [self setNewRule];
-    if([sweep isPlaying])
-        [sweep pause];
-    [sweep setCurrentTime:0.0];
-    [sweep play];
+//    if([sweep isPlaying])
+//        [sweep pause];
+//    [sweep setCurrentTime:0.0];
+//    [sweep play];
 }
 
 /*

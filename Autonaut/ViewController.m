@@ -28,6 +28,8 @@
     UIButton *generatorButton;
     UIButton *playgroundButton;
     FlippingAutomataView *flippingAutomata;
+    Generator *generator;
+    UITapGestureRecognizer *tapGesture;
 }
 @end
 
@@ -86,6 +88,12 @@
     }
 
     [flippingAutomata beginAnimations];
+    
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed:)];
+    [tapGesture setNumberOfTapsRequired:1];
+    [flippingAutomata addGestureRecognizer:tapGesture];
+    [tapGesture setEnabled:NO];
+    generator = nil;
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -110,8 +118,16 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
-    Generator *generator = [[Generator alloc] initWithFrame:self.view.frame];
+    [tapGesture performSelector:@selector(setEnabled:) withObject:@1 afterDelay:1.0];
+    NSLog(@"%f : %f : %f : %f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
+    if(generator == nil)
+        generator = [[Generator alloc] initWithFrame:CGRectMake( self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
     [flippingAutomata setStopped:@1];
+    [generator setNewRule];
+    flippingAutomata.autoresizesSubviews = YES;
+    generator.autoresizesSubviews = YES;
+    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
+
     [self.view addSubview:generator];
     [self.view sendSubviewToBack:generator];
 }
@@ -152,13 +168,33 @@
 -(void)animateCheckerboardShrinkAndReposition
 {
     [UIView beginAnimations:@"checkerboard" context:nil];
-    flippingAutomata.autoresizesSubviews = YES;
-    [UIView setAnimationDuration:1.0];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.66];
-    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-125, -205), 0.1f, 0.1f);
+    [UIView setAnimationDuration:0.66];                                                //-111
+    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-self.view.frame.size.width*.5+self.view.frame.size.width*.15, -.5*self.view.frame.size.height+self.view.frame.size.height*0.075), 0.075f, 0.075f);
+    generator.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.0f, 1.0f);
     [UIView commitAnimations];
+}
+-(void)animateCheckerboardExpandAndReposition
+{
+    [UIView beginAnimations:@"checkerboard" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.66];                                                      //-205
+    flippingAutomata.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.0f, 1.0f), 0, 0);
+    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
+    [UIView commitAnimations];
+}
+-(void)tapPressed:(UITapGestureRecognizer*)sender
+{
+    NSLog(@"Tapping");
+    [self animateCheckerboardExpandAndReposition];
+        generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+        playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    [flippingAutomata setStopped:@0];
+    [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
+    
+
 }
 // keyPath is @"transform.rotation.z"
 //- (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath

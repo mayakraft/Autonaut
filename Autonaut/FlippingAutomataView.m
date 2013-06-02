@@ -40,7 +40,8 @@
     return self;
 }
 -(void) beginAnimations{
-    [self performSelector:@selector(loop:) withObject:[NSNumber numberWithInteger:0]];
+    if(![stopped boolValue])
+        [self performSelector:@selector(loop:) withObject:[NSNumber numberWithInteger:0]];
 }
 -(void) loop:(NSNumber*)cellNumber{
     NSInteger cell = [cellNumber integerValue];
@@ -80,7 +81,7 @@
             [self resetBoard];
             [self loadNewAutomata:[automataRules objectAtIndex:arc4random()%automataRules.count]];
             if(![stopped boolValue])
-                [self performSelector:@selector(loop:) withObject:[NSNumber numberWithInteger:0] afterDelay:restartTime];
+                [self performSelector:@selector(beginAnimations) withObject:[NSNumber numberWithInteger:0] afterDelay:restartTime];
         }
     }
 }

@@ -33,11 +33,29 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <segue destination="wVf-aC-a0S" kind="push" identifier="SettingsSegue" id="2vF-vT-W8m"/>
+                        <segue destination="cwB-sR-Jgb" kind="modal" identifier="FullScreenSegue" modalTransitionStyle="flipHorizontal" id="gGJ-DU-dwk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1011" y="-277"/>
+        </scene>
+        <!--Scroll View Controller-->
+        <scene sceneID="95K-JV-BkT">
+            <objects>
+                <viewController id="cwB-sR-Jgb" customClass="ScrollViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CkH-cB-j21">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="2" kind="modal" identifier="GeneratorSegue" modalTransitionStyle="flipHorizontal" id="hJ4-DY-bm9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="20R-hC-erK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-964" y="1276"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Npj-pI-47R">
@@ -83,15 +101,14 @@
         </scene>
     </scenes>
     <classes>
+        <class className="ScrollViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScrollViewController.h"/>
+        </class>
         <class className="SettingsViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
         </class>
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="generatorButtonPress:"/>
-                <relationship kind="action" name="playgroundButtonPress:"/>
-            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -99,4 +116,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="hJ4-DY-bm9"/>
+    </inferredMetricsTieBreakers>
 </document>

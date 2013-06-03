@@ -187,13 +187,5 @@
     }
     [travelingRow[selection] performSelector:@selector(setBackgroundColor:) withObject:[UIColor colorWithWhite:nextCell alpha:1.0] afterDelay:flipInterval/2.0];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

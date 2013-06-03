@@ -19,6 +19,7 @@
 }
 @property NSInteger ruleNumber;
 @property (nonatomic) BOOL state;
-@property (nonatomic, weak) NSNumber *rule;
+
+-(void) setState:(BOOL)s animated:(BOOL)animated;
 
 @end

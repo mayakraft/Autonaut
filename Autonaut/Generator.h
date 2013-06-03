@@ -11,11 +11,12 @@
 
 @interface Generator : UIView{
     NSArray *buttons;
-    UIImageView *randomAutomataView;
-    UIImageView *nonrandomAutomataView;
     NSInteger retina;
     AVAudioPlayer *sweep;
 }
 @property (nonatomic, strong) NSNumber *rule;
+@property (nonatomic, strong) UIImageView *randomAutomataView;
+@property (nonatomic, strong) UIImageView *nonrandomAutomataView;
+
 -(void) setNewRule;
 @end

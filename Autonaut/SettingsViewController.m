@@ -26,6 +26,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setTitle:@"SETTINGS"];
+    UIView *background = [[UIView alloc] init];
+    [background setBackgroundColor:[UIColor blackColor]];
+    [self.tableView setBackgroundView:nil];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -49,35 +54,63 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 4;
 }
+
+//-(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    UIView *view = [[UIView alloc] init];
+//    [view setBackgroundColor:[UIColor blackColor]];
+//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
+//    [title setCenter:CGPointMake([[UIScreen mainScreen] bounds].size.width/2.0, 22)];
+//    [title setTextAlignment:NSTextAlignmentCenter];
+//    [title setText:@"SETTINGS"];
+//    [title setBackgroundColor:[UIColor clearColor]];
+//    [title setTextColor:[UIColor whiteColor]];
+//    [view addSubview:title];
+//    return view;
+//}
+
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 3;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
-            [[cell textLabel] setText:@"Retina Enabled Full Screen"];
-            [[cell detailTextLabel] setText:@"NO"];
+            [[cell textLabel] setText:@"retina"];
+            [[cell detailTextLabel] setText:@"no"];
             break;
         case 1:
-            [[cell textLabel] setText:@"Full Screen Size (width):"];
-            [[cell detailTextLabel] setText:@"x3"];
+            [[cell textLabel] setText:@"width"];
+            [[cell detailTextLabel] setText:@"×3"];
             break;
         case 2:
-            [[cell textLabel] setText:@"Full Screen Size (height):"];
-            [[cell detailTextLabel] setText:@"x1"];
+            [[cell textLabel] setText:@"height"];
+            [[cell detailTextLabel] setText:@"×1"];
+            break;
+        case 3:
+            [[cell textLabel] setText:@"reset defaults"];
+            [[cell detailTextLabel] setText:@""];
             break;
         default:
             break;
     }
+    [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
+    [[cell textLabel] setFont:[UIFont boldSystemFontOfSize:33.0]];
+    [[cell detailTextLabel] setFont:[UIFont boldSystemFontOfSize:33.0]];
     // Configure the cell...
     
     return cell;

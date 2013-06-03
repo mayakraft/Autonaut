@@ -43,17 +43,57 @@
     return self;
 }
 
--(void) setState:(BOOL)s
-{
+-(void) setState:(BOOL)s animated:(BOOL)animated{
     state = s;
-    [self animateStateChange];
+    [self updateStateAnimated:[NSNumber numberWithBool:animated]];
+    [self performSelectorInBackground:@selector(updateFuzzStateAnimated:) withObject:[NSNumber numberWithBool:animated]];
 }
 
--(void) updateFuzzState
+-(void) updateStateAnimated:(NSNumber*)animated
 {
-    [UIView beginAnimations:@"alternateFuzz" context:nil];
-    [UIView setAnimationDuration:0.33];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    if(!animated){
+        bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
+        [bottom setUserInteractionEnabled:NO];
+        if(state) [bottom setBackgroundColor:[UIColor whiteColor]];
+        else     [bottom setBackgroundColor:[UIColor blackColor]];
+        [self addSubview:bottom];
+    }
+    else{
+        bottom = nil;
+        UIColor *cellColor;
+        if(state) cellColor = [UIColor whiteColor];
+        else      cellColor = [UIColor blackColor];
+        
+        // this method is incomplete. it stacks uiviews on top of each other forever. memory problem.
+        bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/4.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
+        [bottom setUserInteractionEnabled:NO];
+        [bottom setBackgroundColor:center.backgroundColor];
+        [[bottom layer] setAnchorPoint:CGPointMake(0.5, 1.0)];
+        [[bottom layer] setZPosition:5.0];
+        [self addSubview:bottom];
+        
+        CATransform3D transformFlip = CATransform3DIdentity;
+        transformFlip.m34 = -1.0 / 50;
+        transformFlip = CATransform3DRotate(transformFlip, M_PI, 1, 0, 0);
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:.24];
+        [[bottom layer] setTransform:transformFlip];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
+        [UIView commitAnimations];
+        [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.24*.48];
+        [bottom performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.25];
+    }
+}
+
+-(void) updateFuzzStateAnimated:(NSNumber*)animated
+{
+    if([animated boolValue]){
+        [UIView beginAnimations:@"alternateFuzz" context:nil];
+        [UIView setAnimationDuration:0.25];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    }
     if(state){
         [whitefuzz setAlpha:1.0];
         [blackfuzz setAlpha:0.0];
@@ -62,35 +102,10 @@
         [whitefuzz setAlpha:0.0];
         [blackfuzz setAlpha:1.0];
     }
-    [UIView commitAnimations];
+    if([animated boolValue])
+        [UIView commitAnimations];
 }
 
--(void) animateStateChange
-{
-    UIColor *cellColor;
-    if(state) cellColor = [UIColor whiteColor];
-    else      cellColor = [UIColor blackColor];
-    
-    [self performSelectorInBackground:@selector(updateFuzzState) withObject:nil];
-    
-    bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/4.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
-    [bottom setUserInteractionEnabled:NO];
-    [bottom setBackgroundColor:center.backgroundColor];
-    [[bottom layer] setAnchorPoint:CGPointMake(0.5, 1.0)];
-    [self addSubview:bottom];
-    
-    CATransform3D transformFlip = CATransform3DIdentity;
-    transformFlip.m34 = -1.0 / 50;
-    transformFlip = CATransform3DRotate(transformFlip, M_PI, 1, 0, 0);
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.24];
-    [[bottom layer] setTransform:transformFlip];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
-    [UIView commitAnimations];
-    [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.24*.48];
-}
 -(void)layoutSubviews
 {
     if(!(ruleNumber % 2))
@@ -106,13 +121,5 @@
     else
         [left setBackgroundColor:[UIColor blackColor]];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

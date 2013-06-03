@@ -13,6 +13,8 @@
 
 @implementation Generator
 @synthesize rule;
+@synthesize randomAutomataView;
+@synthesize nonrandomAutomataView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -27,8 +29,6 @@
 
         retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
         retina = 1;
-        
-        rule = [NSNumber numberWithInteger:30];
 
         randomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, (self.frame.size.height-self.frame.size.width*1.2)*.33, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:randomAutomataView];
@@ -40,11 +40,10 @@
         NSMutableArray *buttonsMutable = [[NSMutableArray alloc] init];
         for(int i = 0; i < 8; i++){
             RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(self.frame.size.width*.15-ruleButtonHeight*3/4.0, ruleButtonHeight*1.82+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
-            [button setRuleNumber:i];
+            [button setRuleNumber:7-i];
+            [button setState:0];
             [button addTarget:self action:@selector(ruleButtonPress:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
-            [button setRule:rule];
-//            [button setState:0];
             [buttonsMutable addObject:button];
         }
         buttons = buttonsMutable;
@@ -59,12 +58,35 @@
 
 -(void) updateImageViews
 {
+    NSLog(@"UpdatingImageViews");
     Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+//    randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
     
     Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
+//    nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
 
+}
+
+-(void) setRule:(NSNumber *)r{
+    NSLog(@"Custom Set Rule Function");
+    rule = r;
+    bool binaryRule[8];
+    //Convert Decimal to Binary
+    int powerer, ruleNumberCopy = [rule integerValue];
+    for(int i=7;i>=0;i--){
+        binaryRule[i] = false;
+        powerer = pow(2,i);
+        if(ruleNumberCopy >= powerer){
+            binaryRule[i] = true;
+            ruleNumberCopy -= powerer;
+        }
+    }
+    for(int i = 0; i < 8; i++)
+    {
+        [[buttons objectAtIndex:i] setState:binaryRule[i] animated:NO];
+    }
 }
 
 -(void) setNewRule{
@@ -75,29 +97,23 @@
     }
     rule = [NSNumber numberWithInteger:base10];
     NSLog(@"NewRULE: %@",rule);
+    [[NSUserDefaults standardUserDefaults] setObject:rule forKey:@"rule"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSelectorInBackground:@selector(updateImageViews) withObject:nil];
 //    [self updateImageViews];
 }
 
 -(IBAction)ruleButtonPress:(RuleButton*)sender
 {
+    NSLog(@"RI:LE %@",rule);
     NSLog(@"Button Pressed: %d",[sender ruleNumber]);
-    if([sender state]) [sender setState:FALSE];
-    else [sender setState:TRUE];
+    if([sender state]) [sender setState:FALSE animated:YES];
+    else [sender setState:TRUE animated:YES];
     [self setNewRule];
 //    if([sweep isPlaying])
 //        [sweep pause];
 //    [sweep setCurrentTime:0.0];
 //    [sweep play];
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

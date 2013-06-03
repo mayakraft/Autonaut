@@ -13,6 +13,7 @@
 #import <QuartzCore/CAMediaTimingFunction.h>
 #import "FlippingAutomataView.h"
 #import "Generator.h"
+#import "ScrollViewController.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -30,6 +31,7 @@
     FlippingAutomataView *flippingAutomata;
     Generator *generator;
     UITapGestureRecognizer *tapGesture;
+    BOOL random; // for segue transition
 }
 @end
 
@@ -88,14 +90,26 @@
     }
 
     [flippingAutomata beginAnimations];
-    
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPressed:)];
+    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapListener:)];
     [tapGesture setNumberOfTapsRequired:1];
-    [flippingAutomata addGestureRecognizer:tapGesture];
+    [self.view addGestureRecognizer:tapGesture];
     [tapGesture setEnabled:NO];
     generator = nil;
 }
 
+- (IBAction) goToRoot: (UIStoryboardSegue*) segue
+{
+    NSLog(@"Called goToRoot: unwind action");
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"FullScreenSegue"]){
+        ScrollViewController *vc = [segue destinationViewController];
+        [vc setRandom:[NSNumber numberWithBool:random]];
+        [vc setRule:generator.rule];
+    }
+}
 -(void) viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
@@ -120,8 +134,16 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
     [tapGesture performSelector:@selector(setEnabled:) withObject:@1 afterDelay:1.0];
     NSLog(@"%f : %f : %f : %f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
-    if(generator == nil)
+    if(generator == nil){
         generator = [[Generator alloc] initWithFrame:CGRectMake( self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"rule"]){
+            NSLog(@"There is a RULE");
+            [generator setRule:[[NSUserDefaults standardUserDefaults] objectForKey:@"rule"]];
+        }
+        else
+            [generator setRule:@30];
+            NSLog(@"no rule");
+    }
     [flippingAutomata setStopped:@1];
     [generator setNewRule];
     flippingAutomata.autoresizesSubviews = YES;
@@ -193,9 +215,42 @@
         playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
     [flippingAutomata setStopped:@0];
     [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
-    
-
 }
+
+-(void)tapListener:(UITapGestureRecognizer*)sender
+{
+    if(CGRectContainsPoint(flippingAutomata.frame, [sender locationInView:[sender view]]))
+    {
+        NSLog(@"Tapping");
+        [self animateCheckerboardExpandAndReposition];
+        generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+        playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+        [flippingAutomata setStopped:@0];
+        [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
+        [tapGesture setEnabled:NO];
+    }
+    if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
+        NSLog(@"Generator");
+        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
+        random = TRUE;
+    }
+    if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
+        NSLog(@"Generator");
+        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
+        random = FALSE;
+    }
+    //    CGPoint anchor = CGPointMake(randomAutomataView.center.x/self.bounds.size.width,
+    //                                 randomAutomataView.center.y/self.bounds.size.height);
+    //    if(CGRectContainsPoint([randomAutomataView frame], [sender locationInView:[sender view]])){
+    //        NSLog(@":: %f : %f",randomAutomataView.center.x, randomAutomataView.center.y*4);
+    //    }
+    //    if(CGRectContainsPoint([nonrandomAutomataView frame], [sender locationInView:[sender view]])){
+    //        NSLog(@"Non Random Automata");
+    //        NSLog(@":: %f : %f",randomAutomataView.center.x, -randomAutomataView.center.y);
+    //    }
+    
+}
+
 // keyPath is @"transform.rotation.z"
 //- (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath
 //{
@@ -237,6 +292,7 @@
 //-(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
 //	NSLog(@"AnimationDidStop");
 //}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

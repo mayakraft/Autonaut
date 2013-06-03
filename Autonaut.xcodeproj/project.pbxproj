@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D5238FA7175C18E100A25AE7 /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5238FA6175C18E100A25AE7 /* ScrollViewController.m */; };
 		D527CF74172474B600F698D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF73172474B600F698D0 /* UIKit.framework */; };
 		D527CF76172474B600F698D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF75172474B600F698D0 /* Foundation.framework */; };
 		D527CF78172474B600F698D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CF77172474B600F698D0 /* CoreGraphics.framework */; };
@@ -30,6 +31,10 @@
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5954476175AF7950074188E /* blackfuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954475175AF7950074188E /* blackfuzz.png */; };
 		D5954478175AF79D0074188E /* whitefuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954477175AF79D0074188E /* whitefuzz.png */; };
+		D595447A175B1AD80074188E /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954479175B1AD70074188E /* icon114.png */; };
+		D595447C175B1ADA0074188E /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = D595447B175B1ADA0074188E /* icon57.png */; };
+		D595447E175B1ADF0074188E /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = D595447D175B1ADF0074188E /* icon144.png */; };
+		D5954480175B1AE10074188E /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = D595447F175B1AE10074188E /* icon72.png */; };
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
 		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
 		D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BC7491174ECFF50039F6FA /* SettingsViewController.m */; };
@@ -49,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D5238FA5175C18E100A25AE7 /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
+		D5238FA6175C18E100A25AE7 /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
 		D527CF70172474B600F698D0 /* Autonaut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Autonaut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D527CF73172474B600F698D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D527CF75172474B600F698D0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -79,6 +86,10 @@
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
 		D5954475175AF7950074188E /* blackfuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackfuzz.png; sourceTree = "<group>"; };
 		D5954477175AF79D0074188E /* whitefuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitefuzz.png; sourceTree = "<group>"; };
+		D5954479175B1AD70074188E /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
+		D595447B175B1ADA0074188E /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
+		D595447D175B1ADF0074188E /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon144.png; sourceTree = "<group>"; };
+		D595447F175B1AE10074188E /* icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon72.png; sourceTree = "<group>"; };
 		D5A3CD151740251800574630 /* FlippingAutomataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlippingAutomataView.h; sourceTree = "<group>"; };
 		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
 		D5A3CD1817403B1000574630 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
@@ -120,6 +131,10 @@
 		D527CF67172474B500F698D0 = {
 			isa = PBXGroup;
 			children = (
+				D595447F175B1AE10074188E /* icon72.png */,
+				D595447D175B1ADF0074188E /* icon144.png */,
+				D595447B175B1ADA0074188E /* icon57.png */,
+				D5954479175B1AD70074188E /* icon114.png */,
 				D5BC7495174EDCD30039F6FA /* AVFoundation.framework */,
 				D527CFB517249B2400F698D0 /* QuartzCore.framework */,
 				D527CF79172474B600F698D0 /* Autonaut */,
@@ -164,6 +179,8 @@
 				D5D2E71D173ECE460051D5DF /* Generator.m */,
 				D5A3CD151740251800574630 /* FlippingAutomataView.h */,
 				D5A3CD161740251800574630 /* FlippingAutomataView.m */,
+				D5238FA5175C18E100A25AE7 /* ScrollViewController.h */,
+				D5238FA6175C18E100A25AE7 /* ScrollViewController.m */,
 				D52A32A7173C36BF00F443C5 /* AnimatedBoardView.h */,
 				D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */,
 				D5A3CD1817403B1000574630 /* RuleButton.h */,
@@ -291,6 +308,10 @@
 				D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */,
 				D5954476175AF7950074188E /* blackfuzz.png in Resources */,
 				D5954478175AF79D0074188E /* whitefuzz.png in Resources */,
+				D595447A175B1AD80074188E /* icon114.png in Resources */,
+				D595447C175B1ADA0074188E /* icon57.png in Resources */,
+				D595447E175B1ADF0074188E /* icon144.png in Resources */,
+				D5954480175B1AE10074188E /* icon72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +355,7 @@
 				D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */,
 				D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */,
 				D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */,
+				D5238FA7175C18E100A25AE7 /* ScrollViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

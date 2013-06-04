@@ -231,13 +231,13 @@
     }
     if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
         NSLog(@"Generator");
-        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
         random = TRUE;
+        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
         NSLog(@"Generator");
-        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
         random = FALSE;
+        [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     //    CGPoint anchor = CGPointMake(randomAutomataView.center.x/self.bounds.size.width,
     //                                 randomAutomataView.center.y/self.bounds.size.height);

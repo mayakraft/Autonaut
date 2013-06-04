@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "Cell.h"
 
 @interface SettingsViewController ()
 
@@ -27,10 +28,10 @@
 {
     [super viewDidLoad];
     
-    [self setTitle:@"SETTINGS"];
+    [self setTitle:@""];
     UIView *background = [[UIView alloc] init];
-    [background setBackgroundColor:[UIColor blackColor]];
-    [self.tableView setBackgroundView:nil];
+    [background setBackgroundColor:[UIColor whiteColor]];
+    [self.tableView setBackgroundView:background];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,7 +55,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 4;
+    return 5;
 }
 
 //-(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -72,22 +73,20 @@
 //}
 
 
--(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 50;
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 100;
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+//    Cell *cell = [[Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+
     switch (indexPath.section) {
         case 0:
             [[cell textLabel] setText:@"retina"];
@@ -102,17 +101,16 @@
             [[cell detailTextLabel] setText:@"×1"];
             break;
         case 3:
+            [[cell textLabel] setText:@"noise"];
+            [[cell detailTextLabel] setText:@"white"];
+            break;
+        case 4:
             [[cell textLabel] setText:@"reset defaults"];
             [[cell detailTextLabel] setText:@""];
             break;
         default:
             break;
     }
-    [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
-    [[cell textLabel] setFont:[UIFont boldSystemFontOfSize:33.0]];
-    [[cell detailTextLabel] setFont:[UIFont boldSystemFontOfSize:33.0]];
-    // Configure the cell...
-    
     return cell;
 }
 

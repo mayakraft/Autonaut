@@ -43,7 +43,7 @@
     automataView.layer.magnificationFilter = kCAFilterNearest;
     [scrollView addSubview:automataView];
     [scrollView setMinimumZoomScale:1.0];
-    [scrollView setMaximumZoomScale:50.0];
+    [scrollView setMaximumZoomScale:100.0];
     [scrollView setDelegate:self];
     [scrollView flashScrollIndicators];
     [scrollView setScrollEnabled:YES];
@@ -61,12 +61,11 @@
     NSLog(@"Tapped twice");
     SEL theUnwindSelector = @selector(goToRoot:);
     NSString *unwindSegueIdentifier = @"unwindToRootSeque";
-    
     UINavigationController *nc = [self navigationController];
     // Find the view controller that has this unwindAction selector (may not be one in the nav stack)
     UIViewController *viewControllerToCallUnwindSelectorOn = [nc viewControllerForUnwindSegueAction: theUnwindSelector
                                                                                  fromViewController: self
-                                                                                         withSender: sender];
+                                                                                         withSender:self];
     // None found, then do nothing.
     if (viewControllerToCallUnwindSelectorOn == nil) {
         NSLog(@"No controller found to unwind too");

@@ -37,6 +37,7 @@
 		D5954480175B1AE10074188E /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = D595447F175B1AE10074188E /* icon72.png */; };
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
 		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
+		D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B2D9F4175DABF1009F7D31 /* Cell.m */; };
 		D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BC7491174ECFF50039F6FA /* SettingsViewController.m */; };
 		D5BC7496174EDCD30039F6FA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BC7495174EDCD30039F6FA /* AVFoundation.framework */; };
 		D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5BC7497174EDDE50039F6FA /* sweep.mp3 */; };
@@ -94,6 +95,8 @@
 		D5A3CD161740251800574630 /* FlippingAutomataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlippingAutomataView.m; sourceTree = "<group>"; };
 		D5A3CD1817403B1000574630 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
 		D5A3CD1917403B1000574630 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
+		D5B2D9F3175DABF1009F7D31 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell.h; sourceTree = "<group>"; };
+		D5B2D9F4175DABF1009F7D31 /* Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell.m; sourceTree = "<group>"; };
 		D5BC7490174ECFF50039F6FA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		D5BC7491174ECFF50039F6FA /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		D5BC7495174EDCD30039F6FA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -171,6 +174,8 @@
 				D527CF83172474B600F698D0 /* AppDelegate.m */,
 				D527CF8B172474B600F698D0 /* MainStoryboard_iPhone.storyboard */,
 				D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */,
+				D5B2D9F3175DABF1009F7D31 /* Cell.h */,
+				D5B2D9F4175DABF1009F7D31 /* Cell.m */,
 				D5BC7490174ECFF50039F6FA /* SettingsViewController.h */,
 				D5BC7491174ECFF50039F6FA /* SettingsViewController.m */,
 				D527CF91172474B600F698D0 /* ViewController.h */,
@@ -356,6 +361,7 @@
 				D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */,
 				D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */,
 				D5238FA7175C18E100A25AE7 /* ScrollViewController.m in Sources */,
+				D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

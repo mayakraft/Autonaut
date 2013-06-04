@@ -9,6 +9,8 @@
 #import "Cell.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
 @implementation Cell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -17,15 +19,20 @@
     if (self) {
         // Initialization code
         NSLog(@"INIT WITH STYLE");
-        self.layer.borderWidth = 8.0f;
-        self.layer.cornerRadius = 50.0f;
-//        [self.layer setMasksToBounds:YES];
-//        [self.layer setOpaque:YES];
+        self.layer.borderWidth = 3.0f;
+        self.layer.cornerRadius = 20.0f;
+        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         [self.layer setBackgroundColor:[UIColor whiteColor].CGColor];
         [self setBackgroundColor:[UIColor whiteColor]];
-        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
-        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+        if(IS_IPAD())
+        {
+            self.layer.borderWidth = 8.0f;
+            self.layer.cornerRadius = 50.0f;
+            [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+            [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+        }
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
     }
@@ -37,18 +44,37 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    frame.origin.x += 100;
-    frame.size.width -= 2 * 100;
+    if(IS_IPAD()){
+        frame.origin.x += 100;
+        frame.size.width -= 2 * 100;
+    }
+    else{
+        frame.origin.x += 30;
+        frame.size.width -= 2 * 30;
+    }
     [super setFrame:frame];
 
-    self.layer.borderWidth = 8.0f;
-    self.layer.cornerRadius = 50.0f;
+    self.layer.borderWidth = 3.0f;
+    self.layer.cornerRadius = 20.0f;
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setBackgroundColor:[UIColor whiteColor]];
-    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
-    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+    if(IS_IPAD())
+    {
+        self.layer.borderWidth = 8.0f;
+        self.layer.cornerRadius = 50.0f;
+        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+    }
+    [self.detailTextLabel setTextColor:[UIColor blackColor]];
     [self.textLabel setBackgroundColor:[UIColor clearColor]];
     [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
+    [self.textLabel setHighlightedTextColor:[UIColor blackColor]];
+    [self.detailTextLabel setHighlightedTextColor:[UIColor blackColor]];
+    UIView *clear= [[UIView alloc] initWithFrame:CGRectZero];
+    [clear setBackgroundColor:[UIColor clearColor]];
+    self.selectedBackgroundView = clear;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

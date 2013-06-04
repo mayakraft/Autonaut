@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
-- (IBAction) goToRoot: (UIStoryboardSegue*) segue;
+- (IBAction) unwindToViewController: (UIStoryboardSegue*) segue;
 
 @end

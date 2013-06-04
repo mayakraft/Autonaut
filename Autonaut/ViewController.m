@@ -97,9 +97,19 @@
     generator = nil;
 }
 
-- (IBAction) goToRoot: (UIStoryboardSegue*) segue
+- (IBAction) unwindToViewController: (UIStoryboardSegue*) unwindSegue
 {
-    NSLog(@"Called goToRoot: unwind action");
+    UIViewController* sourceViewController = unwindSegue.sourceViewController;
+    
+    if ([sourceViewController isKindOfClass:[ScrollViewController class]])
+    {
+        NSLog(@"Coming from ScrollView!");
+    }
+//    else if ([sourceViewController isKindOfClass:[GreenViewController class]])
+//    {
+//        NSLog(@"Coming from GREEN!");
+//    }
+    NSLog(@"Unwind to View Controller");
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -219,6 +229,8 @@
 
 -(void)tapListener:(UITapGestureRecognizer*)sender
 {
+    NSLog(@"Tap Listener: %f : %f",[sender locationInView:sender.view].x,
+          [sender locationInView:sender.view].y);
     if(CGRectContainsPoint(flippingAutomata.frame, [sender locationInView:[sender view]]))
     {
         NSLog(@"Tapping");

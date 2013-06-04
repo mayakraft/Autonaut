@@ -60,11 +60,11 @@
 {
     NSLog(@"UpdatingImageViews");
     Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
-//    randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
+    randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
     
     Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
-//    nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
+    nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
 
 }

@@ -34,11 +34,9 @@
                     <connections>
                         <segue destination="wVf-aC-a0S" kind="push" identifier="SettingsSegue" id="2vF-vT-W8m"/>
                         <segue destination="cwB-sR-Jgb" kind="modal" identifier="FullScreenSegue" modalTransitionStyle="flipHorizontal" id="gGJ-DU-dwk"/>
-                        <segue destination="rnu-xp-PRx" kind="unwind" identifier="unwindToRootSeque" unwindAction="goToRoot:" id="xRp-lg-fHH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
-                <exit id="rnu-xp-PRx" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1011" y="-277"/>
         </scene>
@@ -52,7 +50,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="8lf-Ns-8C7" kind="unwind" identifier="unwindToRootSeque" unwindAction="goToRoot:" id="kVh-1T-jjS"/>
+                        <segue destination="8lf-Ns-8C7" kind="unwind" identifier="unwindToViewController" unwindAction="unwindToViewController:" id="kVh-1T-jjS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="20R-hC-erK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -121,8 +119,8 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="generatorButtonPress:"/>
-                <relationship kind="action" name="goToRoot:" candidateClass="UIStoryboardSegue"/>
                 <relationship kind="action" name="playgroundButtonPress:"/>
+                <relationship kind="action" name="unwindToViewController:" candidateClass="UIStoryboardSegue"/>
             </relationships>
         </class>
     </classes>

@@ -9,6 +9,8 @@
 #import "SettingsViewController.h"
 #import "Cell.h"
 
+#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
 @interface SettingsViewController ()
 
 @end
@@ -74,7 +76,10 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100;
+    if(IS_IPAD())
+        return 100;
+    else
+        return 40;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -87,29 +92,28 @@
     Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 //    Cell *cell = [[Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 
-    switch (indexPath.section) {
-        case 0:
-            [[cell textLabel] setText:@"retina"];
+    if(indexPath.section == 0){
+        [[cell textLabel] setText:@"retina"];
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue] == 1)
             [[cell detailTextLabel] setText:@"no"];
-            break;
-        case 1:
-            [[cell textLabel] setText:@"width"];
-            [[cell detailTextLabel] setText:@"×3"];
-            break;
-        case 2:
-            [[cell textLabel] setText:@"height"];
+        else
+            [[cell detailTextLabel] setText:@"yes"];
+    }
+    else if (indexPath.section == 1){
+        [[cell textLabel] setText:@"width"];
+        [[cell detailTextLabel] setText:@"×3"];
+    }
+    else if (indexPath.section == 2){
+           [[cell textLabel] setText:@"height"];
             [[cell detailTextLabel] setText:@"×1"];
-            break;
-        case 3:
+    }
+    else if (indexPath.section == 3){
             [[cell textLabel] setText:@"noise"];
             [[cell detailTextLabel] setText:@"white"];
-            break;
-        case 4:
+    }
+    else if (indexPath.section == 4){
             [[cell textLabel] setText:@"reset defaults"];
             [[cell detailTextLabel] setText:@""];
-            break;
-        default:
-            break;
     }
     return cell;
 }
@@ -157,6 +161,30 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(indexPath.section == 0){
+        if([cell.detailTextLabel.text isEqualToString:@"no"]){
+            if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
+                    ([UIScreen mainScreen].scale == 2.0)){
+                [cell.detailTextLabel setText:@"yes"];
+                [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+        else{
+            [cell.detailTextLabel setText:@"no"];
+            [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    else if (indexPath.section == 3){
+        if([cell.detailTextLabel.text isEqualToString:@"white"])
+            [cell.detailTextLabel setText:@"perlan"];
+        else
+            [cell.detailTextLabel setText:@"white"];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

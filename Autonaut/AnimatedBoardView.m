@@ -9,6 +9,7 @@
 #import "AnimatedBoardView.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
+#import "Colors.h"
 
 @implementation AnimatedBoardView
 @synthesize automataArray;
@@ -32,7 +33,7 @@
         travelingRow = [[NSMutableArray alloc] init];
 
         [self loadNewAutomata:[NSNumber numberWithInteger:60]];
-        
+
         for(int j = 0; j < BOARD_HEIGHT; j++){
             for(int i = 0; i < BOARD_WIDTH; i++){
                 [animatedCells addObject:[[UIView alloc] initWithFrame:CGRectMake(i*board.bounds.size.width/BOARD_WIDTH,
@@ -40,7 +41,10 @@
                                                                               board.bounds.size.width/BOARD_WIDTH,
                                                                               board.bounds.size.height/BOARD_HEIGHT)]];
 //                ((UIView*)animatedCells[j*BOARD_WIDTH+i]).layer.anchorPoint = CGPointMake(0.5f,1);
-                [(UIView*)animatedCells[j*BOARD_WIDTH+i] setBackgroundColor:[UIColor colorWithWhite:[[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue] alpha:1.0]];
+                if([[automataArray objectAtIndex:j*BOARD_WIDTH+i] boolValue])
+                    [(UIView*)animatedCells[j*BOARD_WIDTH+i] setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+                else
+                    [(UIView*)animatedCells[j*BOARD_WIDTH+i] setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
                 [((UIView*)animatedCells[j*BOARD_WIDTH+i]) setHidden:YES];
                 [board addSubview:[animatedCells objectAtIndex:j*BOARD_WIDTH+i]];
             }

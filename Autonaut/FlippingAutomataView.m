@@ -9,6 +9,7 @@
 #import "FlippingAutomataView.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
+#import "Colors.h"
 
 @implementation FlippingAutomataView
 @synthesize automataArray;
@@ -71,7 +72,11 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
     [UIView commitAnimations];
-    UIColor *cellColor = [UIColor colorWithWhite:[[automataArray objectAtIndex:[cellNumber integerValue]] boolValue] alpha:1.0];
+    UIColor *cellColor;
+    if([[automataArray objectAtIndex:[cellNumber integerValue]] boolValue])
+        cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+    else
+        cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
     [[animatedCells objectAtIndex:[cellNumber integerValue]] performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:flipTime*.48];
 }
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context{

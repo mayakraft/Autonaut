@@ -15,6 +15,7 @@
 #import "Generator.h"
 #import "ScrollViewController.h"
 #import "SettingsView.h"
+#import "Colors.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -42,6 +43,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
+    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blackColor], @"off",
+                                                                     [UIColor whiteColor], @"on",
+                                                                     [UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0], @"complement",
+                                                                     @"b&w", @"title", nil];
+    NSDictionary *rgb = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blueColor], @"off",
+                                                                     [UIColor redColor], @"on",
+                                                                     [UIColor greenColor], @"complement",
+                                                                     @"rgb", @"title", nil];
+
+    [[Colors sharedColors] setThemes:[[NSDictionary alloc] initWithObjectsAndKeys:b_w, @"b_w", rgb, @"rgb", nil]];
+
     [self.view setBackgroundColor:[UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0]];
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
     [self.view addSubview:flippingAutomata];
@@ -50,10 +63,10 @@
     [generatorButton setTitle:@"generator" forState:UIControlStateNormal];
     [generatorButton addTarget:self action:@selector(generatorButtonPress:) forControlEvents:UIControlEventTouchDown];
     [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
-    [generatorButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [generatorButton setBackgroundColor:[UIColor whiteColor]];
+    [generatorButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [generatorButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     generatorButton.layer.borderWidth = 4.0f;
-    generatorButton.layer.borderColor = [[UIColor blackColor] CGColor];
+    generatorButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
     generatorButton.layer.cornerRadius = 25.0f;
     [generatorButton setHidden:YES];
     [generatorButton setTag:1];
@@ -63,10 +76,10 @@
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
     [playgroundButton setTitle:@"settings" forState:UIControlStateNormal];
     [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0]];
-    [playgroundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [playgroundButton setBackgroundColor:[UIColor whiteColor]];
+    [playgroundButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [playgroundButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     playgroundButton.layer.borderWidth = 4.0f;
-    playgroundButton.layer.borderColor = [[UIColor blackColor] CGColor];
+    playgroundButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
     playgroundButton.layer.cornerRadius = 25.0f;
     [playgroundButton setHidden: YES];
     [playgroundButton setTag:2];
@@ -92,6 +105,17 @@
     [self.view addGestureRecognizer:tapGesture];
     [tapGesture setEnabled:NO];
     generator = nil;
+}
+
+-(void) updateColorsProgramWide
+{
+    [generatorButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [generatorButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    generatorButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
+    [playgroundButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [playgroundButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    playgroundButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
+    
 }
 
 - (IBAction) unwindToViewController: (UIStoryboardSegue*) unwindSegue
@@ -407,6 +431,17 @@
             [cell.detailTextLabel setText:@"perlan"];
         else
             [cell.detailTextLabel setText:@"white"];
+    }
+    else if (indexPath.section == 2){
+        if([cell.detailTextLabel.text isEqualToString:@"b_w"]){
+            [[NSUserDefaults standardUserDefaults] setObject:@"rgb" forKey:@"theme"];
+        }
+        else{
+            [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self updateColorsProgramWide];
+        [tableView reloadData];
     }
     else if (indexPath.section == 3)
     {

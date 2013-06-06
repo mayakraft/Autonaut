@@ -35,7 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor blackColor]];
+//    [self.view setBackgroundColor:[((AppDelegate*)[[UIApplication sharedApplication] delegate]) off]];
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     NSInteger retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
 

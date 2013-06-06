@@ -67,7 +67,7 @@
     }
     else if (indexPath.section == 2){
         [[cell textLabel] setText:@"theme"];
-        [[cell detailTextLabel] setText:@"b&w"];
+        [[cell detailTextLabel] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]];
     }
     else if (indexPath.section == 3){
         [[cell textLabel] setText:@"okay"];

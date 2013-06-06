@@ -9,6 +9,7 @@
 #import "RuleButton.h"
 #import "Generator.h"
 #import <QuartzCore/CAAnimation.h>
+#import "Colors.h"
 
 @implementation RuleButton
 @synthesize ruleNumber;
@@ -54,15 +55,15 @@
     if(!animated){
         bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
         [bottom setUserInteractionEnabled:NO];
-        if(state) [bottom setBackgroundColor:[UIColor whiteColor]];
-        else     [bottom setBackgroundColor:[UIColor blackColor]];
+        if(state) [bottom setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+        else     [bottom setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
         [self addSubview:bottom];
     }
     else{
         bottom = nil;
         UIColor *cellColor;
-        if(state) cellColor = [UIColor whiteColor];
-        else      cellColor = [UIColor blackColor];
+        if(state) cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+        else      cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
         
         // this method is incomplete. it stacks uiviews on top of each other forever. memory problem.
         bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/4.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
@@ -109,17 +110,17 @@
 -(void)layoutSubviews
 {
     if(!(ruleNumber % 2))
-        [right setBackgroundColor:[UIColor whiteColor]];
+        [right setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     else
-        [right setBackgroundColor:[UIColor blackColor]];
+        [right setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
     if(!((int)(ruleNumber/2.0) % 2))
-        [center setBackgroundColor:[UIColor whiteColor]];
+        [center setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     else
-        [center setBackgroundColor:[UIColor blackColor]];
+        [center setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
     if(!((int)(ruleNumber/4.0) % 2))
-        [left setBackgroundColor:[UIColor whiteColor]];
+        [left setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     else
-        [left setBackgroundColor:[UIColor blackColor]];
+        [left setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
 }
 
 @end

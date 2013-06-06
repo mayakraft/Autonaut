@@ -30,6 +30,7 @@
 		D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CFB517249B2400F698D0 /* QuartzCore.framework */; };
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5610637175F0F2A00D25034 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5610636175F0F2A00D25034 /* SettingsView.m */; };
+		D588CBCB1760A89100A768ED /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = D588CBCA1760A89100A768ED /* Colors.m */; };
 		D5954476175AF7950074188E /* blackfuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954475175AF7950074188E /* blackfuzz.png */; };
 		D5954478175AF79D0074188E /* whitefuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954477175AF79D0074188E /* whitefuzz.png */; };
 		D595447A175B1AD80074188E /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954479175B1AD70074188E /* icon114.png */; };
@@ -39,7 +40,6 @@
 		D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD161740251800574630 /* FlippingAutomataView.m */; };
 		D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A3CD1917403B1000574630 /* RuleButton.m */; };
 		D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B2D9F4175DABF1009F7D31 /* Cell.m */; };
-		D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BC7491174ECFF50039F6FA /* SettingsViewController.m */; };
 		D5BC7496174EDCD30039F6FA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BC7495174EDCD30039F6FA /* AVFoundation.framework */; };
 		D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5BC7497174EDDE50039F6FA /* sweep.mp3 */; };
 		D5D2E71E173ECE460051D5DF /* Generator.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E71D173ECE460051D5DF /* Generator.m */; };
@@ -88,6 +88,8 @@
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
 		D5610635175F0F2A00D25034 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsView.h; sourceTree = "<group>"; };
 		D5610636175F0F2A00D25034 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsView.m; sourceTree = "<group>"; };
+		D588CBC91760A89100A768ED /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
+		D588CBCA1760A89100A768ED /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
 		D5954475175AF7950074188E /* blackfuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackfuzz.png; sourceTree = "<group>"; };
 		D5954477175AF79D0074188E /* whitefuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitefuzz.png; sourceTree = "<group>"; };
 		D5954479175B1AD70074188E /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
@@ -100,8 +102,6 @@
 		D5A3CD1917403B1000574630 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
 		D5B2D9F3175DABF1009F7D31 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cell.h; sourceTree = "<group>"; };
 		D5B2D9F4175DABF1009F7D31 /* Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell.m; sourceTree = "<group>"; };
-		D5BC7490174ECFF50039F6FA /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		D5BC7491174ECFF50039F6FA /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		D5BC7495174EDCD30039F6FA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D5BC7497174EDDE50039F6FA /* sweep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sweep.mp3; sourceTree = "<group>"; };
 		D5D2E71C173ECE460051D5DF /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
@@ -179,10 +179,10 @@
 				D527CF8E172474B600F698D0 /* MainStoryboard_iPad.storyboard */,
 				D5B2D9F3175DABF1009F7D31 /* Cell.h */,
 				D5B2D9F4175DABF1009F7D31 /* Cell.m */,
+				D588CBC91760A89100A768ED /* Colors.h */,
+				D588CBCA1760A89100A768ED /* Colors.m */,
 				D5610635175F0F2A00D25034 /* SettingsView.h */,
 				D5610636175F0F2A00D25034 /* SettingsView.m */,
-				D5BC7490174ECFF50039F6FA /* SettingsViewController.h */,
-				D5BC7491174ECFF50039F6FA /* SettingsViewController.m */,
 				D527CF91172474B600F698D0 /* ViewController.h */,
 				D527CF92172474B600F698D0 /* ViewController.m */,
 				D5D2E71C173ECE460051D5DF /* Generator.h */,
@@ -364,10 +364,10 @@
 				D5D2E71E173ECE460051D5DF /* Generator.m in Sources */,
 				D5A3CD171740251800574630 /* FlippingAutomataView.m in Sources */,
 				D5A3CD1A17403B1000574630 /* RuleButton.m in Sources */,
-				D5BC7492174ECFF50039F6FA /* SettingsViewController.m in Sources */,
 				D5238FA7175C18E100A25AE7 /* ScrollViewController.m in Sources */,
 				D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */,
 				D5610637175F0F2A00D25034 /* SettingsView.m in Sources */,
+				D588CBCB1760A89100A768ED /* Colors.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

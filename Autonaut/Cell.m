@@ -8,6 +8,7 @@
 
 #import "Cell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Colors.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -23,8 +24,9 @@
         [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
         [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-        [self.layer setBackgroundColor:[UIColor whiteColor].CGColor];
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self.layer setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+        [self setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+        [self setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
         if(IS_IPAD())
         {
             self.layer.borderWidth = 8.0f;
@@ -42,10 +44,14 @@
     NSInteger padding = 40;
     if(IS_IPAD()) padding = 100;
     self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, self.textLabel.frame.origin.y, self.bounds.size.width-padding, self.textLabel.frame.size.height);
-    [self.layer setBackgroundColor:[UIColor whiteColor].CGColor];
+    [self.layer setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+    [[self textLabel] setTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+    [[self textLabel] setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    self.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
 }
 
 - (void)setFrame:(CGRect)frame {
+    NSLog(@"setFramke getting Called");
     if(IS_IPAD()){
         frame.origin.x += 100;
         frame.size.width -= 2 * 100;
@@ -59,7 +65,8 @@
     self.layer.borderWidth = 4.0f;
     self.layer.cornerRadius = 25.0f;
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self setBackgroundColor:[UIColor whiteColor]];
+    [self setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    [self.layer setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
     [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
     [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
     if(IS_IPAD())
@@ -69,11 +76,11 @@
         [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
         [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
     }
-    [self.detailTextLabel setTextColor:[UIColor blackColor]];
+    [self.detailTextLabel setTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
     [self.textLabel setBackgroundColor:[UIColor clearColor]];
     [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
-    [self.textLabel setHighlightedTextColor:[UIColor blackColor]];
-    [self.detailTextLabel setHighlightedTextColor:[UIColor blackColor]];
+    [self.textLabel setHighlightedTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+    [self.detailTextLabel setHighlightedTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
     UIView *clear= [[UIView alloc] initWithFrame:CGRectZero];
     [clear setBackgroundColor:[UIColor clearColor]];
     self.selectedBackgroundView = clear;

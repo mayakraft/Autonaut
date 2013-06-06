@@ -23,6 +23,10 @@
         [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+//    if([[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] == nil){
+        [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
     return YES;
 }
 							

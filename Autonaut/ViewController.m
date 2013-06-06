@@ -14,6 +14,7 @@
 #import "FlippingAutomataView.h"
 #import "Generator.h"
 #import "ScrollViewController.h"
+#import "SettingsView.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -32,6 +33,7 @@
     Generator *generator;
     UITapGestureRecognizer *tapGesture;
     BOOL random; // for segue transition
+    SettingsView *settings;
 }
 @end
 
@@ -44,37 +46,32 @@
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
     [self.view addSubview:flippingAutomata];
         
-    generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(66, -10, [[UIScreen mainScreen] bounds].size.width-133, 40)];
-    [generatorButton setTitle:@"generator ➜" forState:UIControlStateNormal];
+    generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 30, [[UIScreen mainScreen] bounds].size.width-100, 50)];
+    [generatorButton setTitle:@"generator" forState:UIControlStateNormal];
     [generatorButton addTarget:self action:@selector(generatorButtonPress:) forControlEvents:UIControlEventTouchDown];
-    [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+    [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
     [generatorButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [generatorButton setBackgroundColor:[UIColor whiteColor]];
-    generatorButton.layer.borderWidth = 3.0f;
+    generatorButton.layer.borderWidth = 4.0f;
     generatorButton.layer.borderColor = [[UIColor blackColor] CGColor];
-    generatorButton.layer.cornerRadius = 20.0f;
+    generatorButton.layer.cornerRadius = 25.0f;
     [generatorButton setHidden:YES];
     [generatorButton setTag:1];
     [self.view addSubview:generatorButton];
     
-    playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 20, [[UIScreen mainScreen] bounds].size.width-120, 40)];
+    playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 100, [[UIScreen mainScreen] bounds].size.width-100, 50)];
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
-    [playgroundButton setTitle:@"settings ➜" forState:UIControlStateNormal];
-    [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0]];
+    [playgroundButton setTitle:@"settings" forState:UIControlStateNormal];
+    [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0]];
     [playgroundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[UIColor whiteColor]];
-    playgroundButton.layer.borderWidth = 3.0f;
+    playgroundButton.layer.borderWidth = 4.0f;
     playgroundButton.layer.borderColor = [[UIColor blackColor] CGColor];
-    playgroundButton.layer.cornerRadius = 20.0f;
+    playgroundButton.layer.cornerRadius = 25.0f;
     [playgroundButton setHidden: YES];
     [playgroundButton setTag:2];
     [self.view addSubview:playgroundButton];
-    
-    [[generatorButton layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
-    [[generatorButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
-    [[playgroundButton layer] setAnchorPoint:CGPointMake(0.5f, -1.0)];
-    [[playgroundButton layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI/4*3, 1, 0, 0)];
-    
+        
     [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.66];
     [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.75];   
     
@@ -126,12 +123,14 @@
 
 -(void)buttonFlipDown:(UIButton*)button
 {
+    [[button layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
+    [[button layer] setTransform:CATransform3DRotate(CATransform3DIdentity, M_PI*.5, 1, 0, 0)];
     [button setHidden:NO];
     CATransform3D transformFlipDown = CATransform3DIdentity;
     transformFlipDown.m34 = -1.0 / 500;
     transformFlipDown = CATransform3DRotate(transformFlipDown, 0, 1, 0, 0);
     [UIView beginAnimations:[NSString stringWithFormat:@"flipButtonDown%d",button.tag] context:nil];
-    [UIView setAnimationDuration:0.33];
+    [UIView setAnimationDuration:0.2];
     [[button layer] setTransform:transformFlipDown];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -164,16 +163,35 @@
     [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
-    [self performSegueWithIdentifier:@"SettingsSegue" sender:self];
+    settings = [[SettingsView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [settings setDataSource:settings];
+    [settings setDelegate:self];
+    [settings setBackgroundView:nil];
+    [settings setCenter:CGPointMake(settings.center.x, settings.center.y+settings.bounds.size.height)];
+    [self.view addSubview:settings];
+
+    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.1];
+    [self animateSettingsTableIn];
+    //[self performSegueWithIdentifier:@"SettingsSegue" sender:self];
 //    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
 //    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
 }
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context
 {
+    
+    if(animationID.length > 14)
+        if([[animationID substringToIndex:15] isEqualToString:@"animationShrink"]){
+            NSLog(@"Settings things hidden");
+            if([[animationID substringFromIndex:15] isEqualToString:@"generator"])
+                [generatorButton setHidden:YES];
+            else if ([[animationID substringFromIndex:15] isEqualToString:@"playground"])
+                [playgroundButton setHidden:YES];
+        }
     if ([animationID isEqualToString:@"generator"] || [animationID isEqualToString:@"playground"])
     {
-        [UIView beginAnimations:@"animationShrink" context:NULL];
-        [UIView setAnimationDuration:SHRINK_TIME];
+        [UIView beginAnimations:[NSString stringWithFormat:@"animationShrink%@",animationID] context:NULL];
+        [UIView setAnimationDuration:0.12f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
         if([animationID isEqualToString:@"generator"])
             generatorButton.transform=CGAffineTransformMakeScale(SCALED_DOWN_AMOUNT, SCALED_DOWN_AMOUNT);
@@ -187,7 +205,7 @@
 -(void)expandToCollapse:(NSString*)objectDescription
 {
     [UIView beginAnimations:objectDescription context:NULL];
-    [UIView setAnimationDuration:SHRINK_TIME];
+    [UIView setAnimationDuration:0.08f];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     if([objectDescription isEqualToString:@"generator"])
         generatorButton.transform=CGAffineTransformMakeScale(1.15, 1.15);
@@ -200,8 +218,7 @@
 -(void)animateCheckerboardShrinkAndReposition
 {
     [UIView beginAnimations:@"checkerboard" context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView beginAnimations:nil context:NULL];
+    //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.66];                                                //-111
     flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-self.view.frame.size.width*.5+self.view.frame.size.width*.15, -.5*self.view.frame.size.height+self.view.frame.size.height*0.075), 0.075f, 0.075f);
     generator.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.0f, 1.0f);
@@ -209,9 +226,10 @@
 }
 -(void)animateCheckerboardExpandAndReposition
 {
+    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.2];
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.28];
     [UIView beginAnimations:@"checkerboard" context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView beginAnimations:nil context:NULL];
+    //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.66];                                                      //-205
     flippingAutomata.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.0f, 1.0f), 0, 0);
     generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
@@ -221,10 +239,34 @@
 {
     NSLog(@"Tapping");
     [self animateCheckerboardExpandAndReposition];
-        generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
-        playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
     [flippingAutomata setStopped:@0];
     [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
+}
+
+-(void) animateSettingsTableIn
+{
+    [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+    [UIView setAnimationDuration:.4];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [settings setCenter:self.view.center];
+    [UIView commitAnimations];
+}
+-(void) animateSettingsTableOut
+{
+    generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    [generatorButton setHidden:YES];
+    [playgroundButton setHidden:YES];
+    [self buttonFlipDown:generatorButton];
+    //    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.2];
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.2];
+    [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+    [UIView setAnimationDuration:.33];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [settings setCenter:CGPointMake(self.view.center.x, self.view.center.y+self.view.bounds.size.height)];
+    [UIView commitAnimations];
 }
 
 -(void)tapListener:(UITapGestureRecognizer*)sender
@@ -304,6 +346,82 @@
 //-(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
 //	NSLog(@"AnimationDidStop");
 //}
+
+#pragma mark - Table view delegate
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(IS_IPAD())
+        return 100;
+    else
+        return 50;
+}
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(IS_IPAD()){
+        if(section==0)
+            return 150;
+        else return 20;
+    }
+    else{
+        if(section == 0)
+            return 60;
+        else
+            return 5;
+    }
+}
+//-(UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    NSLog(@"This is getting called");
+//    UIView *view = [[UIView alloc] init];
+//    [view setBackgroundColor:[UIColor greenColor]];
+//    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
+//    [title setCenter:CGPointMake([[UIScreen mainScreen] bounds].size.width/2.0, 22)];
+//    [title setTextAlignment:NSTextAlignmentCenter];
+//    [title setText:@"SETTINGS"];
+//    [title setBackgroundColor:[UIColor clearColor]];
+//    [title setTextColor:[UIColor whiteColor]];
+//    //    [view addSubview:title];
+//    return view;
+//}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(indexPath.section == 0){
+        if([cell.detailTextLabel.text isEqualToString:@"no"]){
+            if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
+                ([UIScreen mainScreen].scale == 2.0)){
+                [cell.detailTextLabel setText:@"yes"];
+                [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+        else{
+            [cell.detailTextLabel setText:@"no"];
+            [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    else if (indexPath.section == 1){
+        if([cell.detailTextLabel.text isEqualToString:@"white"])
+            [cell.detailTextLabel setText:@"perlan"];
+        else
+            [cell.detailTextLabel setText:@"white"];
+    }
+    else if (indexPath.section == 3)
+    {
+        [self animateSettingsTableOut];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+}
 
 - (void)didReceiveMemoryWarning
 {

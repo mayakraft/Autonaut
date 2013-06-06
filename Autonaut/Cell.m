@@ -18,11 +18,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        NSLog(@"INIT WITH STYLE");
-        self.layer.borderWidth = 3.0f;
-        self.layer.cornerRadius = 20.0f;
-        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
-        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+        self.layer.borderWidth = 4.0f;
+        self.layer.cornerRadius = 25.0f;
+        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
+        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         [self.layer setBackgroundColor:[UIColor whiteColor].CGColor];
         [self setBackgroundColor:[UIColor whiteColor]];
@@ -40,6 +39,9 @@
 }
 -(void) layoutSubviews{
     [super layoutSubviews];
+    NSInteger padding = 40;
+    if(IS_IPAD()) padding = 100;
+    self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, self.textLabel.frame.origin.y, self.bounds.size.width-padding, self.textLabel.frame.size.height);
     [self.layer setBackgroundColor:[UIColor whiteColor].CGColor];
 }
 
@@ -49,17 +51,17 @@
         frame.size.width -= 2 * 100;
     }
     else{
-        frame.origin.x += 30;
-        frame.size.width -= 2 * 30;
+        frame.origin.x += 40;
+        frame.size.width -= 2 * 40;
     }
     [super setFrame:frame];
 
-    self.layer.borderWidth = 3.0f;
-    self.layer.cornerRadius = 20.0f;
+    self.layer.borderWidth = 4.0f;
+    self.layer.cornerRadius = 25.0f;
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setBackgroundColor:[UIColor whiteColor]];
-    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
-    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:25.0f]];
+    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
+    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
     if(IS_IPAD())
     {
         self.layer.borderWidth = 8.0f;

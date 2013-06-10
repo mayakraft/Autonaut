@@ -51,7 +51,6 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    NSLog(@"setFramke getting Called");
     if(IS_IPAD()){
         frame.origin.x += 100;
         frame.size.width -= 2 * 100;

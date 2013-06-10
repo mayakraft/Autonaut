@@ -18,6 +18,7 @@
 //   to eclipse any effects due to null edge values
 
 #import "Automata.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface Automata(){
     NSInteger width;
@@ -35,6 +36,7 @@
                     width:(NSInteger)widthInput
                    height:(NSInteger)heightInput
 {
+    NSLog(@"InitBegins");
     if(ruleNumber > 255 || ruleNumber < 0)
         return nil; //rule number must be between 0 and 255
 
@@ -81,7 +83,10 @@
                 cells[i+width*j] = true;
             else cells[i+width*j] = false;
         }
-    } 
+        if(j == ((int)(height/2.0)))
+            NSLog(@"Halfway there");
+    }
+    NSLog(@"Done!");
     return self;
 }
 
@@ -96,12 +101,28 @@
     return mutableCells;
 }
 
--(UIImage*) GIFImageFromDataWithScale:(CGFloat)scale
+-(UIImage*) GIFImageFromDataWithLightColor:(UIColor*)light DarkColor:(UIColor*)dark Scale:(CGFloat)scale
 {
+    NSLog(@"GIF begins");
+    const float *lights = CGColorGetComponents([light CGColor]);
+    const float *darks = CGColorGetComponents([dark CGColor]);
+    NSLog(@" LIGHT    DARK");
+    for(int i = 0; i < 3; i++)
+        NSLog(@"%f %f", lights[i], darks[i]);
+    
+    unsigned char light_r = lights[0]*255.0;
+    unsigned char light_g = lights[1]*255.0;
+    unsigned char light_b = lights[2]*255.0;
+    unsigned char dark_r = darks[0]*255.0;
+    unsigned char dark_g = darks[1]*255.0;
+    unsigned char dark_b = darks[2]*255.0;
+
     unsigned char header[30] =                   /*  width  */ /*  height */ /*GCT*/
     {  '\x47','\x49','\x46','\x38','\x39','\x61','\x0f','\x00','\x0f','\x00','\x80','\x00','\x00',
+//        /*     color 1    *//*    color 2     */
+//        '\xff','\xff','\xff','\x00','\x00','\x00',
         /*     color 1    *//*    color 2     */
-        '\xff','\xff','\xff','\x00','\x00','\x00',
+        light_r,light_g,light_b,dark_r,dark_g,dark_b,
         /*   left  */ /*   top   */  /*  width  */ /*  height *//*LCT*//*LZW Minimum code size */
         '\x2c','\x00','\x00','\x00','\x00','\x0f','\x00','\x0f','\x00','\x00','\x07'};
     /* 1 Byte to Follow*//*EOI STOP*//*EndOfImage*//*GIFFileTerminator*/
@@ -139,7 +160,10 @@
             count++;
             if(count == 96) count = 0;
         }
+        if(j == ((int)(visibleHeight/2.0)))
+            NSLog(@"Halfway there");
     }
+    NSLog(@"GIF done");
     [imageData appendBytes:footer length:4];
 //    return [UIImage imageWithData:imageData];
     return [UIImage imageWithData:imageData scale:scale];

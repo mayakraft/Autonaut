@@ -20,5 +20,6 @@
 @property NSArray *automataArray;
 @property NSNumber *stopped;
 -(void) beginAnimations;
+-(void)updateColors;
 
 @end

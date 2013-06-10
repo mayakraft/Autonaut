@@ -10,6 +10,7 @@
 #import "Generator.h"
 #import "Automata.h"
 #import "RuleButton.h"
+#import "Colors.h"
 
 @implementation Generator
 @synthesize rule;
@@ -50,9 +51,11 @@
     }
     return self;
 }
-
--(void)viewDidLoad
-{
+-(void) updateColors{
+    for(RuleButton *button in buttons)
+        [button updateStateAnimated:@0];
+}
+-(void)viewDidLoad{
     NSLog(@"ViewDidLoad");
 }
 
@@ -61,11 +64,17 @@
     NSLog(@"UpdatingImageViews");
     Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
     randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
-    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
+    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithLightColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
+                                                                      DarkColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+                                                                          Scale:retina]];
+//    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
     
     Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
     nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
-    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
+    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithLightColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
+                                                                            DarkColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+                                                                                Scale:retina]];
+//    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
 
 }
 

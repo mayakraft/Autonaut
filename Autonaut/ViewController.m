@@ -11,6 +11,7 @@
 #import "Automata.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
+#import <AVFoundation/AVFoundation.h>
 #import "FlippingAutomataView.h"
 #import "Generator.h"
 #import "ScrollViewController.h"
@@ -35,6 +36,7 @@
     UITapGestureRecognizer *tapGesture;
     BOOL random; // for segue transition
     SettingsView *settings;
+    AVAudioPlayer *touchSound;
 }
 @end
 
@@ -43,17 +45,40 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
-    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blackColor], @"off",
-                                                                     [UIColor whiteColor], @"on",
-                                                                     [UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0], @"complement",
-                                                                     @"b&w", @"title", nil];
-    NSDictionary *rgb = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blueColor], @"off",
-                                                                     [UIColor redColor], @"on",
-                                                                     [UIColor greenColor], @"complement",
-                                                                     @"rgb", @"title", nil];
+ 
+    touchSound = [[AVAudioPlayer alloc] initWithContentsOfURL:
+                  [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/touch.wav", [[NSBundle mainBundle] resourcePath]]]
+                                                        error:nil];
 
-    [[Colors sharedColors] setThemes:[[NSDictionary alloc] initWithObjectsAndKeys:b_w, @"b_w", rgb, @"rgb", nil]];
+    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blackColor], @"off",
+                         [UIColor whiteColor], @"on",
+                         [UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0], @"complement",
+                         @"FFFFFF", @"on_web",
+                         @"000000", @"off_web",
+                         @"b&w", @"title", nil];
+    NSDictionary *ice = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.26 green:0.27 blue:0.35 alpha:1.0], @"off",
+                         [UIColor colorWithRed:0.98 green:0.99 blue:1.0 alpha:1.0], @"on",
+                         [UIColor colorWithRed:0.70 green:0.77 blue:0.86 alpha:1.0], @"complement",
+                         @"ice", @"title", nil];
+    NSDictionary *stone = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.10 green:0.26 blue:0.34 alpha:1.0], @"off",
+                         [UIColor colorWithRed:0.91 green:0.93 blue:0.81 alpha:1.0], @"on",
+                         [UIColor colorWithRed:0.80 green:0.61 blue:0.40 alpha:1.0], @"complement",
+                         @"stone", @"title", nil];
+    NSDictionary *gray = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithWhite:0.17 alpha:1.0], @"off",
+                         [UIColor colorWithWhite:0.95 alpha:1.0], @"on",
+                         [UIColor colorWithWhite:0.71 alpha:1.0], @"complement",
+                         @"gray", @"title", nil];
+    NSDictionary *clay = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.37 green:0.11 blue:0.00 alpha:1.0], @"off",
+                         [UIColor colorWithRed:0.79 green:0.70 blue:0.59 alpha:1.0], @"on",
+                         [UIColor colorWithRed:0.99 green:1.0 blue:0.73 alpha:1.0], @"complement",
+                         @"clay", @"title", nil];
+
+    [[Colors sharedColors] setThemes:[[NSDictionary alloc] initWithObjectsAndKeys:
+                                      b_w, @"b_w",
+                                      clay, @"clay",
+                                      ice, @"ice",
+                                      gray, @"gray",
+                                      stone, @"stone", nil]];
 
     [self.view setBackgroundColor:[UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0]];
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
@@ -109,6 +134,9 @@
 
 -(void) updateColorsProgramWide
 {
+    [generator updateColors];
+    [flippingAutomata updateColors];
+    [self.view setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"]];
     [generatorButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
     [generatorButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     generatorButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
@@ -162,6 +190,7 @@
     
 }
 -(IBAction)generatorButtonPress:(id)sender{
+    [touchSound play];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
@@ -187,6 +216,7 @@
     [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
+    [touchSound play];
     settings = [[SettingsView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [settings setDataSource:settings];
     [settings setDelegate:self];
@@ -261,6 +291,7 @@
 }
 -(void)tapPressed:(UITapGestureRecognizer*)sender
 {
+    [touchSound play];
     NSLog(@"Tapping");
     [self animateCheckerboardExpandAndReposition];
     generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
@@ -299,6 +330,7 @@
           [sender locationInView:sender.view].y);
     if(CGRectContainsPoint(flippingAutomata.frame, [sender locationInView:[sender view]]))
     {
+        [touchSound play];
         NSLog(@"Tapping");
         [self animateCheckerboardExpandAndReposition];
         generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
@@ -308,25 +340,17 @@
         [tapGesture setEnabled:NO];
     }
     if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
+        //[touchSound play];
         NSLog(@"Generator");
         random = TRUE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
+        //[touchSound play];
         NSLog(@"Generator");
         random = FALSE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
-    //    CGPoint anchor = CGPointMake(randomAutomataView.center.x/self.bounds.size.width,
-    //                                 randomAutomataView.center.y/self.bounds.size.height);
-    //    if(CGRectContainsPoint([randomAutomataView frame], [sender locationInView:[sender view]])){
-    //        NSLog(@":: %f : %f",randomAutomataView.center.x, randomAutomataView.center.y*4);
-    //    }
-    //    if(CGRectContainsPoint([nonrandomAutomataView frame], [sender locationInView:[sender view]])){
-    //        NSLog(@"Non Random Automata");
-    //        NSLog(@":: %f : %f",randomAutomataView.center.x, -randomAutomataView.center.y);
-    //    }
-    
 }
 
 // keyPath is @"transform.rotation.z"
@@ -410,6 +434,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [touchSound play];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(indexPath.section == 0){
         if([cell.detailTextLabel.text isEqualToString:@"no"]){
@@ -428,17 +453,25 @@
     }
     else if (indexPath.section == 1){
         if([cell.detailTextLabel.text isEqualToString:@"white"])
-            [cell.detailTextLabel setText:@"perlan"];
+            [cell.detailTextLabel setText:@"smooth"];
         else
             [cell.detailTextLabel setText:@"white"];
     }
     else if (indexPath.section == 2){
-        if([cell.detailTextLabel.text isEqualToString:@"b_w"]){
-            [[NSUserDefaults standardUserDefaults] setObject:@"rgb" forKey:@"theme"];
-        }
-        else{
+        //for(NSDictionary *color in [[Colors sharedColors] themes])
+        //    if([color objectForKey:@"title"])
+
+        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"ice"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"gray" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"gray"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"stone" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"stone"])
             [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
-        }
+        
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self updateColorsProgramWide];
         [tableView reloadData];

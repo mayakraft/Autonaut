@@ -19,4 +19,5 @@
 @property (nonatomic, strong) UIImageView *nonrandomAutomataView;
 
 -(void) setNewRule;
+-(void) updateColors;
 @end

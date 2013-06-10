@@ -79,6 +79,20 @@
         cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
     [[animatedCells objectAtIndex:[cellNumber integerValue]] performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:flipTime*.48];
 }
+-(void)updateColors
+{
+    for(int i = 0; i < animatedCells.count; i++)
+    {
+        if([[automataArray objectAtIndex:i] boolValue])
+            [[animatedCells objectAtIndex:i] setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+//            cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+        else
+            [[animatedCells objectAtIndex:i] setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+//            cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
+//        [[animatedCells objectAtIndex:i] performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:flipTime*.48];
+
+    }
+}
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
     if([animationID respondsToSelector:@selector(integerValue)])
     {

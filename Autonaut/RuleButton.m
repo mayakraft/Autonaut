@@ -52,7 +52,7 @@
 
 -(void) updateStateAnimated:(NSNumber*)animated
 {
-    if(!animated){
+    if(![animated boolValue]){
         bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
         [bottom setUserInteractionEnabled:NO];
         if(state) [bottom setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
@@ -84,7 +84,7 @@
         [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
         [UIView commitAnimations];
         [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.24*.48];
-        [bottom performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.25];
+//        [bottom performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.25];
     }
 }
 

@@ -21,5 +21,6 @@
 @property (nonatomic) BOOL state;
 
 -(void) setState:(BOOL)s animated:(BOOL)animated;
+-(void) updateStateAnimated:(NSNumber*)animated;
 
 @end

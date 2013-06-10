@@ -31,6 +31,7 @@
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5610637175F0F2A00D25034 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5610636175F0F2A00D25034 /* SettingsView.m */; };
 		D588CBCB1760A89100A768ED /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = D588CBCA1760A89100A768ED /* Colors.m */; };
+		D588CC171766383D00A768ED /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = D588CC161766383D00A768ED /* touch.wav */; };
 		D5954476175AF7950074188E /* blackfuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954475175AF7950074188E /* blackfuzz.png */; };
 		D5954478175AF79D0074188E /* whitefuzz.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954477175AF79D0074188E /* whitefuzz.png */; };
 		D595447A175B1AD80074188E /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = D5954479175B1AD70074188E /* icon114.png */; };
@@ -90,6 +91,7 @@
 		D5610636175F0F2A00D25034 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsView.m; sourceTree = "<group>"; };
 		D588CBC91760A89100A768ED /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		D588CBCA1760A89100A768ED /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
+		D588CC161766383D00A768ED /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
 		D5954475175AF7950074188E /* blackfuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackfuzz.png; sourceTree = "<group>"; };
 		D5954477175AF79D0074188E /* whitefuzz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitefuzz.png; sourceTree = "<group>"; };
 		D5954479175B1AD70074188E /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		D527CF7A172474B600F698D0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D588CC161766383D00A768ED /* touch.wav */,
 				D5954475175AF7950074188E /* blackfuzz.png */,
 				D5954477175AF79D0074188E /* whitefuzz.png */,
 				D5BC7497174EDDE50039F6FA /* sweep.mp3 */,
@@ -322,6 +325,7 @@
 				D595447C175B1ADA0074188E /* icon57.png in Resources */,
 				D595447E175B1ADF0074188E /* icon144.png in Resources */,
 				D5954480175B1AE10074188E /* icon72.png in Resources */,
+				D588CC171766383D00A768ED /* touch.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

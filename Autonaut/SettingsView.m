@@ -8,6 +8,7 @@
 
 #import "SettingsView.h"
 #import "Cell.h"
+#import "Colors.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -67,7 +68,7 @@
     }
     else if (indexPath.section == 2){
         [[cell textLabel] setText:@"theme"];
-        [[cell detailTextLabel] setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]];
+        [[cell detailTextLabel] setText:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"title"]];
     }
     else if (indexPath.section == 3){
         [[cell textLabel] setText:@"okay"];

@@ -37,6 +37,7 @@
     BOOL random; // for segue transition
     SettingsView *settings;
     AVAudioPlayer *touchSound;
+    UIView *loadingView;
 }
 @end
 
@@ -50,11 +51,9 @@
                   [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/touch.wav", [[NSBundle mainBundle] resourcePath]]]
                                                         error:nil];
 
-    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor blackColor], @"off",
-                         [UIColor whiteColor], @"on",
+    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0], @"off",
+                         [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], @"on",
                          [UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0], @"complement",
-                         @"FFFFFF", @"on_web",
-                         @"000000", @"off_web",
                          @"b&w", @"title", nil];
     NSDictionary *ice = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.26 green:0.27 blue:0.35 alpha:1.0], @"off",
                          [UIColor colorWithRed:0.98 green:0.99 blue:1.0 alpha:1.0], @"on",
@@ -130,6 +129,17 @@
     [self.view addGestureRecognizer:tapGesture];
     [tapGesture setEnabled:NO];
     generator = nil;
+    
+    loadingView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [loadingView setBackgroundColor:[UIColor blackColor]];
+    [loadingView setAlpha:0.0];
+    [loadingView setUserInteractionEnabled:NO];
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [activityIndicator setFrame:CGRectMake(0, 0, 36, 36)];
+    [activityIndicator setCenter:[loadingView center]];
+    [loadingView addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    [self.view addSubview:loadingView];
 }
 
 -(void) updateColorsProgramWide
@@ -152,6 +162,7 @@
     
     if ([sourceViewController isKindOfClass:[ScrollViewController class]])
     {
+        [loadingView setAlpha:0.0];
         NSLog(@"Coming from ScrollView!");
     }
 //    else if ([sourceViewController isKindOfClass:[GreenViewController class]])
@@ -323,7 +334,6 @@
     [settings setCenter:CGPointMake(self.view.center.x, self.view.center.y+self.view.bounds.size.height)];
     [UIView commitAnimations];
 }
-
 -(void)tapListener:(UITapGestureRecognizer*)sender
 {
     NSLog(@"Tap Listener: %f : %f",[sender locationInView:sender.view].x,
@@ -341,16 +351,25 @@
     }
     if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
         //[touchSound play];
+        [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
         NSLog(@"Generator");
         random = TRUE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
         //[touchSound play];
+        [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
         NSLog(@"Generator");
         random = FALSE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
+}
+-(void)fadeInLoadingView
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.33];
+    [loadingView setAlpha:0.66];
+    [UIView commitAnimations];
 }
 
 // keyPath is @"transform.rotation.z"
@@ -452,10 +471,15 @@
         }
     }
     else if (indexPath.section == 1){
-        if([cell.detailTextLabel.text isEqualToString:@"white"])
+        if([cell.detailTextLabel.text isEqualToString:@"white"]){
             [cell.detailTextLabel setText:@"smooth"];
-        else
+            [[NSUserDefaults standardUserDefaults] setObject:@"smooth" forKey:@"noise"];
+        }
+        else{
             [cell.detailTextLabel setText:@"white"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"white" forKey:@"noise"];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if (indexPath.section == 2){
         //for(NSDictionary *color in [[Colors sharedColors] themes])

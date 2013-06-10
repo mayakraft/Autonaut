@@ -14,8 +14,8 @@
     UIView *center;
     UIView *right;
     UIView *bottom;
-    UIImageView *blackfuzz;
-    UIImageView *whitefuzz;
+//    UIImageView *blackfuzz;
+//    UIImageView *whitefuzz;
 }
 @property NSInteger ruleNumber;
 @property (nonatomic) BOOL state;

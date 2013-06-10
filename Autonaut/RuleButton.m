@@ -29,15 +29,16 @@
         [right setUserInteractionEnabled:NO];
         [center setUserInteractionEnabled:NO];
         [left setUserInteractionEnabled:NO];
-        blackfuzz = [[UIImageView alloc] initWithFrame:CGRectMake(-.5*(frame.size.width*1.208-frame.size.width),-.5*(frame.size.width*1.208/1.353125-frame.size.height),frame.size.width*1.208,frame.size.width*1.208/1.353125)];
-        whitefuzz = [[UIImageView alloc] initWithFrame:blackfuzz.frame];
-        [blackfuzz setImage:[UIImage imageNamed:@"blackfuzz.png"]];
-        [whitefuzz setImage:[UIImage imageNamed:@"whitefuzz.png"]];
-        [self addSubview:blackfuzz];
-        [self sendSubviewToBack:blackfuzz];
-        [self addSubview:whitefuzz];
-        [self sendSubviewToBack:whitefuzz];
-        [whitefuzz setAlpha:0.0];
+//        blackfuzz = [[UIImageView alloc] initWithFrame:CGRectMake(-.5*(frame.size.width*1.208-frame.size.width),-.5*(frame.size.width*1.208/1.353125-frame.size.height),frame.size.width*1.208,frame.size.width*1.208/1.353125)];
+//        whitefuzz = [[UIImageView alloc] initWithFrame:blackfuzz.frame];
+//        [blackfuzz setImage:[UIImage imageNamed:@"blackfuzz.png"]];
+//        [whitefuzz setImage:[UIImage imageNamed:@"whitefuzz.png"]];
+//        [self addSubview:blackfuzz];
+//        [self sendSubviewToBack:blackfuzz];
+//        [self addSubview:whitefuzz];
+//        [self sendSubviewToBack:whitefuzz];
+//        [whitefuzz setAlpha:0.0];
+
 //        bg.exclusiveTouch = NO;
         state = 0;
     }
@@ -47,7 +48,7 @@
 -(void) setState:(BOOL)s animated:(BOOL)animated{
     state = s;
     [self updateStateAnimated:[NSNumber numberWithBool:animated]];
-    [self performSelectorInBackground:@selector(updateFuzzStateAnimated:) withObject:[NSNumber numberWithBool:animated]];
+//    [self performSelectorInBackground:@selector(updateFuzzStateAnimated:) withObject:[NSNumber numberWithBool:animated]];
 }
 
 -(void) updateStateAnimated:(NSNumber*)animated
@@ -88,24 +89,24 @@
     }
 }
 
--(void) updateFuzzStateAnimated:(NSNumber*)animated
-{
-    if([animated boolValue]){
-        [UIView beginAnimations:@"alternateFuzz" context:nil];
-        [UIView setAnimationDuration:0.25];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    }
-    if(state){
-        [whitefuzz setAlpha:1.0];
-        [blackfuzz setAlpha:0.0];
-    }
-    else{
-        [whitefuzz setAlpha:0.0];
-        [blackfuzz setAlpha:1.0];
-    }
-    if([animated boolValue])
-        [UIView commitAnimations];
-}
+//-(void) updateFuzzStateAnimated:(NSNumber*)animated
+//{
+//    if([animated boolValue]){
+//        [UIView beginAnimations:@"alternateFuzz" context:nil];
+//        [UIView setAnimationDuration:0.25];
+//        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+//    }
+//    if(state){
+//        [whitefuzz setAlpha:1.0];
+//        [blackfuzz setAlpha:0.0];
+//    }
+//    else{
+//        [whitefuzz setAlpha:0.0];
+//        [blackfuzz setAlpha:1.0];
+//    }
+//    if([animated boolValue])
+//        [UIView commitAnimations];
+//}
 
 -(void)layoutSubviews
 {

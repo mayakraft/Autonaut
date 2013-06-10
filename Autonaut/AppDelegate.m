@@ -27,6 +27,10 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] == nil){
+        [[NSUserDefaults standardUserDefaults] setObject:@"white" forKey:@"noise"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     return YES;
 }
 							

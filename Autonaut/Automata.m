@@ -103,6 +103,8 @@
 
 -(UIImage*) GIFImageFromDataWithLightColor:(UIColor*)light DarkColor:(UIColor*)dark Scale:(CGFloat)scale
 {
+    NSLog(@"LIGHT: %@",light);
+    NSLog(@"DARK: %@",dark);
     NSLog(@"GIF begins");
     const float *lights = CGColorGetComponents([light CGColor]);
     const float *darks = CGColorGetComponents([dark CGColor]);

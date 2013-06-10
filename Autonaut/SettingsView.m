@@ -64,7 +64,10 @@
     }
     else if (indexPath.section == 1){
         [[cell textLabel] setText:@"noise"];
-        [[cell detailTextLabel] setText:@"white"];
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"white"])
+            [[cell detailTextLabel] setText:@"white"];
+        else
+            [[cell detailTextLabel] setText:@"smooth"];
     }
     else if (indexPath.section == 2){
         [[cell textLabel] setText:@"theme"];

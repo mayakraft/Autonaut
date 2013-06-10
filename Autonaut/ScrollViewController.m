@@ -15,7 +15,9 @@
 {
     UIScrollView *scrollView;
     UIImageView *automataView;
-    UITapGestureRecognizer *tapGesture;
+    UITapGestureRecognizer *tap1Gesture;
+    UITapGestureRecognizer *tap2Gesture;
+    UIView *menu;
 }
 @end
 
@@ -54,20 +56,79 @@
     [scrollView setDelegate:self];
     [scrollView flashScrollIndicators];
     [scrollView setScrollEnabled:YES];
-    
-    tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapListener:)];
-    [tapGesture setNumberOfTapsRequired:2];
-    [scrollView addGestureRecognizer:tapGesture];
-
+    [scrollView setContentSize:CGSizeMake(automataView.bounds.size.width, automataView.bounds.size.height)];
     [self.view addSubview:scrollView];
+    
+    tap1Gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap1Listener:)];
+    [tap1Gesture setNumberOfTapsRequired:1];
+    [scrollView addGestureRecognizer:tap1Gesture];
+
+    tap2Gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap2Listener:)];
+    [tap2Gesture setNumberOfTapsRequired:2];
+    [scrollView addGestureRecognizer:tap2Gesture];
+    
+    [tap1Gesture requireGestureRecognizerToFail:tap2Gesture];
+
+    menu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    [menu setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"menu.png"]]];//[UIColor colorWithWhite:0.0 alpha:0.66]];
+    [menu setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height-22)];
+    [self.view addSubview:menu];
+    UIButton *export = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 45, 35)];
+    [export setBackgroundImage:[UIImage imageNamed:@"export"] forState:UIControlStateNormal];
+    [export.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [export.layer setBorderWidth:1.0];
+    [export.layer setCornerRadius:4.0];
+    [export.layer setMasksToBounds:YES];
+    [export setCenter:CGPointMake(menu.bounds.size.width/2.0, menu.bounds.size.height/2.0)];
+    [export addTarget:self action:@selector(exportPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [menu addSubview:export];
 	// Do any additional setup after loading the view.
 }
--(void)tapListener:(UITapGestureRecognizer*)sender{
+-(void)viewDidAppear:(BOOL)animated{
+    [self toggleMenu];
+}
+-(void)exportPressed:(id)sender
+{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [savingText setHidden:NO];
+//        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImageWriteToSavedPhotosAlbum(automataView.image, nil, nil, nil);
+//            [self flashScreen];
+//        });
+//    });
+}
+-(void)tap2Listener:(UITapGestureRecognizer*)sender{
     [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
+}
+-(void)tap1Listener:(UITapGestureRecognizer*)sender{
+    [self toggleMenu];
+}
+-(void)toggleMenu{
+    NSLog(@"%f",menu.center.y);
+    if(menu.center.y == self.view.bounds.size.height-22){
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.16];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [menu setCenter:CGPointMake(menu.center.x, self.view.bounds.size.height+22)];
+        [UIView commitAnimations];
+    }
+    else if(menu.center.y == self.view.bounds.size.height+22){
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.16];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [menu setCenter:CGPointMake(menu.center.x, self.view.bounds.size.height-22)];
+        [UIView commitAnimations];
+    }
 }
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return automataView;
 }
+//-(void)viewDidLayoutSubviews{
+//    
+//}
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -55,7 +55,6 @@
             ruleNumberCopy -= powerer;
         }
     }
-
     cells = malloc(sizeof(bool)*width*height);
     // Initial conditions
     for(int i = 0; i < width; i++){
@@ -66,6 +65,33 @@
         else{
             cells[i] = false;
             if(i == ((NSInteger)((width)/2))) cells[i] = true;
+        }
+    }
+    if(randomStart && [[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"smooth"])
+    {
+        NSLog(@"Smooth brotha");
+        float smooth[width];
+        int before, after, afteragain, beforeagain, afterall;
+        for(int i = 0; i < width; i++)
+        {
+            beforeagain = i-2;
+            before = i-1;
+            after = i+1;
+            afteragain = i+2;
+            afterall = i+3;
+            if(beforeagain < 0) beforeagain = 0;
+            if(before < 0) before = 0;
+            if(after >= width) after = width-1;
+            if(afteragain >= width) afteragain = width-1;
+            if(afterall >= width) afterall = width-1;
+            smooth[i] = cells[i]*2/7.0 + cells[beforeagain]/7.0 + cells[before]/7.0 + cells[after]/7.0 + cells[afteragain]/7.0 + cells[afterall]/7.0;
+        }
+        for(int i = 0; i < width; i++)
+        {
+            if(smooth[i] > .5)
+                cells[i] = true;
+            else
+                cells[i] = false;
         }
     }
     //Elementary Cellular Automata Computation

@@ -30,6 +30,7 @@
 		D527CFB617249B2400F698D0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D527CFB517249B2400F698D0 /* QuartzCore.framework */; };
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5610637175F0F2A00D25034 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5610636175F0F2A00D25034 /* SettingsView.m */; };
+		D565FA3417676843007B5536 /* SelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D565FA3317676843007B5536 /* SelectionView.m */; };
 		D588CBCB1760A89100A768ED /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = D588CBCA1760A89100A768ED /* Colors.m */; };
 		D588CC171766383D00A768ED /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = D588CC161766383D00A768ED /* touch.wav */; };
 		D588CC1A176673B600A768ED /* export@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D588CC18176673B500A768ED /* export@2x.png */; };
@@ -93,6 +94,8 @@
 		D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedBoardView.m; sourceTree = "<group>"; };
 		D5610635175F0F2A00D25034 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsView.h; sourceTree = "<group>"; };
 		D5610636175F0F2A00D25034 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsView.m; sourceTree = "<group>"; };
+		D565FA3217676843007B5536 /* SelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionView.h; sourceTree = "<group>"; };
+		D565FA3317676843007B5536 /* SelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionView.m; sourceTree = "<group>"; };
 		D588CBC91760A89100A768ED /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		D588CBCA1760A89100A768ED /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
 		D588CC161766383D00A768ED /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
@@ -191,12 +194,14 @@
 				D5B2D9F4175DABF1009F7D31 /* Cell.m */,
 				D588CBC91760A89100A768ED /* Colors.h */,
 				D588CBCA1760A89100A768ED /* Colors.m */,
-				D5610635175F0F2A00D25034 /* SettingsView.h */,
-				D5610636175F0F2A00D25034 /* SettingsView.m */,
 				D527CF91172474B600F698D0 /* ViewController.h */,
 				D527CF92172474B600F698D0 /* ViewController.m */,
+				D5610635175F0F2A00D25034 /* SettingsView.h */,
+				D5610636175F0F2A00D25034 /* SettingsView.m */,
 				D5D2E71C173ECE460051D5DF /* Generator.h */,
 				D5D2E71D173ECE460051D5DF /* Generator.m */,
+				D565FA3217676843007B5536 /* SelectionView.h */,
+				D565FA3317676843007B5536 /* SelectionView.m */,
 				D5A3CD151740251800574630 /* FlippingAutomataView.h */,
 				D5A3CD161740251800574630 /* FlippingAutomataView.m */,
 				D5238FA5175C18E100A25AE7 /* ScrollViewController.h */,
@@ -388,6 +393,7 @@
 				D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */,
 				D5610637175F0F2A00D25034 /* SettingsView.m in Sources */,
 				D588CBCB1760A89100A768ED /* Colors.m in Sources */,
+				D565FA3417676843007B5536 /* SelectionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

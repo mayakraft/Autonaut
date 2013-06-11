@@ -17,6 +17,7 @@
 #import "ScrollViewController.h"
 #import "SettingsView.h"
 #import "Colors.h"
+#import "SelectionView.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -140,6 +141,25 @@
     [loadingView addSubview:activityIndicator];
     [activityIndicator startAnimating];
     [self.view addSubview:loadingView];
+    
+//    UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+//    [selectionButton setBackgroundColor:[UIColor orangeColor]];
+//    [selectionButton addTarget:self action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:selectionButton];
+
+}
+
+-(void)goSelection:(id)sender
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    [vc setModalTransitionStyle:UIModalTransitionStylePartialCurl];
+    [vc setView:[[SelectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)]];
+    // do any setup you need for myNewVC
+    
+    [self presentViewController:vc animated:YES completion:nil];
+
+//    [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
 }
 
 -(void) updateColorsProgramWide
@@ -222,7 +242,7 @@
     flippingAutomata.autoresizesSubviews = YES;
     generator.autoresizesSubviews = YES;
     generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
-
+    [generator setDelegate:self];
     [self.view addSubview:generator];
     [self.view sendSubviewToBack:generator];
 }

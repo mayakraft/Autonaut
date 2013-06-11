@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "Generator.h"
 
-@interface ViewController : UIViewController <UITableViewDelegate>
+@interface ViewController : UIViewController <UITableViewDelegate, GeneratorDelegate>
 - (IBAction) unwindToViewController: (UIStoryboardSegue*) segue;
 
 @end

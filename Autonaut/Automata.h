@@ -18,5 +18,5 @@
              width:(NSInteger)visibleWidth
             height:(NSInteger)height;
 -(NSArray*) arrayFromData;
--(UIImage*) GIFImageFromDataWithLightColor:(UIColor*)light DarkColor:(UIColor*)dark Scale:(CGFloat)scale;
+-(UIImage*) ImageWithColorLight:(UIColor*)light Dark:(UIColor*)dark Scale:(CGFloat)scale;
 @end

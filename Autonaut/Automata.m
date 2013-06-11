@@ -36,7 +36,7 @@
                     width:(NSInteger)widthInput
                    height:(NSInteger)heightInput
 {
-    NSLog(@"InitBegins");
+//    NSLog(@"InitBegins");
     if(ruleNumber > 255 || ruleNumber < 0)
         return nil; //rule number must be between 0 and 255
 
@@ -109,10 +109,10 @@
                 cells[i+width*j] = true;
             else cells[i+width*j] = false;
         }
-        if(j == ((int)(height/2.0)))
-            NSLog(@"Halfway there");
+//        if(j == ((int)(height/2.0)))
+//            NSLog(@"Halfway there");
     }
-    NSLog(@"Done!");
+//    NSLog(@"Done!");
     return self;
 }
 
@@ -127,16 +127,16 @@
     return mutableCells;
 }
 
--(UIImage*) GIFImageFromDataWithLightColor:(UIColor*)light DarkColor:(UIColor*)dark Scale:(CGFloat)scale
+-(UIImage*) ImageWithColorLight:(UIColor*)light Dark:(UIColor*)dark Scale:(CGFloat)scale
 {
-    NSLog(@"LIGHT: %@",light);
-    NSLog(@"DARK: %@",dark);
-    NSLog(@"GIF begins");
+//    NSLog(@"LIGHT: %@",light);
+//    NSLog(@"DARK: %@",dark);
+//    NSLog(@"GIF begins");
     const float *lights = CGColorGetComponents([light CGColor]);
     const float *darks = CGColorGetComponents([dark CGColor]);
-    NSLog(@" LIGHT    DARK");
-    for(int i = 0; i < 3; i++)
-        NSLog(@"%f %f", lights[i], darks[i]);
+//    NSLog(@" LIGHT    DARK");
+//    for(int i = 0; i < 3; i++)
+//        NSLog(@"%f %f", lights[i], darks[i]);
     
     unsigned char light_r = lights[0]*255.0;
     unsigned char light_g = lights[1]*255.0;
@@ -188,10 +188,10 @@
             count++;
             if(count == 96) count = 0;
         }
-        if(j == ((int)(visibleHeight/2.0)))
-            NSLog(@"Halfway there");
+//        if(j == ((int)(visibleHeight/2.0)))
+//            NSLog(@"Halfway there");
     }
-    NSLog(@"GIF done");
+//    NSLog(@"GIF done");
     [imageData appendBytes:footer length:4];
 //    return [UIImage imageWithData:imageData];
     return [UIImage imageWithData:imageData scale:scale];

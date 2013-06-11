@@ -11,11 +11,13 @@
 #import "Automata.h"
 #import "RuleButton.h"
 #import "Colors.h"
+#import "SelectionView.h"
 
 @implementation Generator
 @synthesize rule;
 @synthesize randomAutomataView;
 @synthesize nonrandomAutomataView;
+@synthesize delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -48,9 +50,25 @@
             [buttonsMutable addObject:button];
         }
         buttons = buttonsMutable;
+        
+        UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+        [selectionButton setCenter:CGPointMake([[buttons objectAtIndex:7] center].x, [[buttons objectAtIndex:7] center].y+80)];
+        [selectionButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+        [selectionButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+        [selectionButton.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
+        [selectionButton.layer setBorderWidth:4.0];
+        [selectionButton.layer setCornerRadius:22.0];
+        [selectionButton.layer setMasksToBounds:YES];
+        [selectionButton setTitle:@"120" forState:UIControlStateNormal];
+        [[selectionButton titleLabel] setFont:[UIFont boldSystemFontOfSize:28]];
+        
+        [selectionButton addTarget:delegate action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self addSubview:selectionButton];
     }
     return self;
 }
+
 -(void) updateColors{
     for(RuleButton *button in buttons)
         [button updateStateAnimated:@0];
@@ -64,15 +82,15 @@
     NSLog(@"UpdatingImageViews");
     Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
     randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
-    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithLightColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
-                                                                      DarkColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+    [randomAutomataView setImage:[randomAutomata ImageWithColorLight:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
+                                                                      Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
                                                                           Scale:retina]];
 //    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
     
     Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
     nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
-    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithLightColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
-                                                                            DarkColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+    [nonrandomAutomataView setImage:[nonrandomAutomata ImageWithColorLight:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
+                                                                            Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
                                                                                 Scale:retina]];
 //    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
 

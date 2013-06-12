@@ -39,10 +39,10 @@
         nonrandomAutomataView = [[UIImageView alloc] initWithFrame:CGRectMake(self.frame.size.width*.33, self.frame.size.height-(self.frame.size.height-self.frame.size.width*1.2)*.33-self.frame.size.width*.6, self.frame.size.width*.6, self.frame.size.width*.6)];
         [self addSubview:nonrandomAutomataView];
         
-        NSInteger ruleButtonHeight = frame.size.height/12;
+        NSInteger ruleButtonHeight = frame.size.height/13.0;
         NSMutableArray *buttonsMutable = [[NSMutableArray alloc] init];
         for(int i = 0; i < 8; i++){
-            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(self.frame.size.width*.15-ruleButtonHeight*3/4.0, ruleButtonHeight*1.82+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
+            RuleButton *button = [[RuleButton alloc] initWithFrame:CGRectMake(self.frame.size.width*.166-ruleButtonHeight*3/4.0, ruleButtonHeight*2.0+i*(ruleButtonHeight*1.2), ruleButtonHeight*3/2.0, ruleButtonHeight)];
             [button setRuleNumber:7-i];
             [button setState:0];
             [button addTarget:self action:@selector(ruleButtonPress:) forControlEvents:UIControlEventTouchUpInside];
@@ -51,16 +51,16 @@
         }
         buttons = buttonsMutable;
         
-        UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-        [selectionButton setCenter:CGPointMake([[buttons objectAtIndex:7] center].x, [[buttons objectAtIndex:7] center].y+80)];
+        UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ruleButtonHeight*3/2.0, ruleButtonHeight)];
+        [selectionButton setCenter:CGPointMake(self.frame.size.width*.166, ruleButtonHeight*2.0+8.75*(ruleButtonHeight*1.2))];
         [selectionButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
         [selectionButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
         [selectionButton.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
         [selectionButton.layer setBorderWidth:4.0];
-        [selectionButton.layer setCornerRadius:22.0];
+        [selectionButton.layer setCornerRadius:ruleButtonHeight*.5];
         [selectionButton.layer setMasksToBounds:YES];
         [selectionButton setTitle:@"120" forState:UIControlStateNormal];
-        [[selectionButton titleLabel] setFont:[UIFont boldSystemFontOfSize:28]];
+        [[selectionButton titleLabel] setFont:[UIFont boldSystemFontOfSize:ruleButtonHeight*.66]];
         
         [selectionButton addTarget:delegate action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
         

@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingsView : UITableView <UITableViewDataSource, UITableViewDelegate>
-
+{
+    NSArray *_products;
+    NSNumberFormatter * _priceFormatter;
+}
 @end

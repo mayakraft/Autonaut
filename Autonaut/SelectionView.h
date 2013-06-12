@@ -10,7 +10,9 @@
 
 @interface SelectionView : UIScrollView
 {
-    NSArray *views;
+    NSArray *viewsSingle;
     NSArray *viewsRandom;
+    NSArray *interestingSingle;
+    NSArray *interestingRandom;
 }
 @end

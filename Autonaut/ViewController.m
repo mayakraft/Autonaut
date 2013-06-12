@@ -19,6 +19,10 @@
 #import "Colors.h"
 #import "SelectionView.h"
 
+#import <StoreKit/StoreKit.h>
+#import "AutonautIAP.h"
+#import "InAppPurchases.h"
+
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 #define INTERVAL .15f
@@ -39,6 +43,7 @@
     SettingsView *settings;
     AVAudioPlayer *touchSound;
     UIView *loadingView;
+    NSArray *_products;
 }
 @end
 
@@ -54,7 +59,7 @@
 
     NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0], @"off",
                          [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], @"on",
-                         [UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0], @"complement",
+                         [UIColor colorWithRed:186/255.0 green:179/255.0 blue:167/255.0 alpha:1.0], @"complement",
                          @"b&w", @"title", nil];
     NSDictionary *ice = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.26 green:0.27 blue:0.35 alpha:1.0], @"off",
                          [UIColor colorWithRed:0.98 green:0.99 blue:1.0 alpha:1.0], @"on",
@@ -142,6 +147,16 @@
     [activityIndicator startAnimating];
     [self.view addSubview:loadingView];
     
+//    _products = nil;
+//    [[AutonautIAP sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
+//        if (success) {
+//            NSLog(@"Success! in view controller");
+//           _products = products;
+//        }
+//        NSLog(@"%@",products);
+//    }];
+
+    
 //    UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    [selectionButton setBackgroundColor:[UIColor orangeColor]];
 //    [selectionButton addTarget:self action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
@@ -201,9 +216,12 @@
     }
 }
 -(void) viewWillAppear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 -(void)buttonFlipDown:(UIButton*)button
 {
     [[button layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
@@ -320,17 +338,6 @@
     generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
     [UIView commitAnimations];
 }
--(void)tapPressed:(UITapGestureRecognizer*)sender
-{
-    [touchSound play];
-    NSLog(@"Tapping");
-    [self animateCheckerboardExpandAndReposition];
-    generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
-    playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
-    [flippingAutomata setStopped:@0];
-    [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
-}
-
 -(void) animateSettingsTableIn
 {
     [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
@@ -434,8 +441,24 @@
 //	NSLog(@"AnimationDidStop");
 //}
 
-#pragma mark - Table view delegate
+#pragma mark - In App Purchases
 
+- (void)productPurchased:(NSNotification *)notification {
+    
+    NSString * productIdentifier = notification.object;
+    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
+        if ([product.productIdentifier isEqualToString:productIdentifier]) {
+            [settings reloadData];
+            [[NSUserDefaults standardUserDefaults] setObject:@"purchased" forKey:@"IAP"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            *stop = YES;
+        }
+    }];
+    
+}
+
+#pragma mark - Table view delegate
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(IS_IPAD())
         return 100;
@@ -523,6 +546,15 @@
     else if (indexPath.section == 3)
     {
         [self animateSettingsTableOut];
+    }
+    else if (indexPath.section == 4)
+    {
+        SKProduct *product = _products[0];
+        
+        NSLog(@"Buying %@...", product.productIdentifier);
+        [[AutonautIAP sharedInstance] buyProduct:product];
+        
+        [[AutonautIAP sharedInstance] restoreCompletedTransactions];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

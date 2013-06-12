@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AutonautIAP.h"
 
 @implementation AppDelegate
 
@@ -14,6 +15,8 @@
 {
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    [AutonautIAP sharedInstance];
     
 //    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
 //       ([UIScreen mainScreen].scale == 2.0)) 

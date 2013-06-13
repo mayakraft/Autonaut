@@ -164,6 +164,8 @@
 }
 
 -(void)goSelection:(id)sender{
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        [touchSound play];
     [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
 }
 
@@ -187,18 +189,17 @@
     if ([sourceViewController isKindOfClass:[ScrollViewController class]])
     {
         [loadingView setAlpha:0.0];
-        NSLog(@"Coming from ScrollView!");
+        NSLog(@"Unwinding from ScrollView!");
     }
     else if ([sourceViewController isKindOfClass:[SelectionViewController class]])
     {
-        NSLog(@"Coming from SelectionView! RULE: %@",[(SelectionViewController*)sourceViewController ruleSelection]);
+        NSLog(@"Unwinding from SelectionView! RULE: %@",[(SelectionViewController*)sourceViewController ruleSelection]);
         if([(SelectionViewController*)sourceViewController ruleSelection] != nil){
             [generator setRule:[(SelectionViewController*)sourceViewController ruleSelection]];
             [generator updateImageViews];
             [generator updateRuleButtonsAnimated:@1];
         }
     }
-    NSLog(@"Unwind to View Controller");
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -233,7 +234,8 @@
     
 }
 -(IBAction)generatorButtonPress:(id)sender{
-    [touchSound play];
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        [touchSound play];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
@@ -241,25 +243,23 @@
     NSLog(@"%f : %f : %f : %f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
     if(generator == nil){
         generator = [[Generator alloc] initWithFrame:CGRectMake( self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"rule"]){
-            NSLog(@"There is a RULE");
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"rule"])
             [generator setRule:[[NSUserDefaults standardUserDefaults] objectForKey:@"rule"]];
-        }
         else
             [generator setRule:@30];
-            NSLog(@"no rule");
     }
     [flippingAutomata setStopped:@1];
     [generator setNewRule];
     flippingAutomata.autoresizesSubviews = YES;
     generator.autoresizesSubviews = YES;
-    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
+    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.166, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
     [generator setDelegate:self];
     [self.view addSubview:generator];
     [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
-    [touchSound play];
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        [touchSound play];
     settings = [[SettingsView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [settings setDataSource:settings];
     [settings setDelegate:self];
@@ -279,7 +279,6 @@
     
     if(animationID.length > 14)
         if([[animationID substringToIndex:15] isEqualToString:@"animationShrink"]){
-            NSLog(@"Settings things hidden");
             if([[animationID substringFromIndex:15] isEqualToString:@"generator"])
                 [generatorButton setHidden:YES];
             else if ([[animationID substringFromIndex:15] isEqualToString:@"playground"])
@@ -317,7 +316,8 @@
     [UIView beginAnimations:@"checkerboard" context:nil];
     //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.66];                                                //-111
-    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-self.view.frame.size.width*.5+self.view.frame.size.width*.15, -.5*self.view.frame.size.height+self.view.frame.size.height*0.075), 0.075f, 0.075f);
+//    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-self.view.frame.size.width*.5+self.view.frame.size.width*.15, -.5*self.view.frame.size.height+self.view.frame.size.height*0.075), 0.075f, 0.075f);
+    flippingAutomata.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(-self.view.frame.size.width*.5+self.view.frame.size.width*.166, -.5*self.view.frame.size.height+self.view.frame.size.height*0.075), 0.075f, 0.075f);
     generator.transform = CGAffineTransformScale(CGAffineTransformMakeTranslation(0, 0), 1.0f, 1.0f);
     [UIView commitAnimations];
 }
@@ -329,7 +329,7 @@
     //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.66];                                                      //-205
     flippingAutomata.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(1.0f, 1.0f), 0, 0);
-    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.15, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
+    generator.transform = CGAffineTransformTranslate(CGAffineTransformMakeScale(13.333f, 13.333f),self.view.frame.size.width*.5-self.view.frame.size.width*.166, .5*self.view.frame.size.height-self.view.frame.size.height*0.075);
     [UIView commitAnimations];
 }
 -(void) animateSettingsTableIn
@@ -357,12 +357,10 @@
 }
 -(void)tapListener:(UITapGestureRecognizer*)sender
 {
-    NSLog(@"Tap Listener: %f : %f",[sender locationInView:sender.view].x,
-          [sender locationInView:sender.view].y);
     if(CGRectContainsPoint(flippingAutomata.frame, [sender locationInView:[sender view]]))
     {
-        [touchSound play];
-        NSLog(@"Tapping");
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+            [touchSound play];
         [self animateCheckerboardExpandAndReposition];
         generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
         playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
@@ -373,14 +371,12 @@
     if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
         //[touchSound play];
         [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
-        NSLog(@"Generator");
         random = TRUE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
         //[touchSound play];
         [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
-        NSLog(@"Generator");
         random = FALSE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
@@ -393,67 +389,25 @@
     [UIView commitAnimations];
 }
 
-// keyPath is @"transform.rotation.z"
-//- (CAAnimation*)spinAnimationForKeyPath:(NSString*)keyPath
-//{
-//    CAKeyframeAnimation * animation;
-//    animation = [CAKeyframeAnimation animationWithKeyPath:keyPath];
-//    animation.duration = FLIP_INTERVAL;
-//    animation.delegate = self;
-//    animation.removedOnCompletion = NO;
-//    animation.fillMode = kCAFillModeForwards;
-//    
-//    // Create arrays for values and associated timings.
-//    float degrees = M_PI;
-//    float delta = degrees;
-//    NSMutableArray *values = [NSMutableArray array];
-//    NSMutableArray *timings = [NSMutableArray array];
-//    NSMutableArray *keytimes = [NSMutableArray array];
-//    
-//    NSLog(@"Degrees: %.2f  Delta: %.2f",degrees*180/M_PI, delta*180/M_PI);
-//    
-//    [values addObject:[NSNumber numberWithFloat:0]];
-//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-//    [keytimes addObject:[NSNumber numberWithFloat:0.0]];
-//    
-//    [values addObject:[NSNumber numberWithFloat:degrees*1.10]];
-//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-//    [keytimes addObject:[NSNumber numberWithFloat:0.80]];
-//    
-//    [values addObject:[NSNumber numberWithFloat:degrees]];
-//    [timings addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-//    [keytimes addObject:[NSNumber numberWithFloat:1.0]];
-//    
-//    // Reduce the size of the bounce by the lid's tension
-//    
-//    animation.values = values;
-//    animation.timingFunctions = timings;
-//    animation.keyTimes = keytimes;
-//    return animation;
-//}
-//-(void)animationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context{
-//	NSLog(@"AnimationDidStop");
-//}
-
 #pragma mark - In App Purchases
-
-- (void)productPurchased:(NSNotification *)notification {
-    
-    NSString * productIdentifier = notification.object;
-    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
-        if ([product.productIdentifier isEqualToString:productIdentifier]) {
-            [settings reloadData];
-            //supposed to be this below
-            //
-            //BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
-            [[NSUserDefaults standardUserDefaults] setObject:@"purchased" forKey:@"IAP"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            *stop = YES;
-        }
-    }];
-    
-}
+//
+//- (void)productPurchased:(NSNotification *)notification {
+//    
+//    NSString * productIdentifier = notification.object;
+//    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
+//        if ([product.productIdentifier isEqualToString:productIdentifier]) {
+//            [settings reloadData];
+//            //supposed to be this below
+//            //
+//            //BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
+//            [[NSUserDefaults standardUserDefaults] setObject:@"purchased" forKey:@"IAP"];
+//            [[NSUserDefaults standardUserDefaults] synchronize];
+////            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//            *stop = YES;
+//        }
+//    }];
+//    
+//}
 
 #pragma mark - Table view delegate
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -493,7 +447,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [touchSound play];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if(indexPath.section == 0){
         if([cell.detailTextLabel.text isEqualToString:@"no"]){
@@ -522,23 +475,28 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if (indexPath.section == 2){
-        //for(NSDictionary *color in [[Colors sharedColors] themes])
-        //    if([color objectForKey:@"title"])
-
-        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
-            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
-        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
-            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
-        else if([cell.detailTextLabel.text isEqualToString:@"ice"])
-            [[NSUserDefaults standardUserDefaults] setObject:@"gray" forKey:@"theme"];
-        else if([cell.detailTextLabel.text isEqualToString:@"gray"])
-            [[NSUserDefaults standardUserDefaults] setObject:@"stone" forKey:@"theme"];
-        else if([cell.detailTextLabel.text isEqualToString:@"stone"])
-            [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
-        
+        if([cell.detailTextLabel.text isEqualToString:@"off"]){
+            [cell.detailTextLabel setText:@"on"];
+            [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"sound"];
+        }
+        else{
+            [cell.detailTextLabel setText:@"off"];
+            [[NSUserDefaults standardUserDefaults] setObject:@0 forKey:@"sound"];
+        }
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self updateColorsProgramWide];
-        [tableView reloadData];
+//        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
+//        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
+//        else if([cell.detailTextLabel.text isEqualToString:@"ice"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"gray" forKey:@"theme"];
+//        else if([cell.detailTextLabel.text isEqualToString:@"gray"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"stone" forKey:@"theme"];
+//        else if([cell.detailTextLabel.text isEqualToString:@"stone"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        [self updateColorsProgramWide];
+//        [tableView reloadData];
     }
     else if (indexPath.section == 3)
     {
@@ -554,6 +512,8 @@
         [[AutonautIAP sharedInstance] restoreCompletedTransactions];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        [touchSound play];
     
     // Navigation logic may go here. Create and push another view controller.
     /*

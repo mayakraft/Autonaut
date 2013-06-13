@@ -20,7 +20,7 @@
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
-    [AutonautIAP sharedInstance];
+//    [AutonautIAP sharedInstance];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"Interesting" ofType:@"plist"];
     NSDictionary *interesting = [[NSDictionary alloc] initWithContentsOfFile:path];
@@ -28,9 +28,6 @@
     interestingSingle = [interesting objectForKey:@"single"];
     interestingRandom = [interesting objectForKey:@"random"];
     
-    NSLog(@"SINGLE::: %@",interestingSingle);
-    NSLog(@"RANDOM::: %@",interestingRandom);
-
 //    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
 //       ([UIScreen mainScreen].scale == 2.0)) 
 //        [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
@@ -41,6 +38,10 @@
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] == nil){
+        [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"sound"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] == nil){
@@ -59,7 +60,6 @@
             else
                 [rules addObject:@2];
         }
-        NSLog(@"SINGLE RULES ARRAY: %@",rules);
         [[NSUserDefaults standardUserDefaults] setObject:rules forKey:@"foundSingle"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -71,7 +71,6 @@
             else
                 [rulesRandom addObject:@2];
         }
-        NSLog(@"RANDOM RULES ARRAY: %@",rulesRandom);
         [[NSUserDefaults standardUserDefaults] setObject:rulesRandom forKey:@"foundRandom"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -79,7 +78,6 @@
     // nsuserdefaults key "rule" is the current rule number
 
     [self buildPictures];
-
     return YES;
 }
 
@@ -88,8 +86,8 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    NSString* foofile = [documentsDirectory stringByAppendingPathComponent:@"random_18.png"];
-    if([[NSFileManager defaultManager] fileExistsAtPath:foofile])
+    NSString* random_18 = [documentsDirectory stringByAppendingPathComponent:@"random_18.png"];
+    if([[NSFileManager defaultManager] fileExistsAtPath:random_18])
         return;
     
     NSString *imageName;

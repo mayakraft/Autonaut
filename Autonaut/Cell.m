@@ -21,8 +21,8 @@
         // Initialization code
         self.layer.borderWidth = 4.0f;
         self.layer.cornerRadius = 25.0f;
-        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
-        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
+        [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
+        [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         [self.layer setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
         [self setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
@@ -66,8 +66,8 @@
     self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     [self.layer setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
-    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
-    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0f]];
+    [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
+    [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
     if(IS_IPAD())
     {
         self.layer.borderWidth = 8.0f;

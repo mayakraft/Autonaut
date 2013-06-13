@@ -35,6 +35,8 @@
 		D565FA421767AE86007B5536 /* AutonautIAP.m in Sources */ = {isa = PBXBuildFile; fileRef = D565FA411767AE86007B5536 /* AutonautIAP.m */; };
 		D56C455F17690E42002409C5 /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56C455E17690E42002409C5 /* SelectionViewController.m */; };
 		D56C456117697280002409C5 /* Interesting.plist in Resources */ = {isa = PBXBuildFile; fileRef = D56C456017697280002409C5 /* Interesting.plist */; };
+		D56C456A176A6F0E002409C5 /* bells.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D56C4569176A6F0E002409C5 /* bells.mp3 */; };
+		D56C456B176A6F0E002409C5 /* bells.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D56C4569176A6F0E002409C5 /* bells.mp3 */; };
 		D588CBCB1760A89100A768ED /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = D588CBCA1760A89100A768ED /* Colors.m */; };
 		D588CC171766383D00A768ED /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = D588CC161766383D00A768ED /* touch.wav */; };
 		D588CC1A176673B600A768ED /* export@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D588CC18176673B500A768ED /* export@2x.png */; };
@@ -106,6 +108,7 @@
 		D56C455D17690E42002409C5 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
 		D56C455E17690E42002409C5 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
 		D56C456017697280002409C5 /* Interesting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Interesting.plist; sourceTree = "<group>"; };
+		D56C4569176A6F0E002409C5 /* bells.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bells.mp3; sourceTree = "<group>"; };
 		D588CBC91760A89100A768ED /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		D588CBCA1760A89100A768ED /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
 		D588CC161766383D00A768ED /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
@@ -213,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				D588CC161766383D00A768ED /* touch.wav */,
+				D56C4569176A6F0E002409C5 /* bells.mp3 */,
 				D56C456017697280002409C5 /* Interesting.plist */,
 				D588CC1C1766764900A768ED /* menu@2x.png */,
 				D588CC1D1766764900A768ED /* menu.png */,
@@ -397,6 +401,7 @@
 				D588CC1E1766764900A768ED /* menu@2x.png in Resources */,
 				D588CC1F1766764900A768ED /* menu.png in Resources */,
 				D56C456117697280002409C5 /* Interesting.plist in Resources */,
+				D56C456A176A6F0E002409C5 /* bells.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D527CFA5172474B600F698D0 /* InfoPlist.strings in Resources */,
+				D56C456B176A6F0E002409C5 /* bells.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -80,7 +80,6 @@
 }
 -(void)zoomOut:(NSNumber*)phase
 {
-    NSLog(@"Zoom %@",phase);
     CGAffineTransform largeZoom;// = CGAffineTransformMakeScale(1.0f, 1.0f);
     [UIView beginAnimations:[NSString stringWithFormat:@"zoom%@",phase] context:nil];
     if([phase integerValue] == 1){
@@ -117,9 +116,6 @@
         flipTime *= .66;
         flipTimeFloor *= .66;
     }
-    NSLog(@"Speed Up : %@",phase);
-//    NSLog(@"HALF LIFE flip:%f (+floor:%f",flipTime, flipTimeFloor);
-//    NSLog(@"HALF LIFE interval:%f (+floor:%f",intervalTime, intervalTimeFloor);
 }
 -(void) triggerFlipCellBegin
 {
@@ -167,7 +163,6 @@
 }
 -(void)flipCellVertical:(NSNumber*)squareNumber
 {
-    //    NSLog(@"%@",squareNumber);
     NSInteger selection = [squareNumber integerValue]%BOARD_WIDTH;
     CATransform3D transformFlipDown = CATransform3DIdentity;
     transformFlipDown.m34 = -1.0 / 100;
@@ -182,12 +177,10 @@
     [UIView commitAnimations];
     bool nextCell;
     if([squareNumber integerValue] >= 0 && [squareNumber integerValue] < BOARD_WIDTH * BOARD_HEIGHT - BOARD_WIDTH){
-//        NSLog(@"Automata Number: %@",squareNumber);
         nextCell = [[automataArray objectAtIndex:[squareNumber integerValue]+BOARD_WIDTH] boolValue];
     }
     else{
         nextCell = arc4random()%2;
-//        NSLog(@"Random Number: %d",nextCell);
     }
     [travelingRow[selection] performSelector:@selector(setBackgroundColor:) withObject:[UIColor colorWithWhite:nextCell alpha:1.0] afterDelay:flipInterval/2.0];
 }

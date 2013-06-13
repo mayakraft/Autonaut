@@ -26,6 +26,9 @@
         
         NSLog(@"InitWithFrame");
 
+        bellSound = [[AVAudioPlayer alloc] initWithContentsOfURL:
+                      [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bells.mp3", [[NSBundle mainBundle] resourcePath]]]
+                                                            error:nil];
         sweep = [[AVAudioPlayer alloc] initWithContentsOfURL:
                       [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/sweep.mp3", [[NSBundle mainBundle] resourcePath]]] error:nil];
 
@@ -131,6 +134,8 @@
 }
 -(void)foundNewRuleReward
 {
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        [bellSound play];
 //    NSLog(@"Animating Flash");
 //    CABasicAnimation *shadowFlash;
 //    [shadowFlash setFromValue:[NSNumber numberWithFloat:self.bounds.size.width*.05]];
@@ -139,10 +144,6 @@
 //    [shadowFlash setDelegate:self];
 //    [[selectionButton layer] addAnimation:shadowFlash forKey:@"shadowRadius"];
 //    UIView *flash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, selectionButton.bounds.size.width, selectionButton.bounds.size.height)];
-    
-    CALayer *flash = [[CALayer alloc] init];
-    [flash setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
-    [[selectionButton layer] addSublayer:flash];
 }
 -(void) setNewRule{
     NSInteger base10 = 0;
@@ -153,21 +154,19 @@
     rule = [NSNumber numberWithInteger:base10];
     NSLog(@"setNewRule: %@",rule);
     [[NSUserDefaults standardUserDefaults] setObject:rule forKey:@"rule"];
-    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:[rule integerValue]] integerValue] != 2){
+    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:[rule integerValue]] integerValue] == 0){
         NSMutableArray *randoms = [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] mutableCopy];
         [randoms setObject:@1 atIndexedSubscript:[rule integerValue]];
         [[NSUserDefaults standardUserDefaults] setObject:randoms forKey:@"foundRandom"];
         [self setNeedsUpdateFound];
         [self foundNewRuleReward];
-//        [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] setObject:@1 atIndex:[rule integerValue]];
     }
-    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:[rule integerValue]] integerValue] != 2){
+    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:[rule integerValue]] integerValue] == 0){
         NSMutableArray *singles = [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] mutableCopy];
         [singles setObject:@1 atIndexedSubscript:[rule integerValue]];
         [[NSUserDefaults standardUserDefaults] setObject:singles forKey:@"foundSingle"];
         [self setNeedsUpdateFound];
         [self foundNewRuleReward];
-//        [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] setObject:@1 atIndex:[rule integerValue]];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSelectorInBackground:@selector(updateImageViews) withObject:nil];

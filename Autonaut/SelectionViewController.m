@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 
-#define YOFFSET 0
+#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 @interface SelectionViewController ()
 {
@@ -19,6 +19,10 @@
     NSArray *interestingRandom;
     UIScrollView *scroll;
     NSMutableArray *pullToRefreshDots;
+    UIColor *offColor;
+    UIColor *onColor;
+    UIColor *complementColor;
+    NSInteger YOFFSET;
 }
 @end
 
@@ -38,33 +42,40 @@
 {
     [super viewDidLoad];
     
+    YOFFSET = 20;
+    if(IS_IPAD())
+        YOFFSET = 0;
+    
     pullToRefreshDots = [NSMutableArray array];
     
     scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
-    
+    [scroll setDelaysContentTouches:NO];
     int SQUARES = 64;
     while (SQUARES*8 > [[UIScreen mainScreen] bounds].size.width) SQUARES/=2.0;
     
     interestingSingle = [(AppDelegate*)[UIApplication sharedApplication].delegate interestingSingle];
     interestingRandom = [(AppDelegate*)[UIApplication sharedApplication].delegate interestingRandom];
+    onColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+    offColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
+    complementColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"];
     
     NSInteger contentSize = YOFFSET + (2 + ( interestingSingle.count + interestingRandom.count ) / 8.0 ) * self.view.frame.size.width/9.0;
     if(contentSize < [[UIScreen mainScreen] bounds].size.height)
         contentSize = [[UIScreen mainScreen] bounds].size.height+10;
 
     UIView *dark = [[UIView alloc] initWithFrame:CGRectMake(0, -contentSize*.5, self.view.frame.size.width, contentSize*2.0)];
-    [dark setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+    [dark setBackgroundColor:offColor];
     [dark setUserInteractionEnabled:YES];
     [scroll addSubview:dark];
 
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, contentSize*2.0)];
-    [back setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"]];
+    [back setBackgroundColor:complementColor];
     [back setUserInteractionEnabled:YES];
     [scroll addSubview:back];
     
     UILabel *count = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/18.0, YOFFSET, self.view.frame.size.width*8/9.0, self.view.frame.size.width/9.0*3/2.0)];
     [count setFont:[UIFont fontWithName:@"Helvetica" size:self.view.frame.size.width/9.0*3/2.0]];
-    [count setTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+    [count setTextColor:offColor];
     int foundCount = 0;
     for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"])
         if([i integerValue] == 1)
@@ -75,7 +86,7 @@
     
     [count setText:[NSString stringWithFormat:@"%d/%d",foundCount, interestingRandom.count+interestingSingle.count]];
     [[count layer] setShadowOffset:CGSizeMake(-1.0, -1.0)];
-    [[count layer] setShadowColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+    [[count layer] setShadowColor:[onColor CGColor]];
     [[count layer] setShadowOpacity:1.0];
     [[count layer] setShadowRadius:0.5];
     [count setTextAlignment:NSTextAlignmentRight];
@@ -105,11 +116,12 @@
                 [rule.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
             }
             else{
-                [rule.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
+                [rule.layer setBorderColor:[offColor CGColor]];
+                [rule.layer setOpacity:0.5];
                 [rule setEnabled:NO];
             }
             rule.tag = i;
-            [rule.layer setBorderWidth:SQUARES/16.0];
+            [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(randomPressed:) forControlEvents:UIControlEventTouchUpInside];
             [scroll addSubview:rule];
             position++;
@@ -127,14 +139,15 @@
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
             [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
             if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:i] boolValue]){
-                [rule.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+                [rule.layer setBorderColor:[onColor CGColor]];
             }
             else{
-                [rule.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
+                [rule.layer setBorderColor:[offColor CGColor]];
+                [rule.layer setOpacity:0.5];
                 [rule setEnabled:NO];
             }
             rule.tag = i;
-            [rule.layer setBorderWidth:SQUARES/16.0];
+            [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(singlePressed:) forControlEvents:UIControlEventTouchUpInside];
             [scroll addSubview:rule];
             position++;
@@ -151,23 +164,21 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if(scrollView.contentOffset.y < 0){
         //in the negative
-        NSLog(@"ScrollViewDidScroll: %f, %f",scrollView.contentOffset.x, scrollView.contentOffset.y);
         if(scrollView.contentOffset.y > -scroll.bounds.size.width*.18){
             //add squares when you need
-            if((int)(scrollView.contentOffset.y / -25.0) > pullToRefreshDots.count)
+            NSInteger dotSpace = scrollView.bounds.size.width/30.0;
+            if((int)(scrollView.contentOffset.y / -dotSpace) > pullToRefreshDots.count)
             {
                 UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.bounds.size.width*.01, scrollView.bounds.size.width*.01)];
-                [dot setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"]];
-                [dot setCenter:CGPointMake(scrollView.bounds.size.width*.5, 25*((int)(scrollView.contentOffset.y / -25.0))-12.5 )];
+                [dot setBackgroundColor:complementColor];
+                [dot setCenter:CGPointMake(scrollView.bounds.size.width*.5, dotSpace*((int)(scrollView.contentOffset.y / -dotSpace))-dotSpace*.5 )];
                 [pullToRefreshDots addObject:dot];
                 [self.view addSubview:dot];
-                [self animateDot:dot atPoint:CGPointMake(scrollView.bounds.size.width*.5, 25*((int)(scrollView.contentOffset.y / -25.0))-12.5 )];
-                NSLog(@"Adding a dot");
+                [self animateDot:dot atPoint:CGPointMake(scrollView.bounds.size.width*.5, dotSpace*((int)(scrollView.contentOffset.y / -dotSpace))-dotSpace*.5 )];
             }
         }
         // pop all dots
         else{
-            NSLog(@"Popping Dots");
             for(UIView *dot in pullToRefreshDots)
                 [self popDot:dot];
             pullToRefreshDots = [NSMutableArray array];

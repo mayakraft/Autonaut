@@ -71,20 +71,24 @@
     {
         NSLog(@"Smooth brotha");
         float smooth[width];
-        int before, after, afteragain, beforeagain, afterall;
+        int before, after, afteragain, beforeagain, afterall, first, last;
         for(int i = 0; i < width; i++)
         {
+            first = i-3;
             beforeagain = i-2;
             before = i-1;
             after = i+1;
             afteragain = i+2;
             afterall = i+3;
+            last = i+4;
+            if(first < 0) first = 0;
             if(beforeagain < 0) beforeagain = 0;
             if(before < 0) before = 0;
             if(after >= width) after = width-1;
             if(afteragain >= width) afteragain = width-1;
             if(afterall >= width) afterall = width-1;
-            smooth[i] = cells[i]*2/7.0 + cells[beforeagain]/7.0 + cells[before]/7.0 + cells[after]/7.0 + cells[afteragain]/7.0 + cells[afterall]/7.0;
+            if(last >= width) last = width-1;
+            smooth[i] = cells[i]*2/9.0 + cells[first]/9.0 + cells[beforeagain]/9.0 + cells[before]/9.0 + cells[after]/9.0 + cells[afteragain]/9.0 + cells[afterall]/9.0 + cells[last]/9.0;
         }
         for(int i = 0; i < width; i++)
         {

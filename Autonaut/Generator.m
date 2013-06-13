@@ -11,6 +11,7 @@
 #import "Automata.h"
 #import "RuleButton.h"
 #import "Colors.h"
+#import "Sounds.h"
 
 @implementation Generator
 @synthesize rule;
@@ -25,12 +26,6 @@
         // Initialization code
         
         NSLog(@"InitWithFrame");
-
-        bellSound = [[AVAudioPlayer alloc] initWithContentsOfURL:
-                      [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bells.mp3", [[NSBundle mainBundle] resourcePath]]]
-                                                            error:nil];
-        sweep = [[AVAudioPlayer alloc] initWithContentsOfURL:
-                      [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/sweep.mp3", [[NSBundle mainBundle] resourcePath]]] error:nil];
 
         retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
         retina = 1;
@@ -134,8 +129,7 @@
 }
 -(void)foundNewRuleReward
 {
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-        [bellSound play];
+    [[Sounds mixer] playBells];
 //    NSLog(@"Animating Flash");
 //    CABasicAnimation *shadowFlash;
 //    [shadowFlash setFromValue:[NSNumber numberWithFloat:self.bounds.size.width*.05]];

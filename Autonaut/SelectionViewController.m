@@ -7,9 +7,10 @@
 //
 
 #import "SelectionViewController.h"
-#import "Colors.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "Colors.h"
+#import "Sounds.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -169,6 +170,7 @@
             NSInteger dotSpace = scrollView.bounds.size.width/30.0;
             if((int)(scrollView.contentOffset.y / -dotSpace) > pullToRefreshDots.count)
             {
+                [[Sounds mixer] playClick];
                 UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.bounds.size.width*.01, scrollView.bounds.size.width*.01)];
                 [dot setBackgroundColor:complementColor];
                 [dot setCenter:CGPointMake(scrollView.bounds.size.width*.5, dotSpace*((int)(scrollView.contentOffset.y / -dotSpace))-dotSpace*.5 )];
@@ -212,6 +214,7 @@
     NSLog(@"ScrollViewDidEndDragging : %f, %f",scrollView.contentOffset.x, scrollView.contentOffset.y);
     if(scrollView.contentOffset.y < -scroll.bounds.size.width*.18){
         ruleSelection = nil;
+//        [[Sounds mixer] playTouch];
         [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
     }
 }

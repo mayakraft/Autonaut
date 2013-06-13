@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AutonautIAP.h"
 #import "Automata.h"
+#import "Sounds.h"
 
 @implementation AppDelegate
 @synthesize interestingRandom;
@@ -27,6 +28,8 @@
     
     interestingSingle = [interesting objectForKey:@"single"];
     interestingRandom = [interesting objectForKey:@"random"];
+    
+    [[Sounds mixer] initialize];
     
 //    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
 //       ([UIScreen mainScreen].scale == 2.0)) 

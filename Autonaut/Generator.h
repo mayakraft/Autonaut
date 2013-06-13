@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 
 @protocol GeneratorDelegate
 
@@ -19,9 +18,7 @@
 @interface Generator : UIView{
     NSArray *buttons;
     NSInteger retina;
-    AVAudioPlayer *sweep;
     UIButton *selectionButton;
-    AVAudioPlayer *bellSound;
 }
 @property (nonatomic, assign) id<GeneratorDelegate> delegate;
 @property (nonatomic, strong) NSNumber *rule;

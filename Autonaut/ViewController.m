@@ -11,12 +11,12 @@
 #import "Automata.h"
 #import <QuartzCore/CAAnimation.h>
 #import <QuartzCore/CAMediaTimingFunction.h>
-#import <AVFoundation/AVFoundation.h>
 #import "FlippingAutomataView.h"
 #import "Generator.h"
 #import "ScrollViewController.h"
 #import "SettingsView.h"
 #import "Colors.h"
+#import "Sounds.h"
 #import "SelectionViewController.h"
 
 #import <StoreKit/StoreKit.h>
@@ -41,7 +41,6 @@
     UITapGestureRecognizer *tapGesture;
     BOOL random; // for segue transition
     SettingsView *settings;
-    AVAudioPlayer *touchSound;
     UIView *loadingView;
     NSArray *_products;
 }
@@ -54,10 +53,6 @@
     NSLog(@"Entering View Did Load");
     [super viewDidLoad];
  
-    touchSound = [[AVAudioPlayer alloc] initWithContentsOfURL:
-                  [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/touch.wav", [[NSBundle mainBundle] resourcePath]]]
-                                                        error:nil];
-
     NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0], @"off",
                          [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], @"on",
                          [UIColor colorWithRed:186/255.0 green:179/255.0 blue:167/255.0 alpha:1.0], @"complement",
@@ -164,8 +159,7 @@
 }
 
 -(void)goSelection:(id)sender{
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-        [touchSound play];
+    [[Sounds mixer] playTouch];
     [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
 }
 
@@ -234,8 +228,7 @@
     
 }
 -(IBAction)generatorButtonPress:(id)sender{
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-        [touchSound play];
+    [[Sounds mixer] playTouch];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
@@ -258,8 +251,7 @@
     [self.view sendSubviewToBack:generator];
 }
 -(IBAction)playgroundButtonPress:(id)sender{
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-        [touchSound play];
+    [[Sounds mixer] playTouch];
     settings = [[SettingsView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [settings setDataSource:settings];
     [settings setDelegate:self];
@@ -359,8 +351,7 @@
 {
     if(CGRectContainsPoint(flippingAutomata.frame, [sender locationInView:[sender view]]))
     {
-        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-            [touchSound play];
+        [[Sounds mixer] playTouch];
         [self animateCheckerboardExpandAndReposition];
         generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
         playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
@@ -369,13 +360,11 @@
         [tapGesture setEnabled:NO];
     }
     if(CGRectContainsPoint([[generator randomAutomataView] frame], [sender locationInView:[sender view]])){
-        //[touchSound play];
         [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
         random = TRUE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
     }
     if(CGRectContainsPoint([[generator nonrandomAutomataView] frame], [sender locationInView:[sender view]])){
-        //[touchSound play];
         [self performSelectorInBackground:@selector(fadeInLoadingView) withObject:nil];
         random = FALSE;
         [self performSegueWithIdentifier:@"FullScreenSegue" sender:self];
@@ -512,8 +501,7 @@
         [[AutonautIAP sharedInstance] restoreCompletedTransactions];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
-        [touchSound play];
+    [[Sounds mixer] playTouch];
     
     // Navigation logic may go here. Create and push another view controller.
     /*

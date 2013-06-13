@@ -12,4 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong, nonatomic) NSArray *interestingRandom;
+@property (strong, nonatomic) NSArray *interestingSingle;
+
 @end

@@ -11,7 +11,6 @@
 #import "Automata.h"
 #import "RuleButton.h"
 #import "Colors.h"
-#import "SelectionView.h"
 
 @implementation Generator
 @synthesize rule;
@@ -51,19 +50,25 @@
         }
         buttons = buttonsMutable;
         
-        UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ruleButtonHeight*3/2.0, ruleButtonHeight)];
-        [selectionButton setCenter:CGPointMake(self.frame.size.width*.166, ruleButtonHeight*2.0+8.75*(ruleButtonHeight*1.2))];
+        selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, ruleButtonHeight*3/2.0, ruleButtonHeight*.66)];
+        [selectionButton setCenter:CGPointMake(self.frame.size.width*.166, ruleButtonHeight*2.5+8*(ruleButtonHeight*1.2))];
         [selectionButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
         [selectionButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
         [selectionButton.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
-        [selectionButton.layer setBorderWidth:4.0];
-        [selectionButton.layer setCornerRadius:ruleButtonHeight*.5];
-        [selectionButton.layer setMasksToBounds:YES];
-        [selectionButton setTitle:@"120" forState:UIControlStateNormal];
-        [[selectionButton titleLabel] setFont:[UIFont boldSystemFontOfSize:ruleButtonHeight*.66]];
+        [selectionButton.layer setBorderWidth:self.frame.size.width*.0066];
+        [selectionButton.layer setCornerRadius:ruleButtonHeight*.33];
+        [selectionButton setTitle:@"0" forState:UIControlStateNormal];
+        [[selectionButton titleLabel] setFont:[UIFont boldSystemFontOfSize:ruleButtonHeight*.5]];
+        [[selectionButton layer] setShadowOffset:CGSizeMake(0.0, 0.0)];
+        [[selectionButton layer] setShadowColor:[UIColor blackColor].CGColor];
+        //[[selectionButton layer] setShadowColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+        [[selectionButton layer] setShadowOpacity:1.0];
+        [[selectionButton layer] setShadowRadius:0.0];
+//        [[selectionButton layer] setShadowPath:<#(CGPathRef)#>]
+        [[selectionButton layer] setMasksToBounds:YES];
+        [self setNeedsUpdateFound];
         
         [selectionButton addTarget:delegate action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
-        
         [self addSubview:selectionButton];
     }
     return self;
@@ -72,32 +77,32 @@
 -(void) updateColors{
     for(RuleButton *button in buttons)
         [button updateStateAnimated:@0];
-}
--(void)viewDidLoad{
-    NSLog(@"ViewDidLoad");
+    [selectionButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [selectionButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    [selectionButton.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
 }
 
 -(void) updateImageViews
 {
     NSLog(@"UpdatingImageViews");
-    Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:YES width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
+    int howRandom = 1;
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"smooth"])
+        howRandom++;
+    Automata *randomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:howRandom width:randomAutomataView.frame.size.width*retina height:randomAutomataView.frame.size.height*retina];
     randomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [randomAutomataView setImage:[randomAutomata ImageWithColorLight:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
-                                                                      Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
-                                                                          Scale:retina]];
-//    [randomAutomataView setImage:[randomAutomata GIFImageFromDataWithScale:retina]];
+                                                                Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+                                                               Scale:retina]];
     
     Automata *nonrandomAutomata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:NO width:nonrandomAutomataView.frame.size.width*retina height:nonrandomAutomataView.frame.size.height*retina];
     nonrandomAutomataView.layer.magnificationFilter = kCAFilterNearest;
     [nonrandomAutomataView setImage:[nonrandomAutomata ImageWithColorLight:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
-                                                                            Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
-                                                                                Scale:retina]];
-//    [nonrandomAutomataView setImage:[nonrandomAutomata GIFImageFromDataWithScale:retina]];
-
+                                                                      Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]
+                                                                     Scale:retina]];
 }
 
 -(void) setRule:(NSNumber *)r{
-    NSLog(@"Custom Set Rule Function");
+    NSLog(@"setRule %@",r);
     rule = r;
     bool binaryRule[8];
     //Convert Decimal to Binary
@@ -111,11 +116,34 @@
         }
     }
     for(int i = 0; i < 8; i++)
-    {
         [[buttons objectAtIndex:i] setState:binaryRule[i] animated:NO];
-    }
 }
-
+-(void) setNeedsUpdateFound
+{
+    int foundCount = 0;
+    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"])
+        if([i integerValue] == 1)
+            foundCount++;
+    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"])
+        if([i integerValue] == 1)
+            foundCount++;
+    [selectionButton setTitle:[NSString stringWithFormat:@"%d",foundCount] forState:UIControlStateNormal];
+}
+-(void)foundNewRuleReward
+{
+//    NSLog(@"Animating Flash");
+//    CABasicAnimation *shadowFlash;
+//    [shadowFlash setFromValue:[NSNumber numberWithFloat:self.bounds.size.width*.05]];
+//    [shadowFlash setToValue:[NSNumber numberWithFloat:0.0]];
+//    [shadowFlash setDuration:1.66f];
+//    [shadowFlash setDelegate:self];
+//    [[selectionButton layer] addAnimation:shadowFlash forKey:@"shadowRadius"];
+//    UIView *flash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, selectionButton.bounds.size.width, selectionButton.bounds.size.height)];
+    
+    CALayer *flash = [[CALayer alloc] init];
+    [flash setBackgroundColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
+    [[selectionButton layer] addSublayer:flash];
+}
 -(void) setNewRule{
     NSInteger base10 = 0;
     for(int i = 0; i < 8; i++){
@@ -123,24 +151,43 @@
             base10+=pow(2.0, i);
     }
     rule = [NSNumber numberWithInteger:base10];
-    NSLog(@"NewRULE: %@",rule);
+    NSLog(@"setNewRule: %@",rule);
     [[NSUserDefaults standardUserDefaults] setObject:rule forKey:@"rule"];
+    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:[rule integerValue]] integerValue] != 2){
+        NSMutableArray *randoms = [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] mutableCopy];
+        [randoms setObject:@1 atIndexedSubscript:[rule integerValue]];
+        [[NSUserDefaults standardUserDefaults] setObject:randoms forKey:@"foundRandom"];
+        [self setNeedsUpdateFound];
+        [self foundNewRuleReward];
+//        [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] setObject:@1 atIndex:[rule integerValue]];
+    }
+    if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:[rule integerValue]] integerValue] != 2){
+        NSMutableArray *singles = [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] mutableCopy];
+        [singles setObject:@1 atIndexedSubscript:[rule integerValue]];
+        [[NSUserDefaults standardUserDefaults] setObject:singles forKey:@"foundSingle"];
+        [self setNeedsUpdateFound];
+        [self foundNewRuleReward];
+//        [[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] setObject:@1 atIndex:[rule integerValue]];
+    }
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSelectorInBackground:@selector(updateImageViews) withObject:nil];
-//    [self updateImageViews];
+}
+
+-(void) updateRuleButtonsAnimated:(NSNumber*)animated
+{
+    NSInteger timer = .2;
+    for(RuleButton *button in buttons){
+        [button performSelector:@selector(updateStateAnimated:) withObject:animated afterDelay:timer*.075];
+        timer++;
+    }
 }
 
 -(IBAction)ruleButtonPress:(RuleButton*)sender
 {
-    NSLog(@"RI:LE %@",rule);
-    NSLog(@"Button Pressed: %d",[sender ruleNumber]);
+    NSLog(@"Rule Button Press (%@): %d",rule,[sender ruleNumber]);
     if([sender state]) [sender setState:FALSE animated:YES];
     else [sender setState:TRUE animated:YES];
     [self setNewRule];
-//    if([sweep isPlaying])
-//        [sweep pause];
-//    [sweep setCurrentTime:0.0];
-//    [sweep play];
 }
 
 @end

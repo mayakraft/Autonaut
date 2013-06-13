@@ -32,7 +32,7 @@
 @implementation Automata
 
 -(id) initwithRule:(int)ruleNumber
-           randomInitials:(BOOL)randomStart
+           randomInitials:(int)randomStart
                     width:(NSInteger)widthInput
                    height:(NSInteger)heightInput
 {
@@ -67,7 +67,7 @@
             if(i == ((NSInteger)((width)/2))) cells[i] = true;
         }
     }
-    if(randomStart && [[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"smooth"])
+    if(randomStart == 2)
     {
         NSLog(@"Smooth brotha");
         float smooth[width];

@@ -14,7 +14,7 @@
 @interface Automata : NSObject
 
 -(id) initwithRule:(int)ruleNumber
-    randomInitials:(BOOL)randomStart
+    randomInitials:(int)randomStart
              width:(NSInteger)visibleWidth
             height:(NSInteger)height;
 -(NSArray*) arrayFromData;

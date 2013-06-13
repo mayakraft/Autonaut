@@ -42,7 +42,10 @@
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     NSInteger retina = [[[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] integerValue];
 
-    automata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:[random boolValue] width:self.view.bounds.size.width*3*.99999*retina height:self.view.bounds.size.height*.99999*retina];
+    int howRandom = [random boolValue];
+    if(howRandom && [[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"smooth"])
+        howRandom++;
+    automata = [[Automata alloc] initwithRule:[rule integerValue] randomInitials:howRandom width:self.view.bounds.size.width*3*.99999*retina height:self.view.bounds.size.height*.99999*retina];
     automataView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width*3, self.view.bounds.size.height)];
     [automataView setImage:[automata ImageWithColorLight:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]
                                                           Dark:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]

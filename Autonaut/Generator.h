@@ -20,6 +20,7 @@
     NSArray *buttons;
     NSInteger retina;
     AVAudioPlayer *sweep;
+    UIButton *selectionButton;
 }
 @property (nonatomic, assign) id<GeneratorDelegate> delegate;
 @property (nonatomic, strong) NSNumber *rule;
@@ -28,4 +29,6 @@
 
 -(void) setNewRule;
 -(void) updateColors;
+-(void) updateRuleButtonsAnimated:(NSNumber*)animated;
+-(void) updateImageViews;
 @end

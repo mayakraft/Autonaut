@@ -17,7 +17,7 @@
 #import "ScrollViewController.h"
 #import "SettingsView.h"
 #import "Colors.h"
-#import "SelectionView.h"
+#import "SelectionViewController.h"
 
 #import <StoreKit/StoreKit.h>
 #import "AutonautIAP.h"
@@ -51,6 +51,7 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"Entering View Did Load");
     [super viewDidLoad];
  
     touchSound = [[AVAudioPlayer alloc] initWithContentsOfURL:
@@ -156,25 +157,14 @@
 //        NSLog(@"%@",products);
 //    }];
 
-    
 //    UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    [selectionButton setBackgroundColor:[UIColor orangeColor]];
 //    [selectionButton addTarget:self action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:selectionButton];
-
 }
 
--(void)goSelection:(id)sender
-{
-    UIViewController *vc = [[UIViewController alloc] init];
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-    [vc setModalTransitionStyle:UIModalTransitionStylePartialCurl];
-    [vc setView:[[SelectionView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)]];
-    // do any setup you need for myNewVC
-    
-    [self presentViewController:vc animated:YES completion:nil];
-
-//    [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
+-(void)goSelection:(id)sender{
+    [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
 }
 
 -(void) updateColorsProgramWide
@@ -188,7 +178,6 @@
     [playgroundButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     playgroundButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
-    
 }
 
 - (IBAction) unwindToViewController: (UIStoryboardSegue*) unwindSegue
@@ -200,10 +189,15 @@
         [loadingView setAlpha:0.0];
         NSLog(@"Coming from ScrollView!");
     }
-//    else if ([sourceViewController isKindOfClass:[GreenViewController class]])
-//    {
-//        NSLog(@"Coming from GREEN!");
-//    }
+    else if ([sourceViewController isKindOfClass:[SelectionViewController class]])
+    {
+        NSLog(@"Coming from SelectionView! RULE: %@",[(SelectionViewController*)sourceViewController ruleSelection]);
+        if([(SelectionViewController*)sourceViewController ruleSelection] != nil){
+            [generator setRule:[(SelectionViewController*)sourceViewController ruleSelection]];
+            [generator updateImageViews];
+            [generator updateRuleButtonsAnimated:@1];
+        }
+    }
     NSLog(@"Unwind to View Controller");
 }
 
@@ -216,12 +210,12 @@
     }
 }
 -(void) viewWillAppear:(BOOL)animated{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
--(void)viewWillDisappear:(BOOL)animated{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+//-(void)viewWillDisappear:(BOOL)animated{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//}
 -(void)buttonFlipDown:(UIButton*)button
 {
     [[button layer] setAnchorPoint:CGPointMake(0.5f, -.33)];
@@ -276,7 +270,7 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.1];
     [self animateSettingsTableIn];
-    //[self performSegueWithIdentifier:@"SettingsSegue" sender:self];
+//    [self performSegueWithIdentifier:@"SettingsSegue" sender:self];
 //    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
 //    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
 }
@@ -449,6 +443,9 @@
     [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
         if ([product.productIdentifier isEqualToString:productIdentifier]) {
             [settings reloadData];
+            //supposed to be this below
+            //
+            //BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
             [[NSUserDefaults standardUserDefaults] setObject:@"purchased" forKey:@"IAP"];
             [[NSUserDefaults standardUserDefaults] synchronize];
 //            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

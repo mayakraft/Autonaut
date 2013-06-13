@@ -57,6 +57,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
+    //
+    //supposed to be this below
+    // BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
     if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] isEqualToString:@"b_w"] && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IAP"] isEqualToString:@"purchased"])
         return 5;
     else

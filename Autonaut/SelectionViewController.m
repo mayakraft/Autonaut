@@ -24,6 +24,7 @@
     UIColor *onColor;
     UIColor *complementColor;
     NSInteger YOFFSET;
+    UIView *titleBar;
 }
 @end
 
@@ -43,7 +44,7 @@
 {
     [super viewDidLoad];
     
-    YOFFSET = 20;
+    YOFFSET = 10;
     if(IS_IPAD())
         YOFFSET = 0;
     
@@ -64,18 +65,21 @@
     if(contentSize < [[UIScreen mainScreen] bounds].size.height)
         contentSize = [[UIScreen mainScreen] bounds].size.height+10;
 
-    UIView *dark = [[UIView alloc] initWithFrame:CGRectMake(0, -contentSize*.5, self.view.frame.size.width, contentSize*2.0)];
-    [dark setBackgroundColor:offColor];
-    [dark setUserInteractionEnabled:YES];
-    [scroll addSubview:dark];
-
-    UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, contentSize*2.0)];
+    UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, -contentSize*.5, self.view.frame.size.width, contentSize*2.0)];
     [back setBackgroundColor:complementColor];
     [back setUserInteractionEnabled:YES];
     [scroll addSubview:back];
     
-    UILabel *count = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/18.0, YOFFSET, self.view.frame.size.width*8/9.0, self.view.frame.size.width/9.0*3/2.0)];
-    [count setFont:[UIFont fontWithName:@"Helvetica" size:self.view.frame.size.width/9.0*3/2.0]];
+    titleBar = [[UIView alloc] initWithFrame:CGRectMake(-self.view.frame.size.width*0.1, 0, self.view.frame.size.width*1.2, YOFFSET*.66+self.view.frame.size.width/9.0*3/2.0)];
+    [titleBar setBackgroundColor:onColor];
+    [titleBar setUserInteractionEnabled:YES];
+    [[titleBar layer] setBorderColor:[offColor CGColor]];
+    [[titleBar layer] setBorderWidth:self.view.frame.size.width*.01];
+    [scroll addSubview:titleBar];
+    
+    UILabel *count = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/18.0, YOFFSET*.25, self.view.frame.size.width*8/9.0, self.view.frame.size.width/9.0*3/2.0)];
+    [count setFont:[UIFont boldSystemFontOfSize:self.view.frame.size.width/10.0*3/2.0]];
+    //[count setFont:[UIFont fontWithName:@"ArialRoundedMTBold" size:self.view.frame.size.width/10.0*3/2.0]];
     [count setTextColor:offColor];
     int foundCount = 0;
     for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"])
@@ -86,11 +90,11 @@
             foundCount++;
     
     [count setText:[NSString stringWithFormat:@"%d/%d",foundCount, interestingRandom.count+interestingSingle.count]];
-    [[count layer] setShadowOffset:CGSizeMake(-1.0, -1.0)];
-    [[count layer] setShadowColor:[onColor CGColor]];
-    [[count layer] setShadowOpacity:1.0];
-    [[count layer] setShadowRadius:0.5];
-    [count setTextAlignment:NSTextAlignmentRight];
+    //[[count layer] setShadowOffset:CGSizeMake(-1.0, -1.0)];
+    //[[count layer] setShadowColor:[complementColor CGColor]];
+    //[[count layer] setShadowOpacity:1.0];
+    //[[count layer] setShadowRadius:0.5];
+    [count setTextAlignment:NSTextAlignmentCenter];
     [count setBackgroundColor:[UIColor clearColor]];
     [scroll addSubview:count];
     
@@ -114,7 +118,7 @@
             [rule setFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
             [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
             [rule.layer setBorderWidth:SQUARES/24.0];
-            [rule addTarget:self action:@selector(randomPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [rule addTarget:self action:@selector(rulePressed:) forControlEvents:UIControlEventTouchUpInside];
             rule.tag = i;
             if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:i] boolValue]){
                 [rule.layer setBorderColor:[offColor CGColor]];
@@ -141,7 +145,7 @@
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
             [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
             [rule.layer setBorderWidth:SQUARES/24.0];
-            [rule addTarget:self action:@selector(singlePressed:) forControlEvents:UIControlEventTouchUpInside];
+            [rule addTarget:self action:@selector(rulePressed:) forControlEvents:UIControlEventTouchUpInside];
             rule.tag = i;
             if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:i] boolValue]){
                 [rule.layer setBorderColor:[offColor CGColor]];
@@ -165,16 +169,24 @@
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(scrollView.contentOffset.y > 0){
+        if(pullToRefreshDots != nil && pullToRefreshDots.count != 0)
+        {
+            for(UIView *square in pullToRefreshDots)
+                [square removeFromSuperview];
+            pullToRefreshDots = [NSMutableArray array];
+        }
+    }
     if(scrollView.contentOffset.y < 0){
         //in the negative
         if(scrollView.contentOffset.y > -scroll.bounds.size.width*.18){
             //add squares when you need
             NSInteger dotSpace = scrollView.bounds.size.width/30.0;
-            if( pullToRefreshDots != nil && ((int)(scrollView.contentOffset.y / -dotSpace) > [pullToRefreshDots count]) )
+            if( ![scrollView isDecelerating] && pullToRefreshDots != nil && ((int)(scrollView.contentOffset.y / -dotSpace) > [pullToRefreshDots count]) )
             {
                 [[Sounds mixer] playClick];
                 UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.bounds.size.width*.01, scrollView.bounds.size.width*.01)];
-                [dot setBackgroundColor:complementColor];
+                [dot setBackgroundColor:offColor];
                 [dot setCenter:CGPointMake(scrollView.bounds.size.width*.5, dotSpace*((int)(scrollView.contentOffset.y / -dotSpace))-dotSpace*.5 )];
                 [pullToRefreshDots addObject:dot];
                 [self.view addSubview:dot];
@@ -185,6 +197,8 @@
         else{
             for(UIView *dot in pullToRefreshDots)
                 [self popDot:dot];
+            if(pullToRefreshDots != nil)
+                [[Sounds mixer] playPop];
             pullToRefreshDots = nil;//[NSMutableArray array];
         }
     }
@@ -210,27 +224,27 @@
     [dot setAlpha:1.0];
     [UIView commitAnimations];
 }
+
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    NSLog(@"ScrollViewDidEndDragging : %f, %f",scrollView.contentOffset.x, scrollView.contentOffset.y);
     if(scrollView.contentOffset.y < -scroll.bounds.size.width*.18){
         ruleSelection = nil;
-//        [[Sounds mixer] playTouch];
+        [[Sounds mixer] playSweep];
         [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
     }
+    if(pullToRefreshDots.count)
+        [[Sounds mixer] playPop];
+    for(UIView *square in pullToRefreshDots)
+        [self popDot:square];
 }
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    NSLog(@"ScrollViewDidEndDecelerating");
     if(pullToRefreshDots.count)
         for(UIView *square in pullToRefreshDots)
             [square removeFromSuperview];
     pullToRefreshDots = [NSMutableArray array];
 }
--(void)randomPressed:(UIButton*)sender{
+-(void)rulePressed:(UIButton*)sender{
     ruleSelection = [NSNumber numberWithInteger:sender.tag];
-    [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
-}
--(void)singlePressed:(UIButton*)sender{
-    ruleSelection = [NSNumber numberWithInteger:sender.tag];
+    [[Sounds mixer] playTouch];
     [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
 }
 - (void)didReceiveMemoryWarning{

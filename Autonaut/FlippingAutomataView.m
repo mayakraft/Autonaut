@@ -72,12 +72,18 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
     [UIView commitAnimations];
-    UIColor *cellColor;
     if([[automataArray objectAtIndex:[cellNumber integerValue]] boolValue])
-        cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+        [self performSelector:@selector(onCell:) withObject:[animatedCells objectAtIndex:[cellNumber integerValue]] afterDelay:flipTime*.48];
     else
-        cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
-    [[animatedCells objectAtIndex:[cellNumber integerValue]] performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:flipTime*.48];
+        [self performSelector:@selector(offCell:) withObject:[animatedCells objectAtIndex:[cellNumber integerValue]] afterDelay:flipTime*.48];
+}
+-(void)onCell:(UIView*)cell{
+    UIColor *cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+    [cell setBackgroundColor:cellColor];
+}
+-(void)offCell:(UIView*)cell{
+    UIColor *cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
+    [cell setBackgroundColor:cellColor];
 }
 -(void)updateColors
 {

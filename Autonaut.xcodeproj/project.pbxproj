@@ -42,6 +42,8 @@
 		D56C4571176A7F8B002409C5 /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = D56C4570176A7F8B002409C5 /* click.wav */; };
 		D56C4572176A7F8B002409C5 /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = D56C4570176A7F8B002409C5 /* click.wav */; };
 		D56C4574176A8289002409C5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D56C4573176A8289002409C5 /* AudioToolbox.framework */; };
+		D56C4576176ABB81002409C5 /* shutter.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D56C4575176ABB81002409C5 /* shutter.mp3 */; };
+		D56C4577176ABB81002409C5 /* shutter.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D56C4575176ABB81002409C5 /* shutter.mp3 */; };
 		D588CBCB1760A89100A768ED /* Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = D588CBCA1760A89100A768ED /* Colors.m */; };
 		D588CC171766383D00A768ED /* touch.wav in Resources */ = {isa = PBXBuildFile; fileRef = D588CC161766383D00A768ED /* touch.wav */; };
 		D588CC1A176673B600A768ED /* export@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D588CC18176673B500A768ED /* export@2x.png */; };
@@ -118,6 +120,7 @@
 		D56C456D176A78BE002409C5 /* Sounds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sounds.m; sourceTree = "<group>"; };
 		D56C4570176A7F8B002409C5 /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
 		D56C4573176A8289002409C5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D56C4575176ABB81002409C5 /* shutter.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shutter.mp3; sourceTree = "<group>"; };
 		D588CBC91760A89100A768ED /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		D588CBCA1760A89100A768ED /* Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colors.m; sourceTree = "<group>"; };
 		D588CC161766383D00A768ED /* touch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = touch.wav; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 				D588CC161766383D00A768ED /* touch.wav */,
 				D56C4569176A6F0E002409C5 /* bells.mp3 */,
 				D56C4570176A7F8B002409C5 /* click.wav */,
+				D56C4575176ABB81002409C5 /* shutter.mp3 */,
 				D56C456017697280002409C5 /* Interesting.plist */,
 				D588CC1C1766764900A768ED /* menu@2x.png */,
 				D588CC1D1766764900A768ED /* menu.png */,
@@ -417,6 +421,7 @@
 				D56C456117697280002409C5 /* Interesting.plist in Resources */,
 				D56C456A176A6F0E002409C5 /* bells.mp3 in Resources */,
 				D56C4571176A7F8B002409C5 /* click.wav in Resources */,
+				D56C4576176ABB81002409C5 /* shutter.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +432,7 @@
 				D527CFA5172474B600F698D0 /* InfoPlist.strings in Resources */,
 				D56C456B176A6F0E002409C5 /* bells.mp3 in Resources */,
 				D56C4572176A7F8B002409C5 /* click.wav in Resources */,
+				D56C4577176ABB81002409C5 /* shutter.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

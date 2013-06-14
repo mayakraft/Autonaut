@@ -8,20 +8,18 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
+#import "SelectionViewController.h"
+#import "ScrollViewController.h"
 #import "Automata.h"
-#import <QuartzCore/CAAnimation.h>
-#import <QuartzCore/CAMediaTimingFunction.h>
 #import "FlippingAutomataView.h"
 #import "Generator.h"
-#import "ScrollViewController.h"
 #import "SettingsView.h"
 #import "Colors.h"
 #import "Sounds.h"
-#import "SelectionViewController.h"
 
-#import <StoreKit/StoreKit.h>
-#import "AutonautIAP.h"
-#import "InAppPurchases.h"
+//#import <StoreKit/StoreKit.h>
+//#import "AutonautIAP.h"
+//#import "InAppPurchases.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -43,6 +41,7 @@
     SettingsView *settings;
     UIView *loadingView;
     NSArray *_products;
+    UIView *alertView;
 }
 @end
 
@@ -129,6 +128,7 @@
     tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapListener:)];
     [tapGesture setNumberOfTapsRequired:1];
     [self.view addGestureRecognizer:tapGesture];
+
     [tapGesture setEnabled:NO];
     generator = nil;
     
@@ -161,6 +161,10 @@
 -(void)goSelection:(id)sender{
     [[Sounds mixer] playTouch];
     [self performSegueWithIdentifier:@"SelectionViewSegue" sender:nil];
+}
+-(void) rulePressed{
+    NSLog(@"RulePressed, DELEGATE");
+    [tapGesture setEnabled:YES];
 }
 
 -(void) updateColorsProgramWide
@@ -232,7 +236,8 @@
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
     [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
-    [tapGesture performSelector:@selector(setEnabled:) withObject:@1 afterDelay:1.0];
+    [tapGesture setEnabled:YES];
+//    [tapGesture performSelector:@selector(setEnabled:) withObject:@1 afterDelay:1.0];
     NSLog(@"%f : %f : %f : %f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
     if(generator == nil){
         generator = [[Generator alloc] initWithFrame:CGRectMake( self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -434,6 +439,53 @@
 //    return view;
 //}
 
+-(void)showRetinaSpeedWarning
+{
+    alertView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width*.66, self.view.bounds.size.width*.66)];
+    [alertView setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    //[[alertView layer] setCornerRadius:self.view.bounds.size.width*.033];
+    [[alertView layer] setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
+    [[alertView layer] setBorderWidth:self.view.bounds.size.width*.0133];
+    [alertView setCenter:CGPointMake(self.view.center.x, -alertView.bounds.size.height)];
+    UITextView *warning = [[UITextView alloc] initWithFrame:CGRectMake(alertView.bounds.size.width*.05, alertView.bounds.size.height*.05, alertView.bounds.size.width*.9, alertView.bounds.size.height*.9)];
+    [warning setFont:[UIFont systemFontOfSize:self.view.bounds.size.width*.066]];
+    [warning setText:@"Retina looks awesome and it's worth it!\n But it can take up to 4 times longer."];
+    [warning setBackgroundColor:[UIColor clearColor]];
+    [warning setTextAlignment:NSTextAlignmentCenter];
+    [alertView addSubview:warning];
+    [warning setTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
+    UIButton *okayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width*.33, self.view.bounds.size.width*.1)];
+    [okayButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    [[okayButton layer] setBorderWidth:1];
+    [[okayButton layer] setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
+    [[okayButton layer] setCornerRadius:self.view.bounds.size.width*.05];
+    [okayButton setTitle:@"okay" forState:UIControlStateNormal];
+    [okayButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [[okayButton titleLabel] setFont:[UIFont boldSystemFontOfSize:self.view.bounds.size.width*.066]];
+    [okayButton setCenter:CGPointMake(alertView.bounds.size.width*.5, alertView.bounds.size.height*.833)];
+    [okayButton addTarget:self action:@selector(dismissRetinaSpeedWarning) forControlEvents:UIControlEventTouchUpInside];
+    [alertView addSubview:okayButton];
+    [self.view addSubview:alertView];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.33];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [alertView setCenter:self.view.center];
+    [UIView commitAnimations];
+    
+}
+-(void)dismissRetinaSpeedWarning
+{
+    [[Sounds mixer] playTouch];
+    NSLog(@"Dismissing");
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.4];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [alertView setCenter:CGPointMake(alertView.center.x, self.view.bounds.size.height+alertView.bounds.size.height)];
+    [UIView commitAnimations];
+    [alertView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -441,6 +493,10 @@
         if([cell.detailTextLabel.text isEqualToString:@"no"]){
             if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
                 ([UIScreen mainScreen].scale == 2.0)){
+                if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"retinaSpeedWarning"] boolValue]){
+                    [self showRetinaSpeedWarning];
+                    [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retinaSpeedWarning"];
+                }
                 [cell.detailTextLabel setText:@"yes"];
                 [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
@@ -491,15 +547,15 @@
     {
         [self animateSettingsTableOut];
     }
-    else if (indexPath.section == 4)
-    {
-        SKProduct *product = _products[0];
-        
-        NSLog(@"Buying %@...", product.productIdentifier);
-        [[AutonautIAP sharedInstance] buyProduct:product];
-        
-        [[AutonautIAP sharedInstance] restoreCompletedTransactions];
-    }
+//    else if (indexPath.section == 4)
+//    {
+//        SKProduct *product = _products[0];
+//        
+//        NSLog(@"Buying %@...", product.productIdentifier);
+//        [[AutonautIAP sharedInstance] buyProduct:product];
+//        
+//        [[AutonautIAP sharedInstance] restoreCompletedTransactions];
+//    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[Sounds mixer] playTouch];
     

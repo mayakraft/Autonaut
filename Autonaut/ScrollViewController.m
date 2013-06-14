@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
 #import "Colors.h"
+#import "Sounds.h"
 
 @interface ScrollViewController ()
 {
@@ -94,18 +95,23 @@
 }
 -(void)exportPressed:(id)sender
 {
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [savingText setHidden:NO];
-//        });
-//        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageWriteToSavedPhotosAlbum(automataView.image, nil, nil, nil);
-//            [self flashScreen];
-//        });
-//    });
+    UIImageWriteToSavedPhotosAlbum(automataView.image, nil, nil, nil);
     [exportButton setEnabled:NO];
-    [self showMessage:@"Saving to Photo Album"];
+    [[Sounds mixer] playShutter];
+    [self flashScreen];
+    [self showMessage:@"Saved to Photo Album"];
+}
+-(void)flashScreen
+{
+    UIView *flash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    [flash setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:flash];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.33];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [flash setAlpha:0.0];
+    [UIView commitAnimations];
+    [flash performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
 }
 -(void) showMessage:(NSString*)message
 {

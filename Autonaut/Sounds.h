@@ -13,6 +13,7 @@
     SystemSoundID click;
     SystemSoundID touch;
     SystemSoundID bell;
+    SystemSoundID shutter;
 }
 
 +(Sounds*) mixer;
@@ -21,5 +22,6 @@
 -(void) playTouch;
 -(void) playBells;
 -(void) playClick;
+-(void) playShutter;
 
 @end

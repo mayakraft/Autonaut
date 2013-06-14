@@ -23,6 +23,7 @@ static Sounds *_mixer;
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/click.wav", [[NSBundle mainBundle] resourcePath]]], &click);
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/touch.wav", [[NSBundle mainBundle] resourcePath]]], &touch);
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bells.mp3", [[NSBundle mainBundle] resourcePath]]], &bell);
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/shutter.mp3", [[NSBundle mainBundle] resourcePath]]], &shutter);
 }
 -(void) playTouch{
     if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
@@ -35,6 +36,10 @@ static Sounds *_mixer;
 -(void) playClick{
     if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
         AudioServicesPlaySystemSound (click);
+}
+-(void) playShutter{
+    if([[[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] boolValue])
+        AudioServicesPlaySystemSound (shutter);
 }
 
 @end

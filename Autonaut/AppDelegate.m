@@ -23,9 +23,7 @@
     
 //    [AutonautIAP sharedInstance];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Interesting" ofType:@"plist"];
-    NSDictionary *interesting = [[NSDictionary alloc] initWithContentsOfFile:path];
-    
+    NSDictionary *interesting = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Interesting" ofType:@"plist"]];
     interestingSingle = [interesting objectForKey:@"single"];
     interestingRandom = [interesting objectForKey:@"random"];
     
@@ -35,25 +33,30 @@
 //       ([UIScreen mainScreen].scale == 2.0)) 
 //        [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
 //     else
+    bool flag = 0;
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"version"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@1.2 forKey:@"version"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"retina"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retina"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"sound"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"sound"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@"white" forKey:@"noise"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
+    }
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"retinaSpeedWarning"] == nil){
+        [[NSUserDefaults standardUserDefaults] setObject:@0 forKey:@"retinaSpeedWarning"];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] == nil){
         NSMutableArray *rules = [NSMutableArray array];
@@ -63,8 +66,10 @@
             else
                 [rules addObject:@2];
         }
+        // program begins at rule 30
+        [rules setObject:@1 atIndexedSubscript:30];
         [[NSUserDefaults standardUserDefaults] setObject:rules forKey:@"foundSingle"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] == nil){
         NSMutableArray *rulesRandom = [NSMutableArray array];
@@ -74,9 +79,13 @@
             else
                 [rulesRandom addObject:@2];
         }
+        // program begins at rule 30
+        [rulesRandom setObject:@1 atIndexedSubscript:30];
         [[NSUserDefaults standardUserDefaults] setObject:rulesRandom forKey:@"foundRandom"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        flag = 1;
     }
+    if(flag)
+        [[NSUserDefaults standardUserDefaults] synchronize];
     
     // nsuserdefaults key "rule" is the current rule number
 

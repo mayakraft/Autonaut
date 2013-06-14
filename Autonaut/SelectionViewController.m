@@ -99,7 +99,7 @@
     
     NSString *imageName;
     NSString *imagePath;
-    int position = 0;
+    int position = 0;  //position in the grid on screen
     BOOL found;
     for(int i = 0; i < 256; i++){
         found = false;
@@ -113,17 +113,18 @@
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
             [rule setFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
             [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
-            if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:i] boolValue]){
-                [rule.layer setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"] CGColor]];
-            }
-            else{
-                [rule.layer setBorderColor:[offColor CGColor]];
-                [rule.layer setOpacity:0.5];
-                [rule setEnabled:NO];
-            }
-            rule.tag = i;
             [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(randomPressed:) forControlEvents:UIControlEventTouchUpInside];
+            rule.tag = i;
+            if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"] objectAtIndex:i] boolValue]){
+                [rule.layer setBorderColor:[offColor CGColor]];
+            }
+            else{
+                [rule.layer setBorderColor:[onColor CGColor]];
+                [rule.layer setOpacity:0.33];
+                [rule.layer setBorderWidth:1.0];
+                [rule setEnabled:NO];
+            }
             [scroll addSubview:rule];
             position++;
         }
@@ -139,17 +140,18 @@
             UIButton *rule = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
             [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
-            if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:i] boolValue]){
-                [rule.layer setBorderColor:[onColor CGColor]];
-            }
-            else{
-                [rule.layer setBorderColor:[offColor CGColor]];
-                [rule.layer setOpacity:0.5];
-                [rule setEnabled:NO];
-            }
-            rule.tag = i;
             [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(singlePressed:) forControlEvents:UIControlEventTouchUpInside];
+            rule.tag = i;
+            if([[[[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"] objectAtIndex:i] boolValue]){
+                [rule.layer setBorderColor:[offColor CGColor]];
+            }
+            else{
+                [rule.layer setBorderColor:[onColor CGColor]];
+                [rule.layer setOpacity:0.33];
+                [rule.layer setBorderWidth:1.0];
+                [rule setEnabled:NO];
+            }
             [scroll addSubview:rule];
             position++;
         }
@@ -168,7 +170,7 @@
         if(scrollView.contentOffset.y > -scroll.bounds.size.width*.18){
             //add squares when you need
             NSInteger dotSpace = scrollView.bounds.size.width/30.0;
-            if((int)(scrollView.contentOffset.y / -dotSpace) > pullToRefreshDots.count)
+            if( pullToRefreshDots != nil && ((int)(scrollView.contentOffset.y / -dotSpace) > [pullToRefreshDots count]) )
             {
                 [[Sounds mixer] playClick];
                 UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollView.bounds.size.width*.01, scrollView.bounds.size.width*.01)];
@@ -183,8 +185,7 @@
         else{
             for(UIView *dot in pullToRefreshDots)
                 [self popDot:dot];
-            pullToRefreshDots = [NSMutableArray array];
-            
+            pullToRefreshDots = nil;//[NSMutableArray array];
         }
     }
 }
@@ -198,12 +199,11 @@
     [dot setAlpha:0.0];
     [UIView commitAnimations];
 }
-
 -(void)animateDot:(UIView*)dot atPoint:(CGPoint)center{
-    [dot setFrame:CGRectMake(0, 0, scroll.bounds.size.width*.05, scroll.bounds.size.width*.05)];
+    [dot setFrame:CGRectMake(0, 0, scroll.bounds.size.width*.1, scroll.bounds.size.width*.1)];
     [dot setAlpha:0.2];
     [dot setCenter:center];
-    [UIView beginAnimations:@"spin" context:nil];
+    [UIView beginAnimations:@"dot" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [UIView setAnimationDuration:0.166];
     [dot setFrame:CGRectMake(center.x-scroll.bounds.size.width*.005, center.y-scroll.bounds.size.width*.005, scroll.bounds.size.width*.01, scroll.bounds.size.width*.01)];

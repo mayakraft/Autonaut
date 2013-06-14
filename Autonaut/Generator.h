@@ -12,7 +12,7 @@
 
 @optional
 -(void)goSelection:(id)sender;
-
+-(void)rulePressed;
 @end
 
 @interface Generator : UIView{

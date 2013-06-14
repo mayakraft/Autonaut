@@ -140,6 +140,7 @@
 //    UIView *flash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, selectionButton.bounds.size.width, selectionButton.bounds.size.height)];
 }
 -(void) setNewRule{
+    [delegate rulePressed];
     NSInteger base10 = 0;
     for(int i = 0; i < 8; i++){
         if([(RuleButton*)[buttons objectAtIndex:i] state])

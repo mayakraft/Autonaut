@@ -31,8 +31,6 @@
 		D52A32A9173C36BF00F443C5 /* AnimatedBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = D52A32A8173C36BF00F443C5 /* AnimatedBoardView.m */; };
 		D5610637175F0F2A00D25034 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5610636175F0F2A00D25034 /* SettingsView.m */; };
 		D565FA381767AA21007B5536 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D565FA371767AA21007B5536 /* StoreKit.framework */; };
-		D565FA3B1767AAC0007B5536 /* InAppPurchases.m in Sources */ = {isa = PBXBuildFile; fileRef = D565FA3A1767AAC0007B5536 /* InAppPurchases.m */; };
-		D565FA421767AE86007B5536 /* AutonautIAP.m in Sources */ = {isa = PBXBuildFile; fileRef = D565FA411767AE86007B5536 /* AutonautIAP.m */; };
 		D56C455F17690E42002409C5 /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D56C455E17690E42002409C5 /* SelectionViewController.m */; };
 		D56C456117697280002409C5 /* Interesting.plist in Resources */ = {isa = PBXBuildFile; fileRef = D56C456017697280002409C5 /* Interesting.plist */; };
 		D56C456A176A6F0E002409C5 /* bells.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D56C4569176A6F0E002409C5 /* bells.mp3 */; };
@@ -62,6 +60,10 @@
 		D5BC7496174EDCD30039F6FA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BC7495174EDCD30039F6FA /* AVFoundation.framework */; };
 		D5BC7498174EDDE50039F6FA /* sweep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5BC7497174EDDE50039F6FA /* sweep.mp3 */; };
 		D5D2E71E173ECE460051D5DF /* Generator.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D2E71D173ECE460051D5DF /* Generator.m */; };
+		D5DA0429177F7507004F15CD /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = D5DA0427177F7507004F15CD /* camera.png */; };
+		D5DA042A177F7507004F15CD /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5DA0428177F7507004F15CD /* camera@2x.png */; };
+		D5DA04311780E94D004F15CD /* InAppPurchaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DA04301780E94D004F15CD /* InAppPurchaseHelper.m */; };
+		D5DA04321780E94D004F15CD /* InAppPurchaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D5DA04301780E94D004F15CD /* InAppPurchaseHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,10 +110,6 @@
 		D5610635175F0F2A00D25034 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsView.h; sourceTree = "<group>"; };
 		D5610636175F0F2A00D25034 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsView.m; sourceTree = "<group>"; };
 		D565FA371767AA21007B5536 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		D565FA391767AABF007B5536 /* InAppPurchases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchases.h; sourceTree = "<group>"; };
-		D565FA3A1767AAC0007B5536 /* InAppPurchases.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchases.m; sourceTree = "<group>"; };
-		D565FA401767AE86007B5536 /* AutonautIAP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutonautIAP.h; sourceTree = "<group>"; };
-		D565FA411767AE86007B5536 /* AutonautIAP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutonautIAP.m; sourceTree = "<group>"; };
 		D56C455D17690E42002409C5 /* SelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
 		D56C455E17690E42002409C5 /* SelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
 		D56C456017697280002409C5 /* Interesting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Interesting.plist; sourceTree = "<group>"; };
@@ -143,6 +141,10 @@
 		D5BC7497174EDDE50039F6FA /* sweep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sweep.mp3; sourceTree = "<group>"; };
 		D5D2E71C173ECE460051D5DF /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
 		D5D2E71D173ECE460051D5DF /* Generator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Generator.m; sourceTree = "<group>"; };
+		D5DA0427177F7507004F15CD /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		D5DA0428177F7507004F15CD /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		D5DA042F1780E94D004F15CD /* InAppPurchaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseHelper.h; sourceTree = "<group>"; };
+		D5DA04301780E94D004F15CD /* InAppPurchaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,10 +237,12 @@
 				D56C4575176ABB81002409C5 /* shutter.mp3 */,
 				D5BC7497174EDDE50039F6FA /* sweep.mp3 */,
 				D56C456017697280002409C5 /* Interesting.plist */,
-				D588CC1C1766764900A768ED /* menu@2x.png */,
+				D5DA0427177F7507004F15CD /* camera.png */,
+				D5DA0428177F7507004F15CD /* camera@2x.png */,
 				D588CC1D1766764900A768ED /* menu.png */,
-				D588CC18176673B500A768ED /* export@2x.png */,
+				D588CC1C1766764900A768ED /* menu@2x.png */,
 				D588CC19176673B500A768ED /* export.png */,
+				D588CC18176673B500A768ED /* export@2x.png */,
 				D527CF7B172474B600F698D0 /* Autonaut-Info.plist */,
 				D527CF7C172474B600F698D0 /* InfoPlist.strings */,
 				D527CF7F172474B600F698D0 /* main.m */,
@@ -272,10 +276,8 @@
 		D565FA3C1767AD96007B5536 /* In App Purchases */ = {
 			isa = PBXGroup;
 			children = (
-				D565FA401767AE86007B5536 /* AutonautIAP.h */,
-				D565FA411767AE86007B5536 /* AutonautIAP.m */,
-				D565FA391767AABF007B5536 /* InAppPurchases.h */,
-				D565FA3A1767AAC0007B5536 /* InAppPurchases.m */,
+				D5DA042F1780E94D004F15CD /* InAppPurchaseHelper.h */,
+				D5DA04301780E94D004F15CD /* InAppPurchaseHelper.m */,
 			);
 			name = "In App Purchases";
 			sourceTree = "<group>";
@@ -419,6 +421,8 @@
 				D56C4571176A7F8B002409C5 /* click.wav in Resources */,
 				D56C4576176ABB81002409C5 /* shutter.mp3 in Resources */,
 				D56C4579176B3E0E002409C5 /* pop.mp3 in Resources */,
+				D5DA0429177F7507004F15CD /* camera.png in Resources */,
+				D5DA042A177F7507004F15CD /* camera@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,10 +473,9 @@
 				D5B2D9F5175DABF1009F7D31 /* Cell.m in Sources */,
 				D5610637175F0F2A00D25034 /* SettingsView.m in Sources */,
 				D588CBCB1760A89100A768ED /* Colors.m in Sources */,
-				D565FA3B1767AAC0007B5536 /* InAppPurchases.m in Sources */,
-				D565FA421767AE86007B5536 /* AutonautIAP.m in Sources */,
 				D56C455F17690E42002409C5 /* SelectionViewController.m in Sources */,
 				D56C456E176A78BE002409C5 /* Sounds.m in Sources */,
+				D5DA04311780E94D004F15CD /* InAppPurchaseHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +486,7 @@
 				D527CFA8172474B600F698D0 /* AutonautTests.m in Sources */,
 				D527CFB317247E4F00F698D0 /* Automata.m in Sources */,
 				D56C456F176A78BE002409C5 /* Sounds.m in Sources */,
+				D5DA04321780E94D004F15CD /* InAppPurchaseHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,11 +598,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ABEBA155-7A5B-4EFA-BBA4-DEFBB04D8AA2";
+				PROVISIONING_PROFILE = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -607,11 +613,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "Autonaut/Autonaut-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ABEBA155-7A5B-4EFA-BBA4-DEFBB04D8AA2";
+				PROVISIONING_PROFILE = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -620,6 +628,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Autonaut.app/Autonaut";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
@@ -628,6 +638,8 @@
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "AutonautTests/AutonautTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -637,6 +649,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Autonaut.app/Autonaut";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Robby Kraft (77FF5GG6Q3)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
@@ -645,6 +659,8 @@
 				GCC_PREFIX_HEADER = "Autonaut/Autonaut-Prefix.pch";
 				INFOPLIST_FILE = "AutonautTests/AutonautTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0F49660B-E5D5-49F2-A51D-941D6389BB7A";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};

@@ -17,9 +17,8 @@
 #import "Colors.h"
 #import "Sounds.h"
 
-//#import <StoreKit/StoreKit.h>
-//#import "AutonautIAP.h"
-//#import "InAppPurchases.h"
+#import <StoreKit/StoreKit.h>
+#import "InAppPurchaseHelper.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -34,6 +33,7 @@
 {
     UIButton *generatorButton;
     UIButton *playgroundButton;
+    UIButton *settingsButton;
     FlippingAutomataView *flippingAutomata;
     Generator *generator;
     UITapGestureRecognizer *tapGesture;
@@ -42,6 +42,8 @@
     UIView *loadingView;
     NSArray *_products;
     UIView *alertView;
+    
+    UIView *activityIndicatorView;
 }
 @end
 
@@ -52,38 +54,16 @@
     NSLog(@"Entering View Did Load");
     [super viewDidLoad];
  
-    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0], @"off",
-                         [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], @"on",
-                         [UIColor colorWithRed:186/255.0 green:179/255.0 blue:167/255.0 alpha:1.0], @"complement",
-                         @"b&w", @"title", nil];
-    NSDictionary *ice = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.26 green:0.27 blue:0.35 alpha:1.0], @"off",
-                         [UIColor colorWithRed:0.98 green:0.99 blue:1.0 alpha:1.0], @"on",
-                         [UIColor colorWithRed:0.70 green:0.77 blue:0.86 alpha:1.0], @"complement",
-                         @"ice", @"title", nil];
-    NSDictionary *stone = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.10 green:0.26 blue:0.34 alpha:1.0], @"off",
-                         [UIColor colorWithRed:0.91 green:0.93 blue:0.81 alpha:1.0], @"on",
-                         [UIColor colorWithRed:0.80 green:0.61 blue:0.40 alpha:1.0], @"complement",
-                         @"stone", @"title", nil];
-    NSDictionary *gray = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithWhite:0.17 alpha:1.0], @"off",
-                         [UIColor colorWithWhite:0.95 alpha:1.0], @"on",
-                         [UIColor colorWithWhite:0.71 alpha:1.0], @"complement",
-                         @"gray", @"title", nil];
-    NSDictionary *clay = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.37 green:0.11 blue:0.00 alpha:1.0], @"off",
-                         [UIColor colorWithRed:0.79 green:0.70 blue:0.59 alpha:1.0], @"on",
-                         [UIColor colorWithRed:0.99 green:1.0 blue:0.73 alpha:1.0], @"complement",
-                         @"clay", @"title", nil];
-
-    [[Colors sharedColors] setThemes:[[NSDictionary alloc] initWithObjectsAndKeys:
-                                      b_w, @"b_w",
-                                      clay, @"clay",
-                                      ice, @"ice",
-                                      gray, @"gray",
-                                      stone, @"stone", nil]];
-
-    [self.view setBackgroundColor:[UIColor colorWithRed:203/255.0 green:195/255.0 blue:182/255.0 alpha:1.0]];
+    [self.view setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"]];
     flippingAutomata = [[FlippingAutomataView alloc] initWithFrame:CGRectMake(-(self.view.frame.size.height-self.view.frame.size.width)/2, 0, self.view.frame.size.height, self.view.frame.size.height)];
     [self.view addSubview:flippingAutomata];
-        
+    
+#warning lump button properties into one
+    CALayer *properties = [CALayer layer];
+    properties.borderWidth = 4.0f;
+    properties.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
+    properties.cornerRadius = 25.0f;
+    
     generatorButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 30, [[UIScreen mainScreen] bounds].size.width-100, 50)];
     [generatorButton setTitle:@"generator" forState:UIControlStateNormal];
     [generatorButton addTarget:self action:@selector(generatorButtonPress:) forControlEvents:UIControlEventTouchDown];
@@ -99,7 +79,7 @@
     
     playgroundButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 100, [[UIScreen mainScreen] bounds].size.width-100, 50)];
     [playgroundButton addTarget:self action:@selector(playgroundButtonPress:) forControlEvents:UIControlEventTouchDown];
-    [playgroundButton setTitle:@"settings" forState:UIControlStateNormal];
+    [playgroundButton setTitle:@"playground" forState:UIControlStateNormal];
     [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0]];
     [playgroundButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
@@ -109,19 +89,39 @@
     [playgroundButton setHidden: YES];
     [playgroundButton setTag:2];
     [self.view addSubview:playgroundButton];
-        
+#warning playground button disabled
+    [playgroundButton setEnabled:NO];
+
+    settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 170, [[UIScreen mainScreen] bounds].size.width-100, 50)];
+    [settingsButton addTarget:self action:@selector(settingsButtonPress:) forControlEvents:UIControlEventTouchDown];
+    [settingsButton setTitle:@"settings" forState:UIControlStateNormal];
+    [settingsButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:33.0]];
+    [settingsButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [settingsButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    settingsButton.layer.borderWidth = 4.0f;
+    settingsButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
+    settingsButton.layer.cornerRadius = 25.0f;
+    [settingsButton setHidden: YES];
+    [settingsButton setTag:2];
+    [self.view addSubview:settingsButton];
+
     [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.66];
-    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.75];   
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.75];
+    [self performSelector:@selector(buttonFlipDown:) withObject:settingsButton afterDelay:.83];
     
     if(IS_IPAD()){
         [generatorButton setFrame:CGRectMake(150, 100, [[UIScreen mainScreen] bounds].size.width-300, 100)];
         [generatorButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
         generatorButton.layer.borderWidth = 8.0f;
         generatorButton.layer.cornerRadius = 50.0f;
-        [playgroundButton setFrame:CGRectMake(150, 250, [[UIScreen mainScreen] bounds].size.width-300, 100)];
+        [playgroundButton setFrame:CGRectMake(150, 235, [[UIScreen mainScreen] bounds].size.width-300, 100)];
         [playgroundButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
         playgroundButton.layer.borderWidth = 8.0f;
         playgroundButton.layer.cornerRadius = 50.0f;
+        [settingsButton setFrame:CGRectMake(150, 370, [[UIScreen mainScreen] bounds].size.width-300, 100)];
+        [settingsButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:66.0f]];
+        settingsButton.layer.borderWidth = 8.0f;
+        settingsButton.layer.cornerRadius = 50.0f;
     }
 
     [flippingAutomata beginAnimations];
@@ -143,19 +143,12 @@
     [activityIndicator startAnimating];
     [self.view addSubview:loadingView];
     
-//    _products = nil;
-//    [[AutonautIAP sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
-//        if (success) {
-//            NSLog(@"Success! in view controller");
-//           _products = products;
-//        }
-//        NSLog(@"%@",products);
-//    }];
 
 //    UIButton *selectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 //    [selectionButton setBackgroundColor:[UIColor orangeColor]];
 //    [selectionButton addTarget:self action:@selector(goSelection:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:selectionButton];
+    NSLog(@"ViewController viewDidLoad did load");
 }
 
 -(void)goSelection:(id)sender{
@@ -178,6 +171,9 @@
     [playgroundButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
     [playgroundButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     playgroundButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
+    [settingsButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [settingsButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
+    settingsButton.layer.borderColor = [[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor];
 }
 
 - (IBAction) unwindToViewController: (UIStoryboardSegue*) unwindSegue
@@ -234,8 +230,9 @@
 -(IBAction)generatorButtonPress:(id)sender{
     [[Sounds mixer] playTouch];
     [self performSelector:@selector(expandToCollapse:) withObject:@"generator"];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.1];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"settings" afterDelay:0.2];
     [self performSelector:@selector(animateCheckerboardShrinkAndReposition) withObject:nil afterDelay:0.2];
-    [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.20];
     [tapGesture setEnabled:YES];
 //    [tapGesture performSelector:@selector(setEnabled:) withObject:@1 afterDelay:1.0];
     NSLog(@"%f : %f : %f : %f", self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, self.view.bounds.size.height);
@@ -255,21 +252,58 @@
     [self.view addSubview:generator];
     [self.view sendSubviewToBack:generator];
 }
--(IBAction)playgroundButtonPress:(id)sender{
+-(IBAction)playgroundButtonPress:(id)sender{}
+
+-(IBAction)settingsButtonPress:(id)sender{
+
+    if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"com.robbykraft.cellular.colors"] boolValue])
+    {
+        InAppPurchaseHelper *inAppPurchaseHelper = [InAppPurchaseHelper sharedInstance];
+        AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+        if (![inAppPurchaseHelper productPurchasedWithProductIdentifier:[delegate purchaseColorsProductIdentifier]]){
+            NSLog(@"com.robbykraft.cellular.colors has not been purchased");
+        }
+        [inAppPurchaseHelper setViewController:self];
+        
+        //obtain the list of in-app products
+        [inAppPurchaseHelper requestProductsWithOnCompleteBock:^(BOOL success, NSArray *products) {
+            if (success){
+                _products = products;
+                NSLog(@"Products: %@",_products);
+            }
+        }];
+    }
     [[Sounds mixer] playTouch];
     settings = [[SettingsView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [settings setDataSource:settings];
     [settings setDelegate:self];
+    [settings setBackgroundColor:[UIColor clearColor]];
     [settings setBackgroundView:nil];
     [settings setCenter:CGPointMake(settings.center.x, settings.center.y+settings.bounds.size.height)];
     [self.view addSubview:settings];
 
-    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
-    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.1];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"settings"];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.1];
+    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.2];
     [self animateSettingsTableIn];
-//    [self performSegueWithIdentifier:@"SettingsSegue" sender:self];
-//    [self performSelector:@selector(expandToCollapse:) withObject:@"playground"];
-//    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.20];
+}
+-(void) startPurchase{
+    activityIndicatorView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [activityIndicatorView setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.66]];
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [activityIndicator setCenter:activityIndicatorView.center];
+    [activityIndicator startAnimating];
+    [activityIndicatorView addSubview:activityIndicator];
+    [activityIndicatorView setUserInteractionEnabled:YES];
+    [self.view addSubview:activityIndicatorView];
+}
+-(void) finishPurchase{
+    NSLog(@"Callback to ViewController, finishing Purchase");
+    [settings reloadData];
+    if(activityIndicatorView != nil){
+        [activityIndicatorView removeFromSuperview];
+        activityIndicatorView = nil;
+    }
 }
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void *)context
 {
@@ -280,8 +314,10 @@
                 [generatorButton setHidden:YES];
             else if ([[animationID substringFromIndex:15] isEqualToString:@"playground"])
                 [playgroundButton setHidden:YES];
+            else if ([[animationID substringFromIndex:15] isEqualToString:@"settings"])
+                [settingsButton setHidden:YES];
         }
-    if ([animationID isEqualToString:@"generator"] || [animationID isEqualToString:@"playground"])
+    if ([animationID isEqualToString:@"generator"] || [animationID isEqualToString:@"playground"] || [animationID isEqualToString:@"settings"])
     {
         [UIView beginAnimations:[NSString stringWithFormat:@"animationShrink%@",animationID] context:NULL];
         [UIView setAnimationDuration:0.12f];
@@ -290,6 +326,8 @@
             generatorButton.transform=CGAffineTransformMakeScale(SCALED_DOWN_AMOUNT, SCALED_DOWN_AMOUNT);
         else if ([animationID isEqualToString:@"playground"])
             playgroundButton.transform=CGAffineTransformMakeScale(SCALED_DOWN_AMOUNT, SCALED_DOWN_AMOUNT);
+        else if ([animationID isEqualToString:@"settings"])
+            settingsButton.transform=CGAffineTransformMakeScale(SCALED_DOWN_AMOUNT, SCALED_DOWN_AMOUNT);
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
         [UIView commitAnimations];
@@ -304,6 +342,8 @@
         generatorButton.transform=CGAffineTransformMakeScale(1.15, 1.15);
 	else if ([objectDescription isEqualToString:@"playground"])
         playgroundButton.transform=CGAffineTransformMakeScale(1.15, 1.15);
+	else if ([objectDescription isEqualToString:@"settings"])
+        settingsButton.transform=CGAffineTransformMakeScale(1.15, 1.15);
     [UIView setAnimationDelegate:self];
 	[UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
 	[UIView commitAnimations];
@@ -322,6 +362,7 @@
 {
     [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.2];
     [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.28];
+    [self performSelector:@selector(buttonFlipDown:) withObject:settingsButton afterDelay:.36];
     [UIView beginAnimations:@"checkerboard" context:nil];
     //[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.66];                                                      //-205
@@ -341,11 +382,13 @@
 {
     generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
     playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+    settingsButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
     [generatorButton setHidden:YES];
     [playgroundButton setHidden:YES];
+    [settingsButton setHidden:YES];
     [self buttonFlipDown:generatorButton];
-    //    [self performSelector:@selector(buttonFlipDown:) withObject:generatorButton afterDelay:.2];
-    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.2];
+    [self performSelector:@selector(buttonFlipDown:) withObject:playgroundButton afterDelay:.1];
+    [self performSelector:@selector(buttonFlipDown:) withObject:settingsButton afterDelay:.2];
     [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
     [UIView setAnimationDuration:.33];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -360,6 +403,7 @@
         [self animateCheckerboardExpandAndReposition];
         generatorButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
         playgroundButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
+        settingsButton.transform=CGAffineTransformMakeScale(1.0, 1.0);
         [flippingAutomata setStopped:@0];
         [flippingAutomata performSelector:@selector(beginAnimations) withObject:nil afterDelay:1.0];
         [tapGesture setEnabled:NO];
@@ -445,18 +489,19 @@
     [alertView setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
     //[[alertView layer] setCornerRadius:self.view.bounds.size.width*.033];
     [[alertView layer] setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
-    [[alertView layer] setBorderWidth:self.view.bounds.size.width*.0133];
+    [[alertView layer] setBorderWidth:self.view.bounds.size.width*.01];
+    [[alertView layer] setCornerRadius:self.view.bounds.size.width*.033];
     [alertView setCenter:CGPointMake(self.view.center.x, -alertView.bounds.size.height)];
     UITextView *warning = [[UITextView alloc] initWithFrame:CGRectMake(alertView.bounds.size.width*.05, alertView.bounds.size.height*.05, alertView.bounds.size.width*.9, alertView.bounds.size.height*.9)];
-    [warning setFont:[UIFont systemFontOfSize:self.view.bounds.size.width*.066]];
-    [warning setText:@"Retina looks awesome and it's worth it!\n But it can take up to 4 times longer."];
+    [warning setFont:[UIFont systemFontOfSize:self.view.bounds.size.width*.07]];
+    [warning setText:@"Retina images look awesome, but they also take 4 times longer to generate"];
     [warning setBackgroundColor:[UIColor clearColor]];
     [warning setTextAlignment:NSTextAlignmentCenter];
     [alertView addSubview:warning];
     [warning setTextColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"]];
     UIButton *okayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width*.33, self.view.bounds.size.width*.1)];
     [okayButton setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
-    [[okayButton layer] setBorderWidth:1];
+    [[okayButton layer] setBorderWidth:self.view.bounds.size.width*.01];
     [[okayButton layer] setBorderColor:[[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] CGColor]];
     [[okayButton layer] setCornerRadius:self.view.bounds.size.width*.05];
     [okayButton setTitle:@"okay" forState:UIControlStateNormal];
@@ -493,10 +538,10 @@
         if([cell.detailTextLabel.text isEqualToString:@"no"]){
             if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
                 ([UIScreen mainScreen].scale == 2.0)){
-                if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"retinaSpeedWarning"] boolValue]){
+                //if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"retinaSpeedWarning"] boolValue]){
                     [self showRetinaSpeedWarning];
                     [[NSUserDefaults standardUserDefaults] setObject:@1 forKey:@"retinaSpeedWarning"];
-                }
+                //}
                 [cell.detailTextLabel setText:@"yes"];
                 [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
@@ -529,33 +574,46 @@
             [[NSUserDefaults standardUserDefaults] setObject:@0 forKey:@"sound"];
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
-//        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
-//        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
-//        else if([cell.detailTextLabel.text isEqualToString:@"ice"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"gray" forKey:@"theme"];
-//        else if([cell.detailTextLabel.text isEqualToString:@"gray"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"stone" forKey:@"theme"];
-//        else if([cell.detailTextLabel.text isEqualToString:@"stone"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//        [self updateColorsProgramWide];
-//        [tableView reloadData];
     }
-    else if (indexPath.section == 3)
-    {
-        [self animateSettingsTableOut];
+    else if (indexPath.section == 3){
+        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"moss" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"moss"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"water" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"water"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"brick" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"brick"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"zelda" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"zelda"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"ice"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"arcade" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"arcade"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"stone" forKey:@"theme"];
+        else if([cell.detailTextLabel.text isEqualToString:@"stone"])
+            [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self updateColorsProgramWide];
+        [tableView reloadData];
     }
-//    else if (indexPath.section == 4)
-//    {
-//        SKProduct *product = _products[0];
-//        
-//        NSLog(@"Buying %@...", product.productIdentifier);
-//        [[AutonautIAP sharedInstance] buyProduct:product];
-//        
-//        [[AutonautIAP sharedInstance] restoreCompletedTransactions];
-//    }
+    else if (indexPath.section == 4){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] isEqualToString:@"b_w"] ||
+           [[[NSUserDefaults standardUserDefaults] objectForKey:@"com.robbykraft.cellular.colors"] boolValue])
+            [self animateSettingsTableOut];
+        else
+        {
+            if(_products == nil || ![_products count]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot locate color themes. Are you connected to the internet?" delegate:nil cancelButtonTitle:@"okay" otherButtonTitles: nil];
+                [alert show];
+            }
+            else{
+                UIAlertView *purchaseAlert = [[UIAlertView alloc] initWithTitle:@"Unlock all the colors!" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Purchase", @"Restore Transaction", nil];
+                [purchaseAlert show];
+            }
+        }
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[Sounds mixer] playTouch];
     
@@ -566,6 +624,26 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"%d",buttonIndex);
+    if(buttonIndex == 1){
+        SKProduct * product = (SKProduct *) _products[0];
+        NSLog(@"Trying to purchase(%@): %@",product.productIdentifier,product.localizedTitle);
+        [[InAppPurchaseHelper sharedInstance] buyProduct:product];
+    }
+    else if (buttonIndex == 2){
+        SKProduct * product = (SKProduct *) _products[0];
+        NSLog(@"Trying to purchase(%@): %@",product.productIdentifier,product.localizedTitle);
+        [[InAppPurchaseHelper sharedInstance] restoreCompletedTransactions];
+    }
+    else if (buttonIndex == 0){
+        [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self updateColorsProgramWide];
+        [settings reloadData];
+    
+    }
 }
 
 - (void)didReceiveMemoryWarning

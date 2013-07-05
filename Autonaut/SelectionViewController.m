@@ -23,8 +23,7 @@
     UIColor *offColor;
     UIColor *onColor;
     UIColor *complementColor;
-    NSInteger YOFFSET;
-    UIView *titleBar;
+//    UIView *titleBar;
 }
 @end
 
@@ -44,10 +43,6 @@
 {
     [super viewDidLoad];
     
-    YOFFSET = 10;
-    if(IS_IPAD())
-        YOFFSET = 0;
-    
     pullToRefreshDots = [NSMutableArray array];
     
     scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
@@ -57,11 +52,13 @@
     
     interestingSingle = [(AppDelegate*)[UIApplication sharedApplication].delegate interestingSingle];
     interestingRandom = [(AppDelegate*)[UIApplication sharedApplication].delegate interestingRandom];
-    onColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
-    offColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
+//    onColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
+//    offColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
+    onColor = [UIColor whiteColor];
+    offColor = [UIColor blackColor];
     complementColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"complement"];
     
-    NSInteger contentSize = YOFFSET + (2 + ( interestingSingle.count + interestingRandom.count ) / 8.0 ) * self.view.frame.size.width/9.0;
+    NSInteger contentSize = (1.5 + ( interestingSingle.count + interestingRandom.count ) / 8.0 ) * self.view.frame.size.width/9.0;
     if(contentSize < [[UIScreen mainScreen] bounds].size.height)
         contentSize = [[UIScreen mainScreen] bounds].size.height+10;
 
@@ -70,33 +67,28 @@
     [back setUserInteractionEnabled:YES];
     [scroll addSubview:back];
     
-    titleBar = [[UIView alloc] initWithFrame:CGRectMake(-self.view.frame.size.width*0.1, 0, self.view.frame.size.width*1.2, YOFFSET*.66+self.view.frame.size.width/9.0*3/2.0)];
-    [titleBar setBackgroundColor:onColor];
-    [titleBar setUserInteractionEnabled:YES];
-    [[titleBar layer] setBorderColor:[offColor CGColor]];
-    [[titleBar layer] setBorderWidth:self.view.frame.size.width*.01];
-    [scroll addSubview:titleBar];
+//    titleBar = [[UIView alloc] initWithFrame:CGRectMake(-self.view.frame.size.width*0.1, 0, self.view.frame.size.width*1.2, YOFFSET*.66+self.view.frame.size.width/9.0*3/2.0)];
+//    [titleBar setBackgroundColor:onColor];
+//    [titleBar setUserInteractionEnabled:YES];
+//    [[titleBar layer] setBorderColor:[offColor CGColor]];
+//    [[titleBar layer] setBorderWidth:self.view.frame.size.width*.01];
+//    [scroll addSubview:titleBar];
     
-    UILabel *count = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/18.0, YOFFSET*.25, self.view.frame.size.width*8/9.0, self.view.frame.size.width/9.0*3/2.0)];
-    [count setFont:[UIFont boldSystemFontOfSize:self.view.frame.size.width/10.0*3/2.0]];
-    //[count setFont:[UIFont fontWithName:@"ArialRoundedMTBold" size:self.view.frame.size.width/10.0*3/2.0]];
-    [count setTextColor:offColor];
-    int foundCount = 0;
-    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"])
-        if([i integerValue] == 1)
-            foundCount++;
-    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"])
-        if([i integerValue] == 1)
-            foundCount++;
-    
-    [count setText:[NSString stringWithFormat:@"%d/%d",foundCount, interestingRandom.count+interestingSingle.count]];
-    //[[count layer] setShadowOffset:CGSizeMake(-1.0, -1.0)];
-    //[[count layer] setShadowColor:[complementColor CGColor]];
-    //[[count layer] setShadowOpacity:1.0];
-    //[[count layer] setShadowRadius:0.5];
-    [count setTextAlignment:NSTextAlignmentCenter];
-    [count setBackgroundColor:[UIColor clearColor]];
-    [scroll addSubview:count];
+//    UILabel *count = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/18.0, YOFFSET*.25, self.view.frame.size.width*8/9.0, self.view.frame.size.width/9.0*3/2.0)];
+//    [count setFont:[UIFont boldSystemFontOfSize:self.view.frame.size.width/10.0*3/2.0]];
+//    [count setTextColor:offColor];
+//    int foundCount = 0;
+//    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundRandom"])
+//        if([i integerValue] == 1)
+//            foundCount++;
+//    for(NSNumber *i in [[NSUserDefaults standardUserDefaults] objectForKey:@"foundSingle"])
+//        if([i integerValue] == 1)
+//            foundCount++;
+//    
+//    [count setText:[NSString stringWithFormat:@"%d/%d",foundCount, interestingRandom.count+interestingSingle.count]];
+//    [count setTextAlignment:NSTextAlignmentCenter];
+//    [count setBackgroundColor:[UIColor clearColor]];
+//    [scroll addSubview:count];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -116,7 +108,7 @@
             UIButton *rule = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
             [rule setFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
-            [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
+            [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, ((int)((position)/8.0)+1)*self.view.frame.size.width/9.0)];
             [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(rulePressed:) forControlEvents:UIControlEventTouchUpInside];
             rule.tag = i;
@@ -143,7 +135,7 @@
             imagePath = [documentsDirectory stringByAppendingPathComponent:imageName];
             UIButton *rule = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SQUARES, SQUARES)];
             [rule setImage:[[UIImage alloc] initWithContentsOfFile:imagePath] forState:UIControlStateNormal];
-            [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, YOFFSET+((int)((position)/8.0)+2)*self.view.frame.size.width/9.0)];
+            [rule setCenter:CGPointMake((1+position%8)*self.view.frame.size.width/9.0, ((int)((position)/8.0)+1)*self.view.frame.size.width/9.0)];
             [rule.layer setBorderWidth:SQUARES/24.0];
             [rule addTarget:self action:@selector(rulePressed:) forControlEvents:UIControlEventTouchUpInside];
             rule.tag = i;
@@ -179,7 +171,7 @@
     }
     if(scrollView.contentOffset.y < 0){
         //in the negative
-        if(scrollView.contentOffset.y > -scroll.bounds.size.width*.18){
+        if(scrollView.contentOffset.y > -scroll.bounds.size.width*.15){
             //add squares when you need
             NSInteger dotSpace = scrollView.bounds.size.width/30.0;
             if( ![scrollView isDecelerating] && pullToRefreshDots != nil && ((int)(scrollView.contentOffset.y / -dotSpace) > [pullToRefreshDots count]) )
@@ -226,7 +218,7 @@
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    if(scrollView.contentOffset.y < -scroll.bounds.size.width*.18){
+    if(scrollView.contentOffset.y < -scroll.bounds.size.width*.15){
         ruleSelection = nil;
         [[Sounds mixer] playSweep];
         [self performSegueWithIdentifier:@"unwindToViewController" sender:self];

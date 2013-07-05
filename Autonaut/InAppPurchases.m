@@ -9,6 +9,7 @@
 // 1
 #import "InAppPurchases.h"
 #import <StoreKit/StoreKit.h>
+#import "AppDelegate.h"
 
 NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurchasedNotification";
 
@@ -25,45 +26,88 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
     NSMutableSet * _purchasedProductIdentifiers;
 }
 
++ (InAppPurchases *)sharedInstance {
+    static InAppPurchases *sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        sharedInstance = [[self alloc] initWithProductIdentifiers:delegate.inAppProductIdentifiers];
+    });
+    return sharedInstance;
+}
+
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers {
-    
-    if ((self = [super init])) {
-        
-        // Store product identifiers
+    self = [super init];
+    if (self != nil){
+        //save the product identifiers
         _productIdentifiers = productIdentifiers;
         
-        // Check for previously purchased products
+        //check for previously purchased products
         _purchasedProductIdentifiers = [NSMutableSet set];
-        for (NSString * productIdentifier in _productIdentifiers) {
-            BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
-            if (productPurchased) {
+        for (NSString *productIdentifier in _productIdentifiers){
+            BOOL purchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
+            if (purchased){
                 [_purchasedProductIdentifiers addObject:productIdentifier];
-                NSLog(@"Previously purchased: %@", productIdentifier);
-            } else {
-                NSLog(@"Not purchased: %@", productIdentifier);
             }
         }
         
-        // Add self as transaction observer
+        //set this object as the transaction observer
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-        
     }
     return self;
-    
 }
 
-- (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler {
-    
-    NSLog(@"Delegate is getting set");
-    // 1
-    _completionHandler = [completionHandler copy];
-    
-    // 2
-    _productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
-    _productsRequest.delegate = self;
-    [_productsRequest start];
-    
-}
+//- (id)initWithProductIdentifiers:(NSSet *)productIdentifiers {
+//    
+//    if ((self = [super init])) {
+//        
+//        // Store product identifiers
+//        _productIdentifiers = productIdentifiers;
+//        
+//        // Check for previously purchased products
+//        _purchasedProductIdentifiers = [NSMutableSet set];
+//        for (NSString * productIdentifier in _productIdentifiers) {
+//            BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
+//            if (productPurchased) {
+//                [_purchasedProductIdentifiers addObject:productIdentifier];
+//                NSLog(@"Previously purchased: %@", productIdentifier);
+//            } else {
+//                NSLog(@"Not purchased: %@", productIdentifier);
+//            }
+//        }
+//        
+//        // Add self as transaction observer
+//        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+//        
+//    }
+//    return self;
+//    
+//}
+
+//-(void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler{
+//    
+//    NSLog(@"Request Products");
+//    if (!_completionHandler) {
+//        _completionHandler = [completionHandler copy];
+//        
+//        _productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
+//        _productsRequest.delegate=self;
+//        [_productsRequest start];
+//    }else{
+//        NSLog(@"Duplicate call, not requesting products this time");
+//    }
+//}
+
+//- (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler {
+//    
+//    // 1
+//    _completionHandler = [completionHandler copy];
+//    
+//    // 2
+//    _productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
+//    _productsRequest.delegate = self;
+//    [_productsRequest start];
+//}
 
 - (BOOL)productPurchased:(NSString *)productIdentifier {
     return [_purchasedProductIdentifiers containsObject:productIdentifier];
@@ -80,35 +124,35 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
 
 #pragma mark - SKProductsRequestDelegate
 
-- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
-    
-    NSLog(@"Loaded list of products...");
-    _productsRequest = nil;
-    
-    NSLog(@"Response.Products: %@",response.products);
-    
-    NSArray * skProducts = response.products;
-    for (SKProduct * skProduct in skProducts) {
-        NSLog(@"Found product: %@ %@ %0.2f",
-              skProduct.productIdentifier,
-              skProduct.localizedTitle,
-              skProduct.price.floatValue);
-    }
-    
-    _completionHandler(YES, skProducts);
-    _completionHandler = nil;
-    
-}
+//- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
+//    
+//    NSLog(@"Loaded list of products...");
+//    _productsRequest = nil;
+//    
+//    NSLog(@"Response.Products: %@",response.products);
+//    
+//    NSArray * skProducts = response.products;
+//    for (SKProduct * skProduct in skProducts) {
+//        NSLog(@"Found product: %@ %@ %0.2f",
+//              skProduct.productIdentifier,
+//              skProduct.localizedTitle,
+//              skProduct.price.floatValue);
+//    }
+//    
+//    _completionHandler(YES, skProducts);
+//    _completionHandler = nil;
+//    
+//}
 
-- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
-    
-    NSLog(@"Failed to load list of products.");
-    _productsRequest = nil;
-    
-    _completionHandler(NO, nil);
-    _completionHandler = nil;
-    
-}
+//- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
+//    
+//    NSLog(@"Failed to load list of products.");
+//    _productsRequest = nil;
+//    
+//    _completionHandler(NO, nil);
+//    _completionHandler = nil;
+//    
+//}
 
 #pragma mark SKPaymentTransactionOBserver
 

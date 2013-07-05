@@ -73,21 +73,34 @@
     [tap2Gesture setNumberOfTapsRequired:2];
     [scrollView addGestureRecognizer:tap2Gesture];
     
-    [tap1Gesture requireGestureRecognizerToFail:tap2Gesture];
+    //[tap1Gesture requireGestureRecognizerToFail:tap2Gesture];
 
-    menu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    [menu setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"menu.png"]]];//[UIColor colorWithWhite:0.0 alpha:0.66]];
-    [menu setCenter:CGPointMake(self.view.bounds.size.width/2.0, self.view.bounds.size.height-22)];
+    menu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width+2, 60)];
+    //[menu setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"menu.png"]]];//[UIColor colorWithWhite:0.0 alpha:0.66]];
+    [menu setCenter:CGPointMake(self.view.bounds.size.width/2.0, 30)];
+    [[menu layer] setBorderColor:[[UIColor colorWithWhite:0.55 alpha:1.0] CGColor]];
+    [[menu layer] setBorderWidth:1.0];
+    [menu setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.95]];
     [self.view addSubview:menu];
-    exportButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 45, 35)];
-    [exportButton setBackgroundImage:[UIImage imageNamed:@"export"] forState:UIControlStateNormal];
-    [exportButton.layer setBorderColor:[UIColor whiteColor].CGColor];
-    [exportButton.layer setBorderWidth:1.0];
-    [exportButton.layer setCornerRadius:4.0];
-    [exportButton.layer setMasksToBounds:YES];
+    exportButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [exportButton setBackgroundImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
+//    [exportButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+//    [exportButton.layer setBorderWidth:1.0];
+//    [exportButton.layer setCornerRadius:4.0];
+//    [exportButton.layer setMasksToBounds:YES];
     [exportButton setCenter:CGPointMake(menu.bounds.size.width/2.0, menu.bounds.size.height/2.0)];
     [exportButton addTarget:self action:@selector(exportPressed:) forControlEvents:UIControlEventTouchUpInside];
     [menu addSubview:exportButton];
+    
+    UIButton *exitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [exitButton setBackgroundColor:[UIColor clearColor]];
+    [exitButton setTitle:@"<" forState:UIControlStateNormal];
+    [[exitButton titleLabel] setFont:[UIFont fontWithName:@"EuphemiaUCAS" size:44]];//[UIFont boldSystemFontOfSize:44]];
+    [exitButton setTitleColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"] forState:UIControlStateNormal];
+    [exitButton setTitleColor:[UIColor colorWithWhite:0.5 alpha:1.0] forState:UIControlStateHighlighted];
+    [exitButton addTarget:self action:@selector(exitButton:) forControlEvents:UIControlEventTouchUpInside];
+    [exitButton setCenter:CGPointMake(30,menu.bounds.size.height/2.0)];
+    [menu addSubview:exitButton];
 	// Do any additional setup after loading the view.
 }
 -(void)viewDidAppear:(BOOL)animated{
@@ -140,19 +153,24 @@
 -(void)tap1Listener:(UITapGestureRecognizer*)sender{
     [self toggleMenu];
 }
+-(void)exitButton:(UIButton *)sender{
+    [self performSegueWithIdentifier:@"unwindToViewController" sender:self];
+}
 -(void)toggleMenu{
-    if(menu.center.y == self.view.bounds.size.height-22){
+    if(menu.center.y == 30){
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.16];
+        [UIView setAnimationDuration:0.2];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [menu setCenter:CGPointMake(menu.center.x, self.view.bounds.size.height+22)];
+        [menu setCenter:CGPointMake(menu.center.x, 10)];
+        [menu setAlpha:0.0];
         [UIView commitAnimations];
     }
-    else if(menu.center.y == self.view.bounds.size.height+22){
+    else if(menu.center.y == 10){
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.16];
+        [UIView setAnimationDuration:0.2];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [menu setCenter:CGPointMake(menu.center.x, self.view.bounds.size.height-22)];
+        [menu setCenter:CGPointMake(menu.center.x, 30)];
+        [menu setAlpha:1.0];
         [UIView commitAnimations];
     }
 }

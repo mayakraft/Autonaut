@@ -10,7 +10,7 @@
 
 @interface SettingsView : UITableView <UITableViewDataSource, UITableViewDelegate>
 {
-    NSArray *_products;
-    NSNumberFormatter * _priceFormatter;
+//    NSArray *_products;
+//    NSNumberFormatter * _priceFormatter;
 }
 @end

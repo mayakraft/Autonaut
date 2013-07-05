@@ -13,10 +13,14 @@ UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 
 typedef void (^RequestProductsCompletionHandler)(BOOL success, NSArray * products);
 
-@interface InAppPurchases : NSObject
+@interface InAppPurchases : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
+@property (strong, nonatomic) NSString *purchaseColorsProductIdentifier;
+
++ (InAppPurchases *) sharedInstance;
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
-- (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler;
-- (void)buyProduct:(SKProduct *)product;
-- (BOOL)productPurchased:(NSString *)productIdentifier;
-- (void)restoreCompletedTransactions;
+- (void)RequestProductsOnCompleteBlock:(RequestProductsCompletionHandler)completionHandler;
+
+//- (void)buyProduct:(SKProduct *)product;
+//- (BOOL)productPurchased:(NSString *)productIdentifier;
+//- (void)restoreCompletedTransactions;
 @end

@@ -9,7 +9,6 @@
 #import "SettingsView.h"
 #import "Cell.h"
 #import "Colors.h"
-#import "AutonautIAP.h"
 #import <StoreKit/StoreKit.h>
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -27,15 +26,9 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"Entering Settings viewDidLoad");
     [self setBackgroundColor:[UIColor clearColor]];
 
-//    _products = nil;
-//    [[AutonautIAP sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
-//        if (success) {
-//            NSLog(@"Success! in settings view");
-//            _products = products;
-//        }
-//    }];
 //
 //    _priceFormatter = [[NSNumberFormatter alloc] init];
 //    [_priceFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
@@ -56,7 +49,7 @@
 //    if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] isEqualToString:@"b_w"] && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"IAP"] isEqualToString:@"purchased"])
 //        return 5;
 //    else
-        return 4;
+        return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -93,11 +86,23 @@
 //        [[cell detailTextLabel] setText:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"title"]];
     }
     else if (indexPath.section == 3){
-        [[cell textLabel] setText:@"okay"];
-        [[cell detailTextLabel] setText:@""];
-        [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
+        [[cell textLabel] setText:@"theme"];
+        [[cell detailTextLabel] setText:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"title"]];
     }
-//    else if (indexPath.section == 4){
+    else if (indexPath.section == 4){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] isEqualToString:@"b_w"] ||
+           [[[NSUserDefaults standardUserDefaults] objectForKey:@"com.robbykraft.cellular.colors"] boolValue]){
+            [[cell textLabel] setText:@"okay"];
+            [[cell detailTextLabel] setText:@""];
+            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
+        }
+        else{
+            [[cell textLabel] setText:@"themes"];
+            [[cell detailTextLabel] setText:@"$.99"];
+            [[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
+        }
+    }
+//    else if (indexPath.section == 5){
 //        SKProduct * product = (SKProduct *) _products[0];
 //        [_priceFormatter setLocale:product.priceLocale];
 //        NSLog(@"%@",product);

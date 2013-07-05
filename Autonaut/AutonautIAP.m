@@ -13,7 +13,7 @@
     static dispatch_once_t onceToken;
     static AutonautIAP *sharedInstance;
     dispatch_once(&onceToken, ^{
-        NSSet *productIdentifiers = [NSSet setWithObject:@"com.robbykraft.cellular.colorthemes"];
+        NSSet *productIdentifiers = [NSSet setWithObject:@"com.robbykraft.cellular.colors"];
         sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
     });
     return sharedInstance;

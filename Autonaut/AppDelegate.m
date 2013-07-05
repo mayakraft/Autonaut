@@ -7,21 +7,27 @@
 //
 
 #import "AppDelegate.h"
-#import "AutonautIAP.h"
 #import "Automata.h"
 #import "Sounds.h"
+#import "Colors.h"
+#import "InAppPurchaseHelper.h"
 
 @implementation AppDelegate
 @synthesize interestingRandom;
 @synthesize interestingSingle;
 
+- (NSSet *)inAppProductIdentifiers {
+    return [NSSet setWithObjects:[self purchaseColorsProductIdentifier], nil];
+}
+
+- (NSString *)purchaseColorsProductIdentifier {
+    return @"com.robbykraft.cellular.colors";
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"ApplicationDidFinishLaunchingWithOptions");
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
-//    [AutonautIAP sharedInstance];
     
     NSDictionary *interesting = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Interesting" ofType:@"plist"]];
     interestingSingle = [interesting objectForKey:@"single"];
@@ -34,6 +40,10 @@
 //        [[NSUserDefaults standardUserDefaults] setObject:@2 forKey:@"retina"];
 //     else
     bool flag = 0;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"com.robbykraft.cellular.colors"] == nil){
+        [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"com.robbykraft.cellular.colors"];
+        flag = 1;
+    }
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"version"] == nil){
         [[NSUserDefaults standardUserDefaults] setObject:@1.2 forKey:@"version"];
         flag = 1;
@@ -89,8 +99,72 @@
     
     // nsuserdefaults key "rule" is the current rule number
 
+    // prevent crashing program into gaining access to a theme:
+    if(![[[NSUserDefaults standardUserDefaults] objectForKey:@"com.robbykraft.cellular.colors"] boolValue]  &&
+       ![[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"] isEqualToString:@"b_w"]){
+        [[NSUserDefaults standardUserDefaults] setObject:@"b_w" forKey:@"theme"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+    [self loadColors];
     [self buildPictures];
+    
+    //IAP
+    [InAppPurchaseHelper sharedInstance];
+
+    NSLog(@"ApplicationDidFinishLaunchingWithOptions did finish");
     return YES;
+}
+
+-(void) loadColors
+{
+    NSDictionary *b_w = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0], @"off",
+                         [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0], @"on",
+                         [UIColor colorWithRed:186/255.0 green:179/255.0 blue:167/255.0 alpha:1.0], @"complement",
+                         @"b&w", @"title", nil];
+    NSDictionary *ice = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.27 green:0.29 blue:0.64 alpha:1.0], @"off",
+                         [UIColor colorWithRed:0.85 green:0.88 blue:0.97 alpha:1.0], @"on",
+                         [UIColor colorWithRed:0.16 green:0.79 blue:0.84 alpha:1.0], @"complement",
+                         @"ice", @"title", nil];
+    NSDictionary *stone = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.09 green:0.21 blue:0.46 alpha:1.0], @"off",
+                           [UIColor colorWithRed:0.91 green:0.93 blue:0.81 alpha:1.0], @"on",
+                           [UIColor colorWithRed:0.84 green:0.79 blue:0.06 alpha:1.0], @"complement",
+                           @"stone", @"title", nil];
+    NSDictionary *moss = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.15 green:0.45 blue:0.30 alpha:1.0], @"off",
+                          [UIColor colorWithRed:0.84 green:0.77 blue:0.28 alpha:1.0], @"on",
+                          [UIColor colorWithRed:0.70 green:0.54 blue:0.60 alpha:1.0], @"complement",
+                          @"moss", @"title", nil];
+    NSDictionary *zelda = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1.0], @"off",
+                          [UIColor colorWithRed:1.00 green:0.78 blue:0.49 alpha:1.0], @"on",
+                          [UIColor colorWithRed:0.84 green:0.18 blue:0.00 alpha:1.0], @"complement",
+                          @"zelda", @"title", nil];
+    NSDictionary *water = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.27 green:0.00 blue:1.0 alpha:1.0], @"off",
+                          [UIColor colorWithRed:0.65 green:0.70 blue:0.80 alpha:1.0], @"on",
+                          [UIColor colorWithRed:0.32 green:0.62 blue:1.0 alpha:1.0], @"complement",
+                          @"water", @"title", nil];
+    NSDictionary *brick = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.95 green:0.20 blue:0.00 alpha:1.0], @"off",
+                           [UIColor colorWithRed:0.99 green:0.57 blue:0.16 alpha:1.0], @"on",
+                           [UIColor colorWithRed:1.00 green:0.85 blue:0.15 alpha:1.0], @"complement",
+                           @"brick", @"title", nil];
+    NSDictionary *arcade = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.32 green:0.78 blue:0.94 alpha:1.0], @"off",
+                           [UIColor colorWithRed:0.92 green:0.25 blue:0.08 alpha:1.0], @"on",
+                           [UIColor colorWithRed:1.00 green:0.75 blue:0.29 alpha:1.0], @"complement",
+                           @"arcade", @"title", nil];
+    NSDictionary *clay = [[NSDictionary alloc] initWithObjectsAndKeys:[UIColor colorWithRed:0.38 green:0.03 blue:0.00 alpha:1.0], @"off",
+                          [UIColor colorWithRed:0.97 green:0.62 blue:0.39 alpha:1.0], @"on",
+                          [UIColor colorWithRed:0.71 green:0.34 blue:0.18 alpha:1.0], @"complement",
+                          @"clay", @"title", nil];
+  
+    [[Colors sharedColors] setThemes:[[NSDictionary alloc] initWithObjectsAndKeys:
+                                      b_w, @"b_w",
+                                      clay, @"clay",
+                                      ice, @"ice",
+                                      moss, @"moss",
+                                      stone, @"stone",
+                                      water, @"water",
+                                      brick, @"brick",
+                                      arcade, @"arcade",
+                                      zelda, @"zelda",nil]];
 }
 
 -(void)buildPictures
@@ -160,13 +234,11 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"ApplicationWillEnterForeground");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"ApplicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

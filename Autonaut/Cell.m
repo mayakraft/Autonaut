@@ -21,6 +21,7 @@
         // Initialization code
         self.layer.borderWidth = 4.0f;
         self.layer.cornerRadius = 25.0f;
+        [self setClipsToBounds:YES];
         [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
         [self.detailTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:30.0f]];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];

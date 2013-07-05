@@ -29,17 +29,6 @@
         [right setUserInteractionEnabled:NO];
         [center setUserInteractionEnabled:NO];
         [left setUserInteractionEnabled:NO];
-//        blackfuzz = [[UIImageView alloc] initWithFrame:CGRectMake(-.5*(frame.size.width*1.208-frame.size.width),-.5*(frame.size.width*1.208/1.353125-frame.size.height),frame.size.width*1.208,frame.size.width*1.208/1.353125)];
-//        whitefuzz = [[UIImageView alloc] initWithFrame:blackfuzz.frame];
-//        [blackfuzz setImage:[UIImage imageNamed:@"blackfuzz.png"]];
-//        [whitefuzz setImage:[UIImage imageNamed:@"whitefuzz.png"]];
-//        [self addSubview:blackfuzz];
-//        [self sendSubviewToBack:blackfuzz];
-//        [self addSubview:whitefuzz];
-//        [self sendSubviewToBack:whitefuzz];
-//        [whitefuzz setAlpha:0.0];
-
-//        bg.exclusiveTouch = NO;
         state = 0;
     }
     return self;
@@ -48,12 +37,14 @@
 -(void) setState:(BOOL)s animated:(BOOL)animated{
     state = s;
     [self updateStateAnimated:[NSNumber numberWithBool:animated]];
-//    [self performSelectorInBackground:@selector(updateFuzzStateAnimated:) withObject:[NSNumber numberWithBool:animated]];
 }
 
 -(void) updateStateAnimated:(NSNumber*)animated
 {
     if(![animated boolValue]){
+        if(bottom != nil)
+            [bottom removeFromSuperview];
+        
         bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/2.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
         [bottom setUserInteractionEnabled:NO];
         if(state) [bottom setBackgroundColor:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"]];
@@ -61,12 +52,13 @@
         [self addSubview:bottom];
     }
     else{
-        bottom = nil;
         UIColor *cellColor;
         if(state) cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"on"];
         else      cellColor = [[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"off"];
         
-        // this method is incomplete. it stacks uiviews on top of each other forever. memory problem.
+        if(bottom != nil)
+            [bottom removeFromSuperview];
+        bottom = nil;
         bottom = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/3.0, self.frame.size.height/4.0, self.frame.size.width/3.0, self.frame.size.height/2.0)];
         [bottom setUserInteractionEnabled:NO];
         [bottom setBackgroundColor:center.backgroundColor];
@@ -85,28 +77,8 @@
         [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
         [UIView commitAnimations];
         [bottom performSelector:@selector(setBackgroundColor:) withObject:cellColor afterDelay:.24*.48];
-//        [bottom performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:.25];
     }
 }
-
-//-(void) updateFuzzStateAnimated:(NSNumber*)animated
-//{
-//    if([animated boolValue]){
-//        [UIView beginAnimations:@"alternateFuzz" context:nil];
-//        [UIView setAnimationDuration:0.25];
-//        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-//    }
-//    if(state){
-//        [whitefuzz setAlpha:1.0];
-//        [blackfuzz setAlpha:0.0];
-//    }
-//    else{
-//        [whitefuzz setAlpha:0.0];
-//        [blackfuzz setAlpha:1.0];
-//    }
-//    if([animated boolValue])
-//        [UIView commitAnimations];
-//}
 
 -(void)layoutSubviews
 {

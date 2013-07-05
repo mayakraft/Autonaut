@@ -15,4 +15,7 @@
 @property (strong, nonatomic) NSArray *interestingRandom;
 @property (strong, nonatomic) NSArray *interestingSingle;
 
+@property (strong, nonatomic) NSSet *inAppProductIdentifiers;
+-(NSString *)purchaseColorsProductIdentifier;
+
 @end

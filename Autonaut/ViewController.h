@@ -10,7 +10,8 @@
 #import "AppDelegate.h"
 #import "Generator.h"
 
-@interface ViewController : UIViewController <UITableViewDelegate, GeneratorDelegate>
+@interface ViewController : UIViewController <UITableViewDelegate, GeneratorDelegate, UIAlertViewDelegate>
 - (IBAction) unwindToViewController: (UIStoryboardSegue*) segue;
-
+-(void) startPurchase;
+-(void) finishPurchase;
 @end

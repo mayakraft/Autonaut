@@ -2,31 +2,39 @@
 //  AutonautTests.m
 //  AutonautTests
 //
-//  Created by Robby on 4/21/13.
-//  Copyright (c) 2013 robbykraft. All rights reserved.
+//  Created by Robby on 8/19/15.
+//  Copyright (c) 2015 Robby. All rights reserved.
 //
 
-#import "AutonautTests.h"
+#import <UIKit/UIKit.h>
+#import <XCTest/XCTest.h>
+
+@interface AutonautTests : XCTestCase
+
+@end
 
 @implementation AutonautTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
-    
-    // Set-up code here.
+    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in AutonautTests");
+- (void)testExample {
+    // This is an example of a functional test case.
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testPerformanceExample {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+    }];
 }
 
 @end
